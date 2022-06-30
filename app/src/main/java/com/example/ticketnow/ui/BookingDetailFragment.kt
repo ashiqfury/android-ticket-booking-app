@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -42,6 +43,8 @@ class BookingDetailFragment : Fragment() {
             actionBar!!.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeButtonEnabled(true)
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -69,6 +72,17 @@ class BookingDetailFragment : Fragment() {
             }
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return if (item.itemId == android.R.id.home) {
+            parentFragmentManager.popBackStack()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun registerTicket(userId: Int, ticketCount: Int): Int {
         viewModel.insertBooking(movieId, theatreId, userId, ticketCount)

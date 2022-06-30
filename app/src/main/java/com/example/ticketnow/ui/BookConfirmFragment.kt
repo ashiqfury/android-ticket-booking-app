@@ -37,8 +37,8 @@ class BookConfirmFragment : Fragment() {
         }
         if ((activity as MainActivity).supportActionBar != null) {
             val actionBar = (activity as MainActivity).supportActionBar
-            actionBar!!.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeButtonEnabled(true)
+            actionBar!!.setDisplayHomeAsUpEnabled(false)
+            actionBar.setHomeButtonEnabled(false)
         }
     }
 

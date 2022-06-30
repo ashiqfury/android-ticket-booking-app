@@ -1,7 +1,9 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -33,6 +35,8 @@ class MovieDetailFragment : Fragment() {
         if (bundle != null) {
             this.position = bundle.getInt("position", 0)
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -50,8 +54,6 @@ class MovieDetailFragment : Fragment() {
             actionBar!!.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeButtonEnabled(true)
         }
-
-
 
         viewModel.getMovies().observe(viewLifecycleOwner) { movies ->
             movie = movies[position ?: 0]
@@ -84,6 +86,16 @@ class MovieDetailFragment : Fragment() {
             })
 
             recyclerView.adapter = adapter
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return if (item.itemId == android.R.id.home) {
+            parentFragmentManager.popBackStack()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
 

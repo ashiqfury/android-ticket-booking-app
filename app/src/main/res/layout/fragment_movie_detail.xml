@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movie_detail_fragment"
     tools:context=".ui.MovieDetailFragment">
 
     <ScrollView
@@ -96,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
-                android:text="Popular theatres"
+                android:text="Some popular theatres"
                 android:textStyle="bold"
                 android:textColor="@color/sky_blue"
                 android:fontFamily="sans-serif-smallcaps"

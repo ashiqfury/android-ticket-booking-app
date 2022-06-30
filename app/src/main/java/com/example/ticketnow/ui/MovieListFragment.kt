@@ -23,7 +23,6 @@ internal class MovieListFragment : Fragment() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<MovieAdapter.ViewHolder>? = null
 
-//    private lateinit var movies: List<MovieModel>
     private lateinit var viewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +30,8 @@ internal class MovieListFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
         viewModel.initializeRepo(requireContext())
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(

@@ -3,6 +3,7 @@ package com.example.ticketnow.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,14 +19,12 @@ import kotlinx.android.synthetic.main.fragment_theatre_list.*
 internal class TheatreListFragment : Fragment() {
 
     private lateinit var viewModel: TheatreListViewModel
-    private lateinit var theatres: List<TheatreModel>
     private var movieId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[TheatreListViewModel::class.java]
         viewModel.initializeRepo(requireContext())
-        theatres = viewModel.getData()
 
         val bundle = this.arguments
         if (bundle != null) {
@@ -40,6 +39,8 @@ internal class TheatreListFragment : Fragment() {
             actionBar!!.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeButtonEnabled(true)
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -51,22 +52,34 @@ internal class TheatreListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getData().observe(viewLifecycleOwner) { theatres ->
+            val adapter = ViewPagerAdapter(theatres, object : BtnClickListener {
+                override fun clickListener(position: Int) {
+                    val fragment = BookingDetailFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("movieId", movieId ?: 0)
+                    bundle.putInt("theatreId", theatres[position].id)
+                    fragment.arguments = bundle
 
-        val adapter = ViewPagerAdapter(theatres, object : BtnClickListener {
-            override fun clickListener(position: Int) {
-                val fragment = BookingDetailFragment()
-                val bundle = Bundle()
-                bundle.putInt("movieId", movieId ?: 0)
-                bundle.putInt("theatreId", theatres[position].id)
-                fragment.arguments = bundle
-
-                parentFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_layout, fragment)
-                    addToBackStack(null)
-                    commit()
+                    parentFragmentManager.beginTransaction().apply {
+                        replace(R.id.frame_layout, fragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
-            }
-        })
-        view_pager.adapter = adapter
+            })
+            view_pager.adapter = adapter
+        }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return if (item.itemId == android.R.id.home) {
+            parentFragmentManager.popBackStack()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
 }
