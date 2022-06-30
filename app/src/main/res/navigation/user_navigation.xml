@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_navigation"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.example.ticketnow.ui.MovieListFragment"
+        android:label="fragment_movie_list"
+        tools:layout="@layout/fragment_movie_list" >
+        <action
+            android:id="@+id/action_movieListFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.example.ticketnow.ui.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail" >
+        <action
+            android:id="@+id/action_movieDetailFragment_to_theatreListFragment"
+            app:destination="@id/theatreListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/theatreListFragment"
+        android:name="com.example.ticketnow.ui.TheatreListFragment"
+        android:label="fragment_theatre_list"
+        tools:layout="@layout/fragment_theatre_list" >
+        <action
+            android:id="@+id/action_theatreListFragment_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingDetailFragment"
+        android:name="com.example.ticketnow.ui.BookingDetailFragment"
+        android:label="fragment_booking_detail"
+        tools:layout="@layout/fragment_booking_detail" >
+        <action
+            android:id="@+id/action_bookingDetailFragment_to_bookConfirmFragment"
+            app:destination="@id/bookConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookConfirmFragment"
+        android:name="com.example.ticketnow.ui.BookConfirmFragment"
+        android:label="fragment_book_confirm"
+        tools:layout="@layout/fragment_book_confirm" >
+        <action
+            android:id="@+id/action_bookConfirmFragment_to_movieListFragment"
+            app:destination="@id/movieListFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="1dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/theatre_image"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/theatres" />
+
+            <TextView
+                android:id="@+id/theatre_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="20dp"
+                android:text="Phoenix mall"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/sky_blue"
+                android:fontFamily="sans-serif-smallcaps" />
+
+            <TextView
+                android:id="@+id/theatre_desc"
+                android:layout_width="338dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="This is the description of the this theatre. This is one of the popular theatre."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/theatre_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="Location: Tirunelveli"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/theatre_total_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="Total seats: 20"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/theatre_available_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif"
+                android:text="Remaining seats: 12"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_book_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/sky_blue"
+                android:fontFamily="sans-serif"
+                android:text="Book Now"
+                android:layout_gravity="center_horizontal"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
