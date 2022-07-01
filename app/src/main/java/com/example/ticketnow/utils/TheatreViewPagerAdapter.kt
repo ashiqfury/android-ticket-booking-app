@@ -8,19 +8,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.TheatreModel
-import kotlinx.android.synthetic.main.cart_layout_theatre.view.*
+import kotlinx.android.synthetic.main.card_layout_theatre.view.*
 
-class TheatreVIewPagerAdapter(
+class TheatreViewPagerAdapter(
     private val theatres: List<TheatreModel>,
     val btnClickListener: BtnClickListener
-    ) : RecyclerView.Adapter<TheatreVIewPagerAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<TheatreViewPagerAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TheatreVIewPagerAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cart_layout_theatre, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TheatreViewPagerAdapter.ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout_theatre, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TheatreVIewPagerAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TheatreViewPagerAdapter.ViewHolder, position: Int) {
         holder.apply {
             itemTitle.text = theatres[position].name
             itemDesc.text = theatres[position].location

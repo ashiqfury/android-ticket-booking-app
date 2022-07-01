@@ -1,22 +1,18 @@
 package com.example.ticketnow.ui
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
-import com.example.ticketnow.utils.BtnClickListener
 import com.example.ticketnow.utils.MovieRecyclerViewAdapter
+import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
-import kotlinx.android.synthetic.main.fragment_movie_list.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -69,18 +65,31 @@ internal class MovieListFragment : Fragment() {
             searchedMovies.addAll(movies)
             recyclerView.adapter?.notifyDataSetChanged()
         }
-        adapter = MovieRecyclerViewAdapter(searchedMovies, object : BtnClickListener {
-            override fun clickListener(position: Int) {
+        adapter = MovieRecyclerViewAdapter(searchedMovies, object : RecyclerViewClickListener {
+            override fun clickListener(position: Int, isButton: Boolean) {
 
-                val fragment = MovieDetailFragment()
-                val bundle = Bundle()
-                bundle.putInt("position", position)
-                fragment.arguments = bundle
+                if (isButton) {
+                    val fragment = TheatreViewPagerFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("movieId", position)
+                    fragment.arguments = bundle
 
-                parentFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame_layout, fragment)
-                    addToBackStack(null)
-                    commit()
+                    parentFragmentManager.beginTransaction().apply {
+                        replace(R.id.frame_layout, fragment)
+                        addToBackStack(null)
+                        commit()
+                    }
+                } else {
+                    val fragment = MovieDetailFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("position", position)
+                    fragment.arguments = bundle
+
+                    parentFragmentManager.beginTransaction().apply {
+                        replace(R.id.frame_layout, fragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
             }
         })

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.ticketnow.R
 import com.example.ticketnow.data.repository.TheatreRepository
 import com.example.ticketnow.data.repository.TicketBookingRepository
@@ -22,30 +23,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
-        val theatreRepo = TheatreRepository(this)
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
         bottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
-                R.id.movies_tab -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_layout, MovieListFragment()).commit()
-                }
-                R.id.theatres_tab -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_layout, TheatreListFragment()).commit()
-                }
-            }
+                R.id.movies_tab -> MovieListFragment()
+                R.id.theatres_tab -> TheatreListFragment()
+                else -> null
+            }?.let { fragment -> supportFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
             true
         }
-
         supportFragmentManager.beginTransaction().replace(R.id.frame_layout, MovieListFragment()).commit()
-
     }
 
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
         when (fragment) {
-            is MovieListFragment -> {
+            is MovieListFragment, is TheatreListFragment -> {
                 if (doubleBackToExitPressedOnce) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         finishAffinity()

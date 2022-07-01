@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.utils.BtnClickListener
-import com.example.ticketnow.utils.TheatreVIewPagerAdapter
+import com.example.ticketnow.utils.TheatreViewPagerAdapter
 import com.example.ticketnow.viewmodels.MovieDetailViewModel
 
 
@@ -22,7 +22,7 @@ class MovieDetailFragment : Fragment() {
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var movie: MovieModel
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<TheatreVIewPagerAdapter.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<TheatreViewPagerAdapter.ViewHolder>? = null
     private var movieId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +78,7 @@ class MovieDetailFragment : Fragment() {
         viewModel.getTheatres().observe(viewLifecycleOwner) { theatres ->
             if (theatres.isEmpty()) showMore.text = ""
 
-            adapter = TheatreVIewPagerAdapter(theatres, object : BtnClickListener {
+            adapter = TheatreViewPagerAdapter(theatres, object : BtnClickListener {
                 override fun clickListener(position: Int) {
                     navigateToBookingDetailFragment(movie.id, theatres[position].id)
                 }
