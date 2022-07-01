@@ -58,15 +58,16 @@ internal class MovieListFragment : Fragment() {
         }
 
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView = view.findViewById(R.id.recycler_view)
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
 
         viewModel.getData().observe(viewLifecycleOwner) { movies ->
             this.movies.clear()
+            this.movies.addAll(movies)
             searchedMovies.clear()
             searchedMovies.addAll(movies)
-            this.movies.addAll(movies)
+            recyclerView.adapter?.notifyDataSetChanged()
         }
         adapter = MovieRecyclerViewAdapter(searchedMovies, object : BtnClickListener {
             override fun clickListener(position: Int) {

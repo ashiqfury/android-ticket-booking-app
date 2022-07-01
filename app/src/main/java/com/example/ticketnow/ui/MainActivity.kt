@@ -4,9 +4,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import com.example.ticketnow.R
+import com.example.ticketnow.data.repository.TheatreRepository
+import com.example.ticketnow.data.repository.TicketBookingRepository
 import com.example.ticketnow.utils.DatabaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -19,8 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
-        helper.insertTheatre("Lulu Cinemas", "Kerala", 40, 40)
-        helper.insertTheatre("Rainbow Dolby", "Bangalore", 35, 35)
+        val theatreRepo = TheatreRepository(this)
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 

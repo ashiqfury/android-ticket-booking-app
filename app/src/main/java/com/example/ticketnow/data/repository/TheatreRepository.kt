@@ -60,4 +60,8 @@ class TheatreRepository(context: Context) {
         }
         return theatre!!
     }
+
+    fun deleteTheatre(theatreId: Int) {
+        helper.deleteTheatre(theatreId.toString())
+    }
 }

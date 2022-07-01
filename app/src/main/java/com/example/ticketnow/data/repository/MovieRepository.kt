@@ -29,7 +29,7 @@ class MovieRepository(context: Context) {
         val cursor = helper.getAllMovies
 
         if (cursor.moveToFirst()) {
-            Log.d("BOOKING_TAG", DatabaseUtils.dumpCursorToString(cursor))
+//            Log.d("BOOKING_TAG", DatabaseUtils.dumpCursorToString(cursor))
             while (!cursor.isAfterLast) {
                 val id: String = cursor.getString(cursor.getColumnIndex("id"))
                 val name: String = cursor.getString(cursor.getColumnIndex("name"))
