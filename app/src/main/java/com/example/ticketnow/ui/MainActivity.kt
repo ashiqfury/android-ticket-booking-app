@@ -1,10 +1,16 @@
 package com.example.ticketnow.ui
 
+import android.database.DatabaseUtils
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.widget.Toast
 import com.example.ticketnow.R
+import com.example.ticketnow.data.repository.TicketBookingRepository
+import com.example.ticketnow.utils.DatabaseHelper
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +19,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.movies_tab -> {
+                    Toast.makeText(this, "MOVIES", Toast.LENGTH_SHORT).show()
+                }
+                R.id.theatres_tab -> {
+                    Toast.makeText(this, "THEATRES", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
 
         supportFragmentManager.beginTransaction().replace(R.id.frame_layout, MovieListFragment()).commit()
 

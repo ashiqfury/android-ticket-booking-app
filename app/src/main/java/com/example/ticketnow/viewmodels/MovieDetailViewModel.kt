@@ -37,5 +37,4 @@ class MovieDetailViewModel : ViewModel() {
 
     fun getTheatres(): LiveData<List<TheatreModel>> = theatres
 
-//    fun getMovieByIndex(position: Int): MovieModel = movies[position]
 }

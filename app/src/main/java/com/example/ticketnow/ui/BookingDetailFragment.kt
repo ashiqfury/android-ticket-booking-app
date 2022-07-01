@@ -31,8 +31,8 @@ class BookingDetailFragment : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-            this.movieId = bundle.getInt("movieId", 1)
-            this.theatreId = bundle.getInt("theatreId", 1)
+            this.movieId = bundle.getInt("movieId", -1)
+            this.theatreId = bundle.getInt("theatreId", -1)
         }
 
         if (activity != null) {
@@ -59,14 +59,9 @@ class BookingDetailFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btn_booking_submit).setOnClickListener {
             if (validateInputFields(view)) {
-//                registerUser(view)
-                Log.d("BOOK_MY_TICKET", view.et_booking_ticket_count.toString())
-                /*val ticketCount = view.et_booking_ticket_count.toString() as Int
-                val tickets = 2
-                val userId = getUserId(view) ?: 1
-                val bookingId = registerTicket(userId, tickets)
-                navigateToConfirmFragment(bookingId)*/
-                navigateToConfirmFragment(1)
+                val bookingId = registerTicket(view)
+                Log.d("BOOK_MY_SHOW BOOKING_ID", bookingId.toString())
+                navigateToConfirmFragment(bookingId.toInt())
             } else {
                 Toast.makeText(requireContext(), "Please fill all required fields!", Toast.LENGTH_SHORT).show()
             }
@@ -83,30 +78,18 @@ class BookingDetailFragment : Fragment() {
         }
     }
 
-
-    private fun registerTicket(userId: Int, ticketCount: Int): Int {
-        viewModel.insertBooking(movieId, theatreId, userId, ticketCount)
-        return getBookingId()
+    private fun registerTicket(view: View): Long {
+        val userId = registerUser(view)
+        Log.d("BOOK_MY_SHOW USER_ID", userId.toString())
+        val ticketCount = view.et_booking_ticket_count.text.toString().toInt()
+        Log.d("BOOK_MY_SHOW TICKETS", ticketCount.toString())
+        return viewModel.insertBooking(movieId, theatreId, userId.toInt(), ticketCount)
     }
 
-    private fun getBookingId(): Int {
-        val bookings = viewModel.getBookings()
-        return bookings[bookings.size - 1].id
-    }
-
-    private fun getUserId(view: View): Int? {
-        val user = viewModel.getUserByName(view.et_booking_name.text.toString())
-        return user?.id
-    }
-
-    private fun registerUser(view: View) {
+    private fun registerUser(view: View): Long {
         val name = view.et_booking_name.text.toString()
         val number = view.et_booking_contactno.text.toString().toLong()
-
-        Log.d("BOOK_MY_SHOW", "FRAGMENT CALLING $name $number")
-
-        viewModel.insertUser(name, number)
-
+        return viewModel.insertUser(name, number)
     }
 
     private fun validateInputFields(view: View): Boolean {

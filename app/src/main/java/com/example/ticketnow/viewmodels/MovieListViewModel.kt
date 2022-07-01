@@ -15,7 +15,7 @@ class MovieListViewModel : ViewModel() {
     private var movies = MutableLiveData<List<MovieModel>>()
 
     private fun loadData() {
-        movies.value = repository.getData()
+        movies.postValue(repository.getData())
     }
 
     fun initializeRepo(context: Context) {
@@ -28,8 +28,5 @@ class MovieListViewModel : ViewModel() {
     }
 
     fun getData(): LiveData<List<MovieModel>> = movies
-
-
-    fun getMovieByIndex(position: Int): MovieModel = repository.getData()[position]
 
 }

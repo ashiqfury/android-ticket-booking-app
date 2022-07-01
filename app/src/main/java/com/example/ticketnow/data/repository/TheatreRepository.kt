@@ -30,7 +30,6 @@ class TheatreRepository(context: Context) {
         val cursor = helper.getAllTheatres
 
         if (cursor.moveToFirst()) {
-            Log.d("BOOKING_TAG", DatabaseUtils.dumpCursorToString(cursor))
             while (!cursor.isAfterLast) {
                 val id: String = cursor.getString(cursor.getColumnIndex("id"))
                 val name: String = cursor.getString(cursor.getColumnIndex("name"))
@@ -38,11 +37,27 @@ class TheatreRepository(context: Context) {
                 val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
                 val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
                 val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt())
-                Log.d("BOOK", theatre.toString())
                 list.add(theatre)
                 cursor.moveToNext()
             }
         }
         return list
+    }
+
+    fun getTheatre(theatreId: Int): TheatreModel {
+        var theatre: TheatreModel? = null
+        val cursor = helper.getTheatre(theatreId)
+        cursor.moveToFirst()
+
+        if (cursor.moveToFirst()) {
+            val id: String = cursor.getString(cursor.getColumnIndex("id"))
+            val name: String = cursor.getString(cursor.getColumnIndex("name"))
+            val location: String = cursor.getString(cursor.getColumnIndex("location"))
+            val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
+            val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
+            theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt())
+            cursor.moveToNext()
+        }
+        return theatre!!
     }
 }

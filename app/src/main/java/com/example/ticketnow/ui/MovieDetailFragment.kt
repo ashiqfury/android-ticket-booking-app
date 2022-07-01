@@ -1,7 +1,6 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -59,7 +58,6 @@ class MovieDetailFragment : Fragment() {
             movie = movies[position ?: 0]
             assignValuesToViews(view)
         }
-
 
         return view
     }

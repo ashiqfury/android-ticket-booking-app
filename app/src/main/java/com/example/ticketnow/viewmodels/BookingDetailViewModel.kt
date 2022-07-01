@@ -3,6 +3,7 @@ package com.example.ticketnow.viewmodels
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ticketnow.data.models.BookTicketModel
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
@@ -11,6 +12,9 @@ import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
 import com.example.ticketnow.data.repository.TicketBookingRepository
 import com.example.ticketnow.data.repository.UserRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class BookingDetailViewModel: ViewModel() {
     private lateinit var movieRepository: MovieRepository
@@ -28,40 +32,19 @@ class BookingDetailViewModel: ViewModel() {
         userRepository = UserRepository(context)
     }
 
-    fun getBookings(): List<BookTicketModel> = bookingRepository.getData()
-
-    fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int) {
-        bookingRepository.insert(movieId, theatreId, userId, ticketCount)
+    fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
+        var id: Long = -1
+         viewModelScope.launch {
+            id =  bookingRepository.insert(movieId, theatreId, userId, ticketCount)
+        }
+        return id
     }
 
-    fun insertUser(name: String, number: Long) {
-        Log.d("BOOK_MY_SHOW", "VIEWMODEL CALLING $name $number")
-        userRepository.insert(name, number)
-    }
-
-    fun getMovies(): List<MovieModel> = movieRepository.getData()
-
-    fun getMovieByIndex(index: Int): MovieModel {
-        return movieRepository.getData()[index]
-    }
-
-    fun getMovieById(id: Int): MovieModel? {
-        return movieRepository.getData().find { it.id == id }
-    }
-
-    fun getTheatres(): List<TheatreModel> = theatreRepository.getData()
-
-    fun getTheatreByIndex(index: Int): TheatreModel {
-        return theatreRepository.getData()[index]
-    }
-
-    fun getTheatreById(id: Int): TheatreModel? {
-        return theatreRepository.getData().find { it.id == id }
-    }
-
-    fun getUser(): List<UserModel> = userRepository.getData()
-
-    fun getUserByName(name: String): UserModel? {
-        return userRepository.getData().find { it.name == name }
+    fun insertUser(name: String, number: Long): Long {
+        var id: Long = -1
+        viewModelScope.launch {
+            id = userRepository.insert(name, number)
+        }
+        return id
     }
 }

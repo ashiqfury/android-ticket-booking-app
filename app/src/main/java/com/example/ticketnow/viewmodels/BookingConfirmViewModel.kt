@@ -1,6 +1,7 @@
 package com.example.ticketnow.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.ticketnow.data.models.BookTicketModel
 import com.example.ticketnow.data.models.MovieModel
@@ -10,40 +11,36 @@ import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
 import com.example.ticketnow.data.repository.TicketBookingRepository
 import com.example.ticketnow.data.repository.UserRepository
+import kotlinx.coroutines.channels.ticker
 
 class BookingConfirmViewModel : ViewModel() {
 
-    private lateinit var movieRepository: MovieRepository
-    private lateinit var theatreRepository: TheatreRepository
     private lateinit var bookingRepository: TicketBookingRepository
     private lateinit var userRepository: UserRepository
-    private lateinit var bookings: List<BookTicketModel>
+    private lateinit var movieRepository: MovieRepository
+    private lateinit var theatreRepository: TheatreRepository
 
     fun initializeRepo(context: Context) {
+        bookingRepository = TicketBookingRepository(context)
+        userRepository = UserRepository(context)
         movieRepository = MovieRepository(context)
         theatreRepository = TheatreRepository(context)
-        bookingRepository = TicketBookingRepository(context).also {
-            bookings = it.getData()
-        }
-        userRepository = UserRepository(context)
     }
 
-    fun getMovieFromBooking(bookingId: Int): MovieModel? {
-        val booking = bookings.find { it.id == bookingId }
-        return movieRepository.getData().find { it.id == booking?.movieId }
+    fun getBooking(bookingId: Int): BookTicketModel {
+        return bookingRepository.getBooking(bookingId)
     }
 
-    fun getTheatreFromBooking(bookingId: Int): TheatreModel? {
-        val booking = bookings.find { it.id == bookingId }
-        return theatreRepository.getData().find { it.id == booking?.theatreId }
+    fun getUser(userId: Int): UserModel {
+        return userRepository.getUser(userId)
     }
 
-    fun getUserFromBooking(bookingId: Int): UserModel? {
-        val booking = bookings.find { it.id == bookingId }
-        return userRepository.getData().find { it.id == booking?.userId }
+    fun getMovie(movieId: Int): MovieModel {
+        return movieRepository.getMovie(movieId)
     }
 
-    fun getTicketCount(bookingId: Int): Int? {
-        return bookings.find { it.id == bookingId }?.ticketCount
+    fun getTheatre(theatreId: Int): TheatreModel {
+        return theatreRepository.getTheatre(theatreId)
     }
+
 }

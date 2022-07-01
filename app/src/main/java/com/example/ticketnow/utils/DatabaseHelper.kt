@@ -52,7 +52,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         db.insert(THEATRE_TABLE, null, contentValues)
     }
 
-    fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int) {
+    fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.apply {
@@ -63,10 +63,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         Log.d("CONTENT_VALUES BOOKING", contentValues.toString())
 
-        db.insert(BOOKING_TABLE, null, contentValues)
+        return db.insert(BOOKING_TABLE, null, contentValues)
     }
 
-    fun insertUser(name: String, phoneNumber: Long) {
+    fun insertUser(name: String, phoneNumber: Long): Long {
         Log.d("BOOK_MY_SHOW", "DB CALLING")
         val db = this.writableDatabase
         val contentValues = ContentValues()
@@ -76,7 +76,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         Log.d("CONTENT_VALUES USER", contentValues.toString())
 
-        db.insert(USER_TABLE, null, contentValues)
+        return db.insert(USER_TABLE, null, contentValues)
     }
 
     val getAllMovies : Cursor
@@ -103,9 +103,21 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             return db.rawQuery("SELECT * FROM $USER_TABLE", null)
         }
 
-    fun getUserByName(name: String): Cursor {
+    fun getMovie(id: Int): Cursor {
         val db = this.writableDatabase
-        return db.rawQuery("SELECT * FROM $USER_TABLE WHERE $NAME = $name", null)
+        return db.rawQuery("SELECT * FROM $MOVIE_TABLE WHERE $ID = $id", null)
+    }
+    fun getUser(id: Int): Cursor {
+        val db = this.writableDatabase
+        return db.rawQuery("SELECT * FROM $USER_TABLE WHERE $ID = $id", null)
+    }
+    fun getBooking(id: Int): Cursor {
+        val db = this.writableDatabase
+        return db.rawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id", null)
+    }
+    fun getTheatre(id: Int): Cursor {
+        val db = this.writableDatabase
+        return db.rawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id", null)
     }
 
     companion object {

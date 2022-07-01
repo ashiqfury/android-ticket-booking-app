@@ -23,25 +23,6 @@ class MovieRepository(context: Context) {
         }
     }
 
-    /*fun update(id: String, name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
-        try {
-            val isUpdate = helper.updateData(id, name, genre, language, showTime, price)
-            if (isUpdate) Log.d(TAG, "Data updated successfully")
-            else Log.d(TAG, "Data not updated")
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-    }
-
-    fun delete(id: String) = CoroutineScope(Dispatchers.Main).launch {
-        try {
-            helper.deleteData(id)
-            Log.d(TAG, "Data deleted successfully")
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-    }*/
-
     fun getData(): List<MovieModel> {
 
         val list = mutableListOf<MovieModel>()
@@ -64,4 +45,41 @@ class MovieRepository(context: Context) {
         }
         return list
     }
+
+    fun getMovie(movieId: Int): MovieModel {
+        var movie: MovieModel? = null
+        val cursor = helper.getMovie(movieId)
+        cursor.moveToFirst()
+
+        if (cursor.moveToFirst()) {
+            val id: String = cursor.getString(cursor.getColumnIndex("id"))
+            val name: String = cursor.getString(cursor.getColumnIndex("name"))
+            val genre: String = cursor.getString(cursor.getColumnIndex("genre"))
+            val language: String = cursor.getString(cursor.getColumnIndex("language"))
+            val showTime: String = cursor.getString(cursor.getColumnIndex("showtime"))
+            val price: String = cursor.getString(cursor.getColumnIndex("price"))
+            movie = MovieModel(id.toInt(), name, genre, language, showTime, price.toInt())
+            cursor.moveToNext()
+        }
+        return movie!!
+    }
+
+    /*fun update(id: String, name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
+        try {
+            val isUpdate = helper.updateData(id, name, genre, language, showTime, price)
+            if (isUpdate) Log.d(TAG, "Data updated successfully")
+            else Log.d(TAG, "Data not updated")
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    fun delete(id: String) = CoroutineScope(Dispatchers.Main).launch {
+        try {
+            helper.deleteData(id)
+            Log.d(TAG, "Data deleted successfully")
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }*/
 }

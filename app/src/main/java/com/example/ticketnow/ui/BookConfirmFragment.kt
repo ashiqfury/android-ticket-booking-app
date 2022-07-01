@@ -1,6 +1,7 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ class BookConfirmFragment : Fragment() {
 
     private var bookingId = 0
     private lateinit var viewModel: BookingConfirmViewModel
+    private lateinit var book: BookTicketModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +54,21 @@ class BookConfirmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getUserFromBooking(bookingId)?.let { user ->
+        /* Database column collapsed
+         use 'user' in movie function
+         user 'theatre' in user function
+         use 'movie' in theatre function*/
+
+        book = viewModel.getBooking(bookingId)
+
+        viewModel.getUser(book.theatreId).also { user ->
             assignUserValueToView(view, user)
         }
-
-        viewModel.getMovieFromBooking(bookingId)?.let { movie ->
-            viewModel.getTicketCount(bookingId)?.let { ticketCount ->
-                view.tv_confirm_ticketcount.text = "Tickets: ${ticketCount}x"
-                assignMovieValueToView(view, movie, ticketCount)
-            }
+        viewModel.getMovie(book.userId).also { movie ->
+            view.tv_confirm_ticketcount.text = "Tickets: ${book.ticketCount}x"
+            assignMovieValueToView(view, movie, book.ticketCount)
         }
-        viewModel.getTheatreFromBooking(bookingId)?.let { theatre ->
+        viewModel.getTheatre(book.movieId).also { theatre ->
             assignTheatreValueToView(view, theatre)
         }
 

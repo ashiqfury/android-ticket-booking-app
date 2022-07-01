@@ -39,19 +39,5 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, 1500)
-
-/*        val helper = DatabaseHelper(this)
-
-        helper.insertMovie("Titanic", "Romance", "Tamil", "Night", 120)
-        helper.insertTheatre("PVC Cinemas", "Tirunelveli", 20, 20)
-
-        val theatres = helper.getAllTheatres
-        theatres.moveToFirst()
-
-        val movies = helper.getAllMovies
-        movies.moveToFirst()
-
-        Log.d("TAG_FURY_THEATRES", DatabaseUtils.dumpCursorToString(theatres))
-        Log.d("TAG_FURY_MOVIES", DatabaseUtils.dumpCursorToString(movies))*/
     }
 }
