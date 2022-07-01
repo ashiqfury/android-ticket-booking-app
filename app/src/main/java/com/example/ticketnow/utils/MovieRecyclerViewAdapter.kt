@@ -38,7 +38,9 @@ internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, va
             itemDesc = view.item_desc
 
             view.setOnClickListener {
-                btnClickListener.clickListener(this.layoutPosition)
+                val position = this.layoutPosition
+                val movieId = movies[position].id
+                btnClickListener.clickListener(movieId)
             }
         }
 

@@ -23,7 +23,7 @@ class MovieDetailFragment : Fragment() {
     private lateinit var movie: MovieModel
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<TheatreVIewPagerAdapter.ViewHolder>? = null
-    private var position: Int? = null
+    private var movieId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MovieDetailFragment : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-            this.position = bundle.getInt("position", 0)
+            this.movieId = bundle.getInt("position", 0)
         }
 
         setHasOptionsMenu(true)
@@ -50,14 +50,15 @@ class MovieDetailFragment : Fragment() {
         }
         if ((activity as MainActivity).supportActionBar != null) {
             val actionBar = (activity as MainActivity).supportActionBar
-            actionBar!!.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeButtonEnabled(true)
+            actionBar?.let {
+                it.setDisplayHomeAsUpEnabled(true)
+                it.setHomeButtonEnabled(true)
+            }
         }
 
-        viewModel.getMovies().observe(viewLifecycleOwner) { movies ->
-            movie = movies[position ?: 0]
-            assignValuesToViews(view)
-        }
+        movie = viewModel.getMovie(movieId!!)
+        assignValuesToViews(view)
+
 
         return view
     }

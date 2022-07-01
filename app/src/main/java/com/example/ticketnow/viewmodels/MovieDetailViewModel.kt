@@ -37,4 +37,8 @@ class MovieDetailViewModel : ViewModel() {
 
     fun getTheatres(): LiveData<List<TheatreModel>> = theatres
 
+    fun getMovie(movieId: Int): MovieModel {
+        return movieRepository.getMovie(movieId)
+    }
+
 }

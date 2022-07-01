@@ -120,6 +120,22 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return db.rawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id", null)
     }
 
+    fun updateTheatre(id: String, name: String, location: String, totalSeats: Int, availableSeats: Int): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(NAME, name)
+        contentValues.put(LOCATION, location)
+        contentValues.put(TOTAL_SEATS, totalSeats)
+        contentValues.put(AVAILABLE_SEATS, availableSeats)
+        db.update(THEATRE_TABLE, contentValues, "ID = ?", arrayOf(id))
+        return true
+    }
+
+    fun deleteTheatre(id : String) : Int {
+        val db = this.writableDatabase
+        return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(id))
+    }
+
     companion object {
         const val DATABASE_NAME = "ticketnow.db"
         const val DATABASE_VERSION = 1

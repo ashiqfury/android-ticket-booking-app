@@ -3,6 +3,7 @@ package com.example.ticketnow.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -39,13 +40,13 @@ class TheatreListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_theatre_list, container, false)
 
         if (activity != null) {
-            (activity as MainActivity).title = "Popular Movies"
+            (activity as MainActivity).title = "Popcorn Cinemas"
         }
         if ((activity as MainActivity).supportActionBar != null) {
             val actionBar = (activity as MainActivity).supportActionBar
             actionBar?.let {
-                it.setDisplayHomeAsUpEnabled(true)
-                it.setHomeButtonEnabled(true)
+                it.setDisplayHomeAsUpEnabled(false)
+                it.setHomeButtonEnabled(false)
             }
         }
 
