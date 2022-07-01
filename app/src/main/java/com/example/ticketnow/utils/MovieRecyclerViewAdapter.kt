@@ -10,7 +10,7 @@ import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
 import kotlinx.android.synthetic.main.card_layout.view.*
 
-internal class MovieAdapter(private val movies: List<MovieModel>, val btnClickListener: BtnClickListener) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, val btnClickListener: BtnClickListener) : RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
