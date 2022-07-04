@@ -5,6 +5,7 @@ import android.database.DatabaseUtils
 import android.util.Log
 import com.example.ticketnow.data.models.BookTicketModel
 import com.example.ticketnow.data.models.UserModel
+import com.example.ticketnow.ui.TAG
 import com.example.ticketnow.utils.DatabaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class UserRepository(context: Context) {
     private val helper = DatabaseHelper(context)
-    private val TAG = "BOOK_MY_MOVIE"
 
     fun insert(name: String, number: Long): Long {
         return try {

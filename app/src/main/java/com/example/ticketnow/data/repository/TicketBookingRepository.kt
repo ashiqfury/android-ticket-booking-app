@@ -67,5 +67,4 @@ class TicketBookingRepository(context: Context) {
         }
         return book!!
     }
-
 }

@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.ticketnow.ui.TAG
 
 class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -17,10 +18,14 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $MOVIE_TABLE")
+        /*db?.execSQL("DROP TABLE IF EXISTS $MOVIE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $THEATRE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $BOOKING_TABLE")
-        db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")
+        db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")*/
+        Log.d(TAG, "onUpgrade: This method is called, so database is UPGRADED!")
+        /*if (newVersion > oldVersion) {
+            db?.execSQL("ALTER TABLE $THEATRE_TABLE ADD COLUMN $STARED INTEGER DEFAULT 0")
+        }*/
     }
 
     fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
@@ -107,14 +112,17 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $MOVIE_TABLE WHERE $ID = $id", null)
     }
+
     fun getUser(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $USER_TABLE WHERE $ID = $id", null)
     }
+
     fun getBooking(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id", null)
     }
+
     fun getTheatre(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id", null)
@@ -136,9 +144,16 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(id))
     }
 
+    fun updateStar(id: String, value: Int) {
+        val db = writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(STARED, value)
+        db.update(THEATRE_TABLE, contentValues, "id = ?", arrayOf(id))
+    }
+
     companion object {
         const val DATABASE_NAME = "ticketnow.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
         const val MOVIE_TABLE = "movies"
         const val THEATRE_TABLE = "theatres"
         const val BOOKING_TABLE = "bookings"
@@ -157,5 +172,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         const val USER_ID = "userId"
         const val TICKET_COUNT = "ticketCount"
         const val PHONE_NUMBER = "phoneNumber"
+        const val STARED = "stared"
     }
 }

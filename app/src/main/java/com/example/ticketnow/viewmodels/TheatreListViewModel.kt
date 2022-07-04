@@ -28,4 +28,10 @@ class TheatreListViewModel : ViewModel() {
 
     fun getData(): LiveData<List<TheatreModel>> = theatres
 
+    fun updateStar(theatreId: Int, value: Int) {
+        repository.updateStar(theatreId, value)
+        loadData()
+    }
+
+    fun getStar(theatreId: Int): Int = repository.getStar(theatreId)
 }

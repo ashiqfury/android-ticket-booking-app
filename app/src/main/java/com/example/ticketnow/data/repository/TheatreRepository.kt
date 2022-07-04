@@ -36,7 +36,9 @@ class TheatreRepository(context: Context) {
                 val location: String = cursor.getString(cursor.getColumnIndex("location"))
                 val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
                 val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
-                val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt())
+                val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
+                val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt())
+                Log.d(TAG, "Get data is called with: $theatre")
                 list.add(theatre)
                 cursor.moveToNext()
             }
@@ -55,7 +57,8 @@ class TheatreRepository(context: Context) {
             val location: String = cursor.getString(cursor.getColumnIndex("location"))
             val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
             val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
-            theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt())
+            val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
+            theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt())
             cursor.moveToNext()
         }
         return theatre!!
@@ -63,5 +66,21 @@ class TheatreRepository(context: Context) {
 
     fun deleteTheatre(theatreId: Int) {
         helper.deleteTheatre(theatreId.toString())
+    }
+
+    fun updateStar(id: Int, value: Int) {
+        helper.updateStar(id.toString(), value)
+    }
+
+    fun getStar(theatreId: Int): Int {
+        val cursor = helper.getTheatre(theatreId)
+        cursor.moveToFirst()
+        var stared = 0
+
+        if (cursor.moveToFirst()) {
+            stared = cursor.getInt(cursor.getColumnIndex("stared"))
+            cursor.moveToNext()
+        }
+        return stared
     }
 }

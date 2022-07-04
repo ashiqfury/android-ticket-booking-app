@@ -15,6 +15,8 @@ import com.example.ticketnow.utils.DatabaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
+const val TAG = "TICKET_NEW"
+
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
 
@@ -23,9 +25,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
+//        helper.updateStar("1", 1)
+        val theatreRepository = TheatreRepository(this)
+        val star = theatreRepository.getStar(1)
+//        Log.d(TAG, "Star in theatre 1 = $star")
+//        val data = theatreRepository.getData()
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.setOnNavigationItemSelectedListener {
+        bottomNavigation.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.movies_tab -> MovieListFragment()
                 R.id.theatres_tab -> TheatreListFragment()

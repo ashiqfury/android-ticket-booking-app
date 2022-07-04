@@ -20,8 +20,9 @@
         <entry key="app/src/main/res/layout/fragment_booking_detail.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_movie_detail.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.4244791666666667" />
-        <entry key="app/src/main/res/layout/fragment_theatre_list.xml" value="0.4244791666666667" />
+        <entry key="app/src/main/res/layout/fragment_theatre_list.xml" value="0.3934010152284264" />
         <entry key="app/src/main/res/layout/item_view_view_pager.xml" value="0.4234375" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.4239583333333333" />
         <entry key="app/src/main/res/menu/action_menu.xml" value="0.4239583333333333" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.4239583333333333" />
       </map>
