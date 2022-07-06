@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Titanic",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Night",
+    "price": 120
+  },
+  {
+    "name": "Minions",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 120
+  },
+  {
+    "name": "Vikram",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 120
+  },
+  {
+    "name": "Finding Nemo",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 120
+  },
+  {
+    "name": "Raw One",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 120
+  },
+  {
+    "name": "Evil Dead",
+    "genre": "Horror",
+    "language": "English",
+    "time": "Morning",
+    "price": 120
+  }
+]

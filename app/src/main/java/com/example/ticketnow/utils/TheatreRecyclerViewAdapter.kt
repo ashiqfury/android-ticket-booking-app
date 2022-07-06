@@ -1,6 +1,5 @@
 package com.example.ticketnow.utils
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.TheatreModel
-import com.example.ticketnow.ui.TAG
 import kotlinx.android.synthetic.main.card_layout_theatre_list.view.*
 
 internal class TheatreRecyclerViewAdapter(private val theatres: List<TheatreModel>, val btnClickListener: StarBtnClickListener) : RecyclerView.Adapter<TheatreRecyclerViewAdapter.ViewHolder>() {
@@ -24,7 +22,6 @@ internal class TheatreRecyclerViewAdapter(private val theatres: List<TheatreMode
         holder.apply {
             itemTitle.text = theatres[position].name
             itemDesc.text = theatres[position].location
-            Log.d(TAG, "onBindViewHolder: ${theatres[position]}")
 
             if (theatres[position].stared == 1) {
                 itemStar.setImageResource(R.drawable.ic_star_filled)
@@ -33,7 +30,6 @@ internal class TheatreRecyclerViewAdapter(private val theatres: List<TheatreMode
             }
             itemImage.setImageResource(R.drawable.theatres)
         }
-        Log.d(TAG, "onBindViewHolder: is called")
     }
 
     override fun getItemCount(): Int = theatres.size

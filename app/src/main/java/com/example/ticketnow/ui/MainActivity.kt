@@ -1,21 +1,23 @@
 package com.example.ticketnow.ui
 
+import android.content.ContentValues.TAG
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.ticketnow.R
+import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
 import com.example.ticketnow.data.repository.TicketBookingRepository
 import com.example.ticketnow.utils.DatabaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-
-const val TAG = "TICKET_NEW"
+import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -25,21 +27,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
+        helper.deleteAllMovies()
+
+
+
+
+
 //        helper.updateStar("1", 1)
-        val theatreRepository = TheatreRepository(this)
-        val star = theatreRepository.getStar(1)
+//        val movieRepo = MovieRepository(this)
+//        val movies = movieRepo.getMoviesFromNetwork()
+
+//        val fileInString: String = applicationContext.assets.open("moviesdata.json").bufferedReader().use { it.readText() }
+
+//        movies.forEach {
+//            Log.d("TICKETNOW_FURY", "onCreate: $it")
+//        }
+
+//        movieRepo.getMoviesFromDB().forEach {
+//            helper.deleteMovie(it.id.toString())
+//        }
+
 //        Log.d(TAG, "Star in theatre 1 = $star")
 //        val data = theatreRepository.getData()
 
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId) {
-                R.id.movies_tab -> MovieListFragment()
-                R.id.theatres_tab -> TheatreListFragment()
-                else -> null
-            }?.let { fragment -> supportFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
-            true
-        }
         supportFragmentManager.beginTransaction().replace(R.id.frame_layout, MovieListFragment()).commit()
     }
 

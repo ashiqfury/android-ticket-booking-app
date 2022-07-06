@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.example.ticketnow.ui.TAG
 
 class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -22,7 +21,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         db?.execSQL("DROP TABLE IF EXISTS $THEATRE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $BOOKING_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")*/
-        Log.d(TAG, "onUpgrade: This method is called, so database is UPGRADED!")
         /*if (newVersion > oldVersion) {
             db?.execSQL("ALTER TABLE $THEATRE_TABLE ADD COLUMN $STARED INTEGER DEFAULT 0")
         }*/
@@ -139,9 +137,19 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return true
     }
 
-    fun deleteTheatre(id : String) : Int {
+    fun deleteTheatre(theatreId : String) : Int {
         val db = this.writableDatabase
-        return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(id))
+        return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
+    }
+
+    fun deleteMovie(movieId: String): Int {
+        val db = this.writableDatabase
+        return db.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))
+    }
+
+    fun deleteAllMovies() {
+        val db = this.writableDatabase
+        db.execSQL("DELETE FROM $MOVIE_TABLE")
     }
 
     fun updateStar(id: String, value: Int) {

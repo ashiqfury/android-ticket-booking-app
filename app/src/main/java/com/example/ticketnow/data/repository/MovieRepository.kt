@@ -1,35 +1,28 @@
 package com.example.ticketnow.data.repository
 
 import android.content.Context
-import android.database.DatabaseUtils
 import android.util.Log
 import com.example.ticketnow.data.models.MovieModel
+import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.zip.DataFormatException
 
-class MovieRepository(context: Context) {
+class MovieRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
     private val TAG = "BOOK_MY_MOVIE"
 
-    fun insert(name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
-        try {
-            helper.insertMovie(name, genre, language, showTime, price)
-            Log.d(TAG, "Data inserted successfully")
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
+
+    fun getMoviesFromNetwork(): List<MovieModel> {
+        return FakeMovieRemoteDB.getAllMovies(context)
     }
 
-    fun getData(): List<MovieModel> {
-
+    fun getMoviesFromDB(): List<MovieModel> {
         val list = mutableListOf<MovieModel>()
         val cursor = helper.getAllMovies
 
         if (cursor.moveToFirst()) {
-//            Log.d("BOOKING_TAG", DatabaseUtils.dumpCursorToString(cursor))
             while (!cursor.isAfterLast) {
                 val id: String = cursor.getString(cursor.getColumnIndex("id"))
                 val name: String = cursor.getString(cursor.getColumnIndex("name"))
@@ -44,6 +37,31 @@ class MovieRepository(context: Context) {
             }
         }
         return list
+    }
+
+    fun insert(name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
+        try {
+            helper.insertMovie(name, genre, language, showTime, price)
+            Log.d(TAG, "Data inserted successfully")
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    fun getData(): List<MovieModel> {
+        val cursor = helper.getAllMovies
+        return if (cursor.count > 0) {
+            Log.d("TICKETNOW_FURY", "DATABASE CALL")
+            getMoviesFromDB()
+        }
+        else {
+            val movies = getMoviesFromNetwork()
+            movies.forEach { movie ->
+                insert(movie.name, movie.genre, movie.language, movie.time, movie.price)
+            }
+            Log.d("TICKETNOW_FURY", "NETWORK CALL")
+            movies
+        }
     }
 
     fun getMovie(movieId: Int): MovieModel {

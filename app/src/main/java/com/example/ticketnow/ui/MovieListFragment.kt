@@ -13,6 +13,8 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,9 +43,10 @@ internal class MovieListFragment : Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_list, container, false)
 
+        setUpNavigation(view)
 
         if (activity != null) {
-            (activity as MainActivity).title = "Popular Cinemas"
+            (activity as MainActivity).title = "Popcorn Cinemas"
         }
         if ((activity as MainActivity).supportActionBar != null) {
             val actionBar = (activity as MainActivity).supportActionBar
@@ -126,7 +129,18 @@ internal class MovieListFragment : Fragment() {
                 return false
             }
         })
-
     }
 
+    private fun setUpNavigation(view: View) {
+        val bottomNavigation = view.findViewById<BottomNavigationView>(R.id.movie_bottom_navigation)
+        bottomNavigation.setOnItemSelectedListener {
+            Log.d("TAG", "${it.itemId} == ${R.id.theatres_tab}")
+            when(it.itemId) {
+//                R.id.movies_tab -> MovieListFragment()
+                R.id.theatres_tab -> TheatreListFragment()
+                else -> null
+            }?.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
+            true
+        }
+    }
 }

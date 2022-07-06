@@ -5,7 +5,6 @@ import android.database.DatabaseUtils
 import android.util.Log
 import com.example.ticketnow.data.models.BookTicketModel
 import com.example.ticketnow.data.models.UserModel
-import com.example.ticketnow.ui.TAG
 import com.example.ticketnow.utils.DatabaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +15,6 @@ class UserRepository(context: Context) {
 
     fun insert(name: String, number: Long): Long {
         return try {
-            Log.d(TAG, "Data inserted successfully")
             helper.insertUser(name, number)
         } catch (e: Exception){
             e.printStackTrace()
