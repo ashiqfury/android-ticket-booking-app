@@ -23,6 +23,9 @@ class BookConfirmFragment : Fragment() {
     private var bookingId = 0
     private lateinit var viewModel: BookingConfirmViewModel
     private lateinit var book: BookTicketModel
+//    private lateinit var user: UserModel
+//    private lateinit var theatre: TheatreModel
+//    private lateinit var movie: MovieModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,17 +62,28 @@ class BookConfirmFragment : Fragment() {
          user 'theatre' in user function
          use 'movie' in theatre function*/
 
-        book = viewModel.getBooking(bookingId)
+        viewModel.getBookings().observe(viewLifecycleOwner) { _bookings ->
+            _bookings.find { it.id == bookingId }?.let { _book ->
+                book = _book
+            }
+        }
 
-        viewModel.getUser(book.theatreId).also { user ->
-            assignUserValueToView(view, user)
+        viewModel.getUsers().observe(viewLifecycleOwner) { users ->
+            users.find { it.id == book.theatreId }?.let { user ->
+                assignUserValueToView(view, user)
+            }
         }
-        viewModel.getMovie(book.userId).also { movie ->
-            view.tv_confirm_ticketcount.text = "Tickets: ${book.ticketCount}x"
-            assignMovieValueToView(view, movie, book.ticketCount)
+
+        viewModel.getMovies().observe(viewLifecycleOwner) { movies ->
+            movies.find { it.id == book.userId }?.let { movie ->
+                assignMovieValueToView(view, movie, book.ticketCount)
+            }
         }
-        viewModel.getTheatre(book.movieId).also { theatre ->
-            assignTheatreValueToView(view, theatre)
+
+        viewModel.getTheatres().observe(viewLifecycleOwner) { theatres ->
+            theatres.find { it.id == book.theatreId }?.let { theatre ->
+                assignTheatreValueToView(view, theatre)
+            }
         }
 
         // clear the backstack and go back to the home page

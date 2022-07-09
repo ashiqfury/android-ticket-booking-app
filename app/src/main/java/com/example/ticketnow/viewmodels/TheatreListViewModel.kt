@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.data.repository.TheatreRepository
+import kotlinx.coroutines.launch
 
 class TheatreListViewModel : ViewModel() {
     private lateinit var repository: TheatreRepository
@@ -14,7 +16,9 @@ class TheatreListViewModel : ViewModel() {
     private var theatres = MutableLiveData<List<TheatreModel>>()
 
     private fun loadData() {
-        theatres.value = repository.getData()
+        viewModelScope.launch {
+            theatres.postValue(repository.getData())
+        }
     }
 
     fun initializeRepo(context: Context) {

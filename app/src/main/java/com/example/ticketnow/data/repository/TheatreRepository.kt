@@ -24,7 +24,7 @@ class TheatreRepository(context: Context) {
     }
 
 
-    fun getData(): List<TheatreModel> {
+    suspend fun getData(): List<TheatreModel> {
 
         val list = mutableListOf<TheatreModel>()
         val cursor = helper.getAllTheatres

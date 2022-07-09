@@ -26,7 +26,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }*/
     }
 
-    fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
+    suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.apply {
@@ -36,8 +36,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             put(SHOWTIME, showtime)
             put(PRICE, price)
         }
-        Log.d("CONTENT_VALUES MOVIES", contentValues.toString())
-
         db.insert(MOVIE_TABLE, null, contentValues)
     }
 
@@ -50,8 +48,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             put(TOTAL_SEATS, totalSeats)
             put(AVAILABLE_SEATS, availableSeats)
         }
-        Log.d("CONTENT_VALUES THEATRE", contentValues.toString())
-
         db.insert(THEATRE_TABLE, null, contentValues)
     }
 
@@ -82,11 +78,13 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return db.insert(USER_TABLE, null, contentValues)
     }
 
-    val getAllMovies : Cursor
-        get() {
-            val db = this.writableDatabase
-            return db.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
-        }
+    suspend fun getAllMovies(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
+
+//    val getAllMovies : Cursor
+//        get() {
+//            val db = this.writableDatabase
+//            return db.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
+//        }
 
     val getAllTheatres : Cursor
         get() {

@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,10 +35,8 @@ internal class MovieListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
         viewModel.initializeRepo(requireContext())
-
         setHasOptionsMenu(true)
     }
 
@@ -47,34 +46,22 @@ internal class MovieListFragment : Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_list, container, false)
 
-        setUpNavigation(view)
-
-        if (activity != null) {
-            (activity as MainActivity).title = "Popcorn Cinemas"
-        }
-        if ((activity as MainActivity).supportActionBar != null) {
-            val actionBar = (activity as MainActivity).supportActionBar
-            actionBar?.let {
-                it.setDisplayHomeAsUpEnabled(false)
-                it.setHomeButtonEnabled(false)
-            }
-        }
-
+        setupAddBar()
+        setupBottomNavigation(view)
 
         recyclerView = view.findViewById(R.id.recycler_view)
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
 
-        viewModel.getData().observe(viewLifecycleOwner) { movies ->
-            this.movies.clear()
-            this.movies.addAll(movies)
+        viewModel.getMoviesData().observe(viewLifecycleOwner) { _movies ->
+            movies.clear()
+            movies.addAll(_movies)
             searchedMovies.clear()
-            searchedMovies.addAll(movies)
+            searchedMovies.addAll(_movies)
             recyclerView.adapter?.notifyDataSetChanged()
         }
         adapter = MovieRecyclerViewAdapter(searchedMovies, object : RecyclerViewClickListener {
             override fun clickListener(position: Int, isButton: Boolean) {
-
                 if (isButton) {
                     val fragment = TheatreViewPagerFragment()
                     val bundle = Bundle()
@@ -86,7 +73,8 @@ internal class MovieListFragment : Fragment() {
                         addToBackStack(null)
                         commit()
                     }
-                } else {
+                }
+                else {
                     val fragment = MovieDetailFragment()
                     val bundle = Bundle()
                     bundle.putInt("position", position)
@@ -116,6 +104,7 @@ internal class MovieListFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.action_menu, menu)
         val menuItem = menu.findItem(R.id.menu_search)
@@ -124,7 +113,6 @@ internal class MovieListFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 TODO("Not yet implemented")
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 searchedMovies.clear()
                 val searchText = newText!!.lowercase(Locale.getDefault())
@@ -132,7 +120,6 @@ internal class MovieListFragment : Fragment() {
                     movies.forEach { movie ->
                         if (movie.name.lowercase(Locale.getDefault()).contains(searchText)) {
                             searchedMovies.add(movie)
-                            Log.d("FURY", movie.name)
                         }
                     }
                     recyclerView.adapter?.notifyDataSetChanged()
@@ -146,16 +133,27 @@ internal class MovieListFragment : Fragment() {
         })
     }
 
-    private fun setUpNavigation(view: View) {
+    private fun setupBottomNavigation(view: View) {
         val bottomNavigation = view.findViewById<BottomNavigationView>(R.id.movie_bottom_navigation)
         bottomNavigation.setOnItemSelectedListener {
-            Log.d("TAG", "${it.itemId} == ${R.id.theatres_tab}")
             when(it.itemId) {
-//                R.id.movies_tab -> MovieListFragment()
                 R.id.theatres_tab -> TheatreListFragment()
                 else -> null
             }?.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
             true
+        }
+    }
+
+    private fun setupAddBar() {
+        if (activity != null) {
+            (activity as MainActivity).title = "Popcorn Cinemas"
+        }
+        if ((activity as MainActivity).supportActionBar != null) {
+            val actionBar = (activity as MainActivity).supportActionBar
+            actionBar?.let {
+                it.setDisplayHomeAsUpEnabled(false)
+                it.setHomeButtonEnabled(false)
+            }
         }
     }
 }

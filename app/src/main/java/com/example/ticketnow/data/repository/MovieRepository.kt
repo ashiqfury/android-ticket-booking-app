@@ -13,16 +13,14 @@ import kotlinx.coroutines.launch
 
 class MovieRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
-    private val TAG = "BOOK_MY_MOVIE"
 
-
-    fun getMoviesFromNetwork(): List<MovieModel> {
+    private suspend fun getMoviesFromNetwork(): List<MovieModel> {
         return FakeMovieRemoteDB.getAllMovies(context)
     }
 
-    fun getMoviesFromDB(): List<MovieModel> {
+    private suspend fun getMoviesFromDB(): List<MovieModel> {
         val list = mutableListOf<MovieModel>()
-        val cursor = helper.getAllMovies
+        val cursor = helper.getAllMovies()
 
         cursor.apply {
             if (moveToFirst()) {
@@ -43,17 +41,8 @@ class MovieRepository(val context: Context) {
         return list
     }
 
-    fun insert(name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
-        try {
-            helper.insertMovie(name, genre, language, showTime, price)
-            Log.d(TAG, "Data inserted successfully")
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-    }
-
-    fun getData(): List<MovieModel> {
-        val cursor = helper.getAllMovies
+    suspend fun getData(): List<MovieModel> {
+        val cursor = helper.getAllMovies()
         return if (cursor.count > 0) {
             getMoviesFromDB()
         }
@@ -65,10 +54,28 @@ class MovieRepository(val context: Context) {
         }
     }
 
+    suspend fun getUpdatedMovies(): List<MovieModel> {
+        return if (getMoviesFromNetwork().size != getMoviesFromDB().size) {
+            val movies = getMoviesFromNetwork()
+            helper.deleteAllMovies()
+            movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
+            movies
+        } else {
+            getMoviesFromDB()
+        }
+    }
+
+    suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
+        try {
+            helper.insertMovie(name, genre, language, showTime, price)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
     fun getMovie(movieId: Int): MovieModel {
         var movie: MovieModel? = null
         val cursor = helper.getMovie(movieId)
-        cursor.moveToFirst()
 
         cursor.apply {
             if (moveToFirst()) {
@@ -83,18 +90,11 @@ class MovieRepository(val context: Context) {
                 moveToNext()
             }
         }
-
-//        if (cursor.moveToFirst()) {
-//            val id: String = cursor.getString(cursor.getColumnIndex("id"))
-//            val name: String = cursor.getString(cursor.getColumnIndex("name"))
-//            val genre: String = cursor.getString(cursor.getColumnIndex("genre"))
-//            val language: String = cursor.getString(cursor.getColumnIndex("language"))
-//            val showTime: String = cursor.getString(cursor.getColumnIndex("showtime"))
-//            val price: String = cursor.getString(cursor.getColumnIndex("price"))
-//            movie = MovieModel(id.toInt(), name, genre, language, showTime, price.toInt())
-//            cursor.moveToNext()
-//        }
         return movie!!
+    }
+
+    private fun getValueFromCursor(cursor: Cursor, key: String): String {
+        return cursor.getString(cursor.getColumnIndex(key))
     }
 
     /*fun update(id: String, name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {
@@ -115,8 +115,4 @@ class MovieRepository(val context: Context) {
             e.printStackTrace()
         }
     }*/
-
-    fun getValueFromCursor(cursor: Cursor, key: String): String {
-        return cursor.getString(cursor.getColumnIndex(key))
-    }
 }

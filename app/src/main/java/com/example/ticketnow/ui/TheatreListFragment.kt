@@ -100,8 +100,8 @@ class TheatreListFragment : Fragment() {
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.movies_tab -> MovieListFragment()
-                else -> null
-            }?.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
+                else -> TheatreListFragment()
+            }.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
             true
         }
     }

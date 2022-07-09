@@ -8,34 +8,35 @@ import androidx.lifecycle.viewModelScope
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.UserModel
 import com.example.ticketnow.data.repository.MovieRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieListViewModel : ViewModel() {
-
     private lateinit var repository: MovieRepository
-
     private var movies = MutableLiveData<List<MovieModel>>()
-
-    private fun loadData() {
-        viewModelScope.launch {
-            movies.postValue(repository.getData())
-        }
-    }
 
     fun initializeRepo(context: Context) {
         repository = MovieRepository(context)
         loadData()
     }
 
-    fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
-        repository.insert(name, genre, language, showTime, price)
+    fun getMoviesData(): LiveData<List<MovieModel>> = movies
+
+    private fun loadData() {
+        viewModelScope.launch(Dispatchers.Default) {
+            movies.postValue(repository.getData())
+        }
     }
 
-    fun getData(): LiveData<List<MovieModel>> = movies
+    suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
+        viewModelScope.launch(Dispatchers.Default) {
+            repository.insert(name, genre, language, showTime, price)
+        }
+    }
 
     fun getUpdatedData() {
-        viewModelScope.launch {
-            movies.postValue(repository.getMoviesFromNetwork())
+        viewModelScope.launch(Dispatchers.Default) {
+            movies.postValue(repository.getUpdatedMovies())
         }
     }
 }

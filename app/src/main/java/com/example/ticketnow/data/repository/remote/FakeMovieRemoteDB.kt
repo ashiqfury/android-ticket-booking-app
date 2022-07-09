@@ -10,22 +10,7 @@ import java.io.IOException
 
 object FakeMovieRemoteDB {
 
-    private val movieJsonPath = "/Users/zoho/AndroidStudioProjects/TicketNow/app/src/main/java/com/example/ticketnow/resources/moviesdata.json"
-
-
-    fun getJsonDataFromAsset(fileName: String): String {
-        var jsonString = ""
-        try {
-            jsonString = File(fileName).bufferedReader().use { it.readText() }
-        } catch(ioException: IOException) {
-            ioException.printStackTrace()
-            return jsonString
-        }
-        return jsonString
-    }
-
-
-    fun getAllMovies(context: Context): List<MovieModel> {
+    suspend fun getAllMovies(context: Context): List<MovieModel> {
         val gson = Gson()
 
         val movieType = object : TypeToken<List<MovieModel>>() {}.type

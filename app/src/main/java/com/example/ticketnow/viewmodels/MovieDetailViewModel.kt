@@ -9,6 +9,7 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel : ViewModel() {
@@ -28,13 +29,13 @@ class MovieDetailViewModel : ViewModel() {
     }
 
     private fun loadMovies() {
-        viewModelScope.launch {
-            movies.value = movieRepository.getData()
+        viewModelScope.launch(Dispatchers.IO) {
+            movies.postValue(movieRepository.getData())
         }
     }
 
     private fun loadTheatres() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             theatres.postValue(theatreRepository.getData())
         }
     }
@@ -42,9 +43,5 @@ class MovieDetailViewModel : ViewModel() {
     fun getMovies(): LiveData<List<MovieModel>> = movies
 
     fun getTheatres(): LiveData<List<TheatreModel>> = theatres
-
-    fun getMovie(movieId: Int): MovieModel {
-        return movieRepository.getMovie(movieId)
-    }
 
 }

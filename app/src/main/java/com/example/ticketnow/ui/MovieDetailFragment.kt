@@ -56,10 +56,12 @@ class MovieDetailFragment : Fragment() {
             }
         }
 
-        movie = viewModel.getMovie(movieId!!)
-        assignValuesToViews(view)
-
-
+        viewModel.getMovies().observe(viewLifecycleOwner) { _movies ->
+            _movies.find { it.id == movieId }?.let { _movie ->
+                this.movie = _movie
+                assignValuesToViews(view)
+            }
+        }
         return view
     }
 
@@ -127,11 +129,13 @@ class MovieDetailFragment : Fragment() {
 
 
     private fun assignValuesToViews(view: View) {
-        view.findViewById<TextView>(R.id.movie_title).text = movie.name
-        view.findViewById<TextView>(R.id.movie_desc).text = "This is the description of the movie"
-        view.findViewById<TextView>(R.id.movie_language).text = "Language: ${movie.language}"
-        view.findViewById<TextView>(R.id.movie_genre).text = "Genre: ${movie.genre}"
-        view.findViewById<TextView>(R.id.movie_showtime).text = "Show Time: ${movie.time}"
-        view.findViewById<TextView>(R.id.movie_price).text = "Price: ${movie.price}"
+        if (::movie.isInitialized) {
+            view.findViewById<TextView>(R.id.movie_title).text = movie.name
+            view.findViewById<TextView>(R.id.movie_desc).text = "This is the description of the movie"
+            view.findViewById<TextView>(R.id.movie_language).text = "Language: ${movie.language}"
+            view.findViewById<TextView>(R.id.movie_genre).text = "Genre: ${movie.genre}"
+            view.findViewById<TextView>(R.id.movie_showtime).text = "Show Time: ${movie.time}"
+            view.findViewById<TextView>(R.id.movie_price).text = "Price: ${movie.price}"
+        }
     }
 }
