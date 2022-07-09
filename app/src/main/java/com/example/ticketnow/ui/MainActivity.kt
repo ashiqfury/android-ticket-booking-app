@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
-        helper.deleteAllMovies()
+//        helper.deleteAllMovies()
 
 
 

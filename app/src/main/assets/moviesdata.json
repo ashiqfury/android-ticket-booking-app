@@ -40,5 +40,26 @@
     "language": "English",
     "time": "Morning",
     "price": 120
+  },
+  {
+    "name": "Jurassic Park",
+    "genre": "Horror",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 220
+  },
+  {
+    "name": "Karate Kid",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 270
+  },
+  {
+    "name": "Jumanji",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 210
   }
 ]

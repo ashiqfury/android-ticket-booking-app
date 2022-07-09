@@ -1,6 +1,8 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.utils.MovieRecyclerViewAdapter
@@ -23,6 +26,7 @@ internal class MovieListFragment : Fragment() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>? = null
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var viewModel: MovieListViewModel
     private var searchedMovies: ArrayList<MovieModel> = arrayListOf()
@@ -99,6 +103,17 @@ internal class MovieListFragment : Fragment() {
         recyclerView.adapter = adapter
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout = view.findViewById(R.id.swipe)
+        swipeRefreshLayout.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed( {
+                viewModel.getUpdatedData()
+                swipeRefreshLayout.isRefreshing = false
+            }, 2000)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

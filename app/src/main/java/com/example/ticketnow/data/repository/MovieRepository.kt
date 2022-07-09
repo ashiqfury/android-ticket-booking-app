@@ -1,6 +1,8 @@
 package com.example.ticketnow.data.repository
 
 import android.content.Context
+import android.database.Cursor
+import android.database.DatabaseUtils
 import android.util.Log
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
@@ -22,20 +24,22 @@ class MovieRepository(val context: Context) {
         val list = mutableListOf<MovieModel>()
         val cursor = helper.getAllMovies
 
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast) {
-                val id: String = cursor.getString(cursor.getColumnIndex("id"))
-                val name: String = cursor.getString(cursor.getColumnIndex("name"))
-                val genre: String = cursor.getString(cursor.getColumnIndex("genre"))
-                val language: String = cursor.getString(cursor.getColumnIndex("language"))
-                val showTime: String = cursor.getString(cursor.getColumnIndex("showtime"))
-                val price: String = cursor.getString(cursor.getColumnIndex("price"))
-                val movie = MovieModel(id.toInt(), name, genre, language, showTime, price.toInt())
-                Log.d(TAG, movie.toString())
-                list.add(movie)
-                cursor.moveToNext()
+        cursor.apply {
+            if (moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    MovieModel(
+                        getValueFromCursor(this,"id").toInt(),
+                        getValueFromCursor(this,"name"),
+                        getValueFromCursor(this,"genre"),
+                        getValueFromCursor(this,"language"),
+                        getValueFromCursor(this,"showtime"),
+                        getValueFromCursor(this, "price").toInt(),
+                    ).also { list.add(it) }
+                    moveToNext()
+                }
             }
         }
+
         return list
     }
 
@@ -51,15 +55,12 @@ class MovieRepository(val context: Context) {
     fun getData(): List<MovieModel> {
         val cursor = helper.getAllMovies
         return if (cursor.count > 0) {
-            Log.d("TICKETNOW_FURY", "DATABASE CALL")
             getMoviesFromDB()
         }
         else {
             val movies = getMoviesFromNetwork()
-            movies.forEach { movie ->
-                insert(movie.name, movie.genre, movie.language, movie.time, movie.price)
-            }
-            Log.d("TICKETNOW_FURY", "NETWORK CALL")
+            helper.deleteAllMovies()
+            movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
             movies
         }
     }
@@ -69,16 +70,30 @@ class MovieRepository(val context: Context) {
         val cursor = helper.getMovie(movieId)
         cursor.moveToFirst()
 
-        if (cursor.moveToFirst()) {
-            val id: String = cursor.getString(cursor.getColumnIndex("id"))
-            val name: String = cursor.getString(cursor.getColumnIndex("name"))
-            val genre: String = cursor.getString(cursor.getColumnIndex("genre"))
-            val language: String = cursor.getString(cursor.getColumnIndex("language"))
-            val showTime: String = cursor.getString(cursor.getColumnIndex("showtime"))
-            val price: String = cursor.getString(cursor.getColumnIndex("price"))
-            movie = MovieModel(id.toInt(), name, genre, language, showTime, price.toInt())
-            cursor.moveToNext()
+        cursor.apply {
+            if (moveToFirst()) {
+                movie = MovieModel(
+                    getValueFromCursor(this,"id").toInt(),
+                    getValueFromCursor(this,"name"),
+                    getValueFromCursor(this,"genre"),
+                    getValueFromCursor(this,"language"),
+                    getValueFromCursor(this,"showtime"),
+                    getValueFromCursor(this, "price").toInt(),
+                )
+                moveToNext()
+            }
         }
+
+//        if (cursor.moveToFirst()) {
+//            val id: String = cursor.getString(cursor.getColumnIndex("id"))
+//            val name: String = cursor.getString(cursor.getColumnIndex("name"))
+//            val genre: String = cursor.getString(cursor.getColumnIndex("genre"))
+//            val language: String = cursor.getString(cursor.getColumnIndex("language"))
+//            val showTime: String = cursor.getString(cursor.getColumnIndex("showtime"))
+//            val price: String = cursor.getString(cursor.getColumnIndex("price"))
+//            movie = MovieModel(id.toInt(), name, genre, language, showTime, price.toInt())
+//            cursor.moveToNext()
+//        }
         return movie!!
     }
 
@@ -100,4 +115,8 @@ class MovieRepository(val context: Context) {
             e.printStackTrace()
         }
     }*/
+
+    fun getValueFromCursor(cursor: Cursor, key: String): String {
+        return cursor.getString(cursor.getColumnIndex(key))
+    }
 }
