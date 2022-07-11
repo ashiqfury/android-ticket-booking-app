@@ -17,7 +17,6 @@ class DatabaseHelper(context: Context):
         db?.execSQL("CREATE TABLE IF NOT EXISTS $BOOKING_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $MOVIE_ID INTEGER, $THEATRE_ID INTEGER, $USER_ID INTEGER, $TICKET_COUNT INTEGER)")
         db?.execSQL("CREATE TABLE IF NOT EXISTS $USER_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME INTEGER, $PHONE_NUMBER INTEGER)")
     }
-
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         /*db?.execSQL("DROP TABLE IF EXISTS $MOVIE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $THEATRE_TABLE")
@@ -40,7 +39,6 @@ class DatabaseHelper(context: Context):
         }
         db.insert(MOVIE_TABLE, null, contentValues)
     }
-
     fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int) {
         val db = this.writableDatabase
         val contentValues = ContentValues()
@@ -52,7 +50,6 @@ class DatabaseHelper(context: Context):
         }
         db.insert(THEATRE_TABLE, null, contentValues)
     }
-
     fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
@@ -66,7 +63,6 @@ class DatabaseHelper(context: Context):
 
         return db.insert(BOOKING_TABLE, null, contentValues)
     }
-
     fun insertUser(name: String, phoneNumber: Long): Long {
         Log.d("BOOK_MY_SHOW", "DB CALLING")
         val db = this.writableDatabase
@@ -81,40 +77,22 @@ class DatabaseHelper(context: Context):
     }
 
     override suspend fun getAllMovies(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
-
-    val getAllTheatres : Cursor
-        get() {
-            val db = this.writableDatabase
-            return db.rawQuery("SELECT * FROM $THEATRE_TABLE", null)
-        }
-
-    val getAllBookings : Cursor
-        get() {
-            val db = this.writableDatabase
-            return db.rawQuery("SELECT * FROM $BOOKING_TABLE", null)
-        }
-
-    val getAllUsers : Cursor
-        get() {
-            val db = this.writableDatabase
-            return db.rawQuery("SELECT * FROM $USER_TABLE", null)
-        }
+    fun getAllTheatres(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $THEATRE_TABLE", null)
+    fun getAllBookings(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $BOOKING_TABLE", null)
+    fun getAllUsers(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $USER_TABLE", null)
 
     fun getMovie(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $MOVIE_TABLE WHERE $ID = $id", null)
     }
-
     fun getUser(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $USER_TABLE WHERE $ID = $id", null)
     }
-
     fun getBooking(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id", null)
     }
-
     fun getTheatre(id: Int): Cursor {
         val db = this.writableDatabase
         return db.rawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id", null)
@@ -135,7 +113,6 @@ class DatabaseHelper(context: Context):
         val db = this.writableDatabase
         return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
     }
-
     fun deleteMovie(movieId: String): Int {
         val db = this.writableDatabase
         return db.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))

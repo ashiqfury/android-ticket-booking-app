@@ -26,7 +26,7 @@ class UserRepository(context: Context) {
     fun getData(): List<UserModel> {
 
         val list = mutableListOf<UserModel>()
-        val cursor = helper.getAllUsers
+        val cursor = helper.getAllUsers()
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {

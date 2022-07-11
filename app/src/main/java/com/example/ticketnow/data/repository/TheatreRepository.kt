@@ -27,7 +27,7 @@ class TheatreRepository(context: Context) {
     suspend fun getData(): List<TheatreModel> {
 
         val list = mutableListOf<TheatreModel>()
-        val cursor = helper.getAllTheatres
+        val cursor = helper.getAllTheatres()
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {

@@ -27,7 +27,7 @@ class TicketBookingRepository(context: Context) {
     fun getData(): List<BookTicketModel> {
 
         val list = mutableListOf<BookTicketModel>()
-        val cursor = helper.getAllBookings
+        val cursor = helper.getAllBookings()
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
