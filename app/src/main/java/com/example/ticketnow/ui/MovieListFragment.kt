@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
+import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,10 +30,15 @@ internal class MovieListFragment : Fragment() {
     private var adapter: RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var viewModel: MovieListViewModel
     private var searchedMovies: ArrayList<MovieModel> = arrayListOf()
     private var movies: ArrayList<MovieModel> = arrayListOf()
+
+    private var page = 1
+    private val limit = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +52,32 @@ internal class MovieListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_list, container, false)
-
         setupAddBar()
         setupBottomNavigation(view)
 
+        nestedScrollView = view.findViewById(R.id.scroll_view)
+        progressBar = view.findViewById(R.id.progress_bar)
         recyclerView = view.findViewById(R.id.recycler_view)
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
 
-        viewModel.getMoviesData().observe(viewLifecycleOwner) { _movies ->
+        // old code for fetching all movies as livedata
+        viewModel.getMoviesData.observe(viewLifecycleOwner) { _movies ->
             movies.clear()
             movies.addAll(_movies)
             searchedMovies.clear()
             searchedMovies.addAll(_movies)
             recyclerView.adapter?.notifyDataSetChanged()
         }
+
+        /*nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                page++
+                progressBar.visible()
+                getData()
+            }
+        })*/
+
         adapter = MovieRecyclerViewAdapter(searchedMovies, object : RecyclerViewClickListener {
             override fun clickListener(position: Int, isButton: Boolean) {
                 if (isButton) {
@@ -80,6 +101,17 @@ internal class MovieListFragment : Fragment() {
         recyclerView.adapter = adapter
         return view
     }
+
+    /*private fun getData() {
+        viewModel.getData(page, limit).also {
+//            movies.clear()
+            movies.addAll(it)
+            searchedMovies.clear()
+            searchedMovies.addAll(it)
+            progressBar.hide()
+            adapter?.notifyDataSetChanged()
+        }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -151,5 +183,12 @@ internal class MovieListFragment : Fragment() {
                 it.setHomeButtonEnabled(false)
             }
         }
+    }
+
+    private fun ProgressBar.visible() {
+        this.visibility = View.VISIBLE
+    }
+    private fun ProgressBar.hide() {
+        this.visibility = View.GONE
     }
 }

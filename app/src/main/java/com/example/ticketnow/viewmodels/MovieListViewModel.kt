@@ -9,6 +9,7 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.UserModel
 import com.example.ticketnow.data.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MovieListViewModel : ViewModel() {
@@ -20,22 +21,31 @@ class MovieListViewModel : ViewModel() {
         loadData()
     }
 
-    fun getMoviesData(): LiveData<List<MovieModel>> = movies
+    val getMoviesData: LiveData<List<MovieModel>> = movies
+
 
     private fun loadData() {
-        viewModelScope.launch(Dispatchers.Default) {
-            movies.postValue(repository.getData())
+        viewModelScope.launch {
+            movies.postValue(repository.getAllData())
         }
     }
 
+    /*fun getData(page: Int, limit: Int): List<MovieModel> {
+        lateinit var movies: List<MovieModel>
+        viewModelScope.launch {
+            movies = repository.getData(page, limit)
+        }
+        return movies
+    }*/
+
     suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             repository.insert(name, genre, language, showTime, price)
         }
     }
 
     fun getUpdatedData() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             movies.postValue(repository.getUpdatedMovies())
         }
     }

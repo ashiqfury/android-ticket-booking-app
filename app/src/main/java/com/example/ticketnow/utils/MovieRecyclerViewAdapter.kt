@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
 import kotlinx.android.synthetic.main.card_layout_movie_list.view.*
+import kotlinx.android.synthetic.main.card_layout_movie_list.view.item_desc
+import kotlinx.android.synthetic.main.card_layout_movie_list.view.item_image
+import kotlinx.android.synthetic.main.card_layout_movie_list.view.item_title
+import kotlinx.android.synthetic.main.card_layout_theatre_list.view.*
 
 internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, val btnClickListener: RecyclerViewClickListener) : RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>() {
 
@@ -29,15 +33,11 @@ internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, va
     override fun getItemCount(): Int = movies.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemImage: ImageView
-        val itemTitle: TextView
-        val itemDesc: TextView
+        val itemImage: ImageView = view.item_image
+        val itemTitle: TextView = view.item_title
+        val itemDesc: TextView = view.item_desc
 
         init {
-            itemImage = view.item_image
-            itemTitle = view.item_title
-            itemDesc = view.item_desc
-
             view.setOnClickListener {
                 val position = this.layoutPosition
                 val movieId = movies[position].id

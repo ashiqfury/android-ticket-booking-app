@@ -8,13 +8,14 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.IOException
 
-object FakeMovieRemoteDB {
+object FakeMovieRemoteDB : RemoteInterface {
 
-    suspend fun getAllMovies(context: Context): List<MovieModel> {
+    override suspend fun getAllMovies(context: Context): List<MovieModel> {
         val gson = Gson()
 
         val movieType = object : TypeToken<List<MovieModel>>() {}.type
-        val moviesJsonString: String = context.assets.open("moviesdata.json").bufferedReader().use { it.readText() }
+        val moviesJsonString: String =
+            context.assets.open("moviesdata.json").bufferedReader().use { it.readText() }
 
         return gson.fromJson(moviesJsonString, movieType);
     }

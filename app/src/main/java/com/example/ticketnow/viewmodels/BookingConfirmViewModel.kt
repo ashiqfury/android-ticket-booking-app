@@ -53,7 +53,7 @@ class BookingConfirmViewModel : ViewModel() {
 
     private fun loadMovies() {
         viewModelScope.launch {
-            movies.postValue(movieRepository.getData())
+            movies.postValue(movieRepository.getAllData())
         }
     }
 

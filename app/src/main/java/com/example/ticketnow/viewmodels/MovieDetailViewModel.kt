@@ -30,7 +30,7 @@ class MovieDetailViewModel : ViewModel() {
 
     private fun loadMovies() {
         viewModelScope.launch(Dispatchers.IO) {
-            movies.postValue(movieRepository.getData())
+            movies.postValue(movieRepository.getAllData())
         }
     }
 

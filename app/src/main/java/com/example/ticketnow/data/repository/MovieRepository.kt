@@ -9,12 +9,14 @@ import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MovieRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
 
     private suspend fun getMoviesFromNetwork(): List<MovieModel> {
+        delay(2000) // simulated delay
         return FakeMovieRemoteDB.getAllMovies(context)
     }
 
@@ -41,7 +43,7 @@ class MovieRepository(val context: Context) {
         return list
     }
 
-    suspend fun getData(): List<MovieModel> {
+    suspend fun getAllData(): List<MovieModel> {
         val cursor = helper.getAllMovies()
         return if (cursor.count > 0) {
             getMoviesFromDB()
@@ -52,6 +54,11 @@ class MovieRepository(val context: Context) {
             movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
             movies
         }
+    }
+
+    suspend fun getData(page: Int, limit: Int): List<MovieModel> {
+        val movies = getAllData()
+        return movies.subList((page - 1) * limit, page * limit)
     }
 
     suspend fun getUpdatedMovies(): List<MovieModel> {
