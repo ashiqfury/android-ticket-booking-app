@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context):
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
+    DatabaseInterface {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE IF NOT EXISTS $MOVIE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $GENRE TEXT, $LANGUAGE TEXT, $SHOWTIME TEXT, $PRICE INTEGER)")
@@ -26,7 +28,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }*/
     }
 
-    suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
+    override suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.apply {
@@ -78,13 +80,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return db.insert(USER_TABLE, null, contentValues)
     }
 
-    suspend fun getAllMovies(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
-
-//    val getAllMovies : Cursor
-//        get() {
-//            val db = this.writableDatabase
-//            return db.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
-//        }
+    override suspend fun getAllMovies(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
 
     val getAllTheatres : Cursor
         get() {

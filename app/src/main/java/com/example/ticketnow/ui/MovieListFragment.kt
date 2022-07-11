@@ -3,10 +3,8 @@ package com.example.ticketnow.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +16,6 @@ import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,33 +60,24 @@ internal class MovieListFragment : Fragment() {
         adapter = MovieRecyclerViewAdapter(searchedMovies, object : RecyclerViewClickListener {
             override fun clickListener(position: Int, isButton: Boolean) {
                 if (isButton) {
-                    val fragment = TheatreViewPagerFragment()
                     val bundle = Bundle()
                     bundle.putInt("movieId", position)
-                    fragment.arguments = bundle
-
-                    parentFragmentManager.beginTransaction().apply {
-                        replace(R.id.frame_layout, fragment)
-                        addToBackStack(null)
-                        commit()
+                    TheatreViewPagerFragment().apply {
+                        arguments = bundle
+                        navigateFragment(this, true)
                     }
                 }
                 else {
-                    val fragment = MovieDetailFragment()
                     val bundle = Bundle()
                     bundle.putInt("position", position)
-                    fragment.arguments = bundle
-
-                    parentFragmentManager.beginTransaction().apply {
-                        replace(R.id.frame_layout, fragment)
-                        addToBackStack(null)
-                        commit()
+                    MovieDetailFragment().apply {
+                        arguments = bundle
+                        navigateFragment(this, true)
                     }
                 }
             }
         })
         recyclerView.adapter = adapter
-
         return view
     }
 
@@ -137,10 +125,18 @@ internal class MovieListFragment : Fragment() {
         val bottomNavigation = view.findViewById<BottomNavigationView>(R.id.movie_bottom_navigation)
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId) {
-                R.id.theatres_tab -> TheatreListFragment()
-                else -> null
-            }?.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
+                R.id.theatres_tab -> navigateFragment(TheatreListFragment())
+                R.id.movies_tab -> navigateFragment(MovieListFragment())
+            }
             true
+        }
+    }
+
+    private fun navigateFragment(fragment: Fragment, backStack: Boolean = false) {
+        if (backStack) {
+            parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).addToBackStack(null).commit()
+        } else {
+            parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit()
         }
     }
 

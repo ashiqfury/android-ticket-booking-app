@@ -40,10 +40,14 @@ class TheatreListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    //diff util
+    // diff util
     // shared element transaction
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_theatre_list, container, false).also {
             setUpNavigation(it)
             setupAppbar()
@@ -53,6 +57,7 @@ class TheatreListFragment : Fragment() {
     }
 
     /** implementation of search in appbar */
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.action_menu, menu)
         val menuItem = menu.findItem(R.id.menu_search)
@@ -96,14 +101,19 @@ class TheatreListFragment : Fragment() {
     }
 
     private fun setUpNavigation(view: View) {
-        val bottomNavigation = view.findViewById<BottomNavigationView>(R.id.theatre_bottom_navigation)
+        val bottomNavigation =
+            view.findViewById<BottomNavigationView>(R.id.theatre_bottom_navigation)
         bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId) {
-                R.id.movies_tab -> MovieListFragment()
-                else -> TheatreListFragment()
-            }.let { fragment -> parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit() }
+            when (it.itemId) {
+                R.id.movies_tab -> replaceCurrentFragment(MovieListFragment())
+                R.id.theatres_tab -> replaceCurrentFragment(TheatreListFragment())
+            }
             true
         }
+    }
+
+    private fun replaceCurrentFragment(fragment: Fragment) {
+        parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit()
     }
 
     private fun setupSpinner(view: View) {
@@ -111,13 +121,19 @@ class TheatreListFragment : Fragment() {
         val filter = resources.getStringArray(R.array.filter)
         spinner = view.findViewById(R.id.spinner_filter)
         spinner.let {
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, filter)
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, filter)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
 
             spinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
-                override fun onItemSelected( parent: AdapterView<*>?,  view: View?,  position: Int,  id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     /** when the spinner has value of 'all' reset everything */
                     if (filter[position] == "All") {
                         searchedTheatres.clear()
