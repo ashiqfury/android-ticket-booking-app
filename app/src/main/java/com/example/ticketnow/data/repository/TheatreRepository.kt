@@ -13,19 +13,12 @@ class TheatreRepository(context: Context) {
     private val helper = DatabaseHelper(context)
     private val TAG = "BOOK_MY_THEATRE"
 
-    fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) = CoroutineScope(
-        Dispatchers.Main).launch {
-        try {
-            helper.insertTheatre(name, location, totalSeats, availableSeats)
-            Log.d(TAG, "Data inserted successfully")
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
+    suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
+        helper.insertTheatre(name, location, totalSeats, availableSeats)
     }
 
 
     suspend fun getData(): List<TheatreModel> {
-
         val list = mutableListOf<TheatreModel>()
         val cursor = helper.getAllTheatres()
 
@@ -46,7 +39,7 @@ class TheatreRepository(context: Context) {
         return list
     }
 
-    fun getTheatre(theatreId: Int): TheatreModel {
+    suspend fun getTheatre(theatreId: Int): TheatreModel {
         var theatre: TheatreModel? = null
         val cursor = helper.getTheatre(theatreId)
         cursor.moveToFirst()
@@ -64,15 +57,15 @@ class TheatreRepository(context: Context) {
         return theatre!!
     }
 
-    fun deleteTheatre(theatreId: Int) {
+    suspend fun deleteTheatre(theatreId: Int) {
         helper.deleteTheatre(theatreId.toString())
     }
 
-    fun updateStar(id: Int, value: Int) {
+    suspend fun updateStar(id: Int, value: Int) {
         helper.updateStar(id.toString(), value)
     }
 
-    fun getStar(theatreId: Int): Int {
+    suspend fun getStar(theatreId: Int): Int {
         val cursor = helper.getTheatre(theatreId)
         cursor.moveToFirst()
         var stared = 0

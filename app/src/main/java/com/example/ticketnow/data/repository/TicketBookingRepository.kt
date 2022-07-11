@@ -13,7 +13,7 @@ class TicketBookingRepository(context: Context) {
     private val helper = DatabaseHelper(context)
     private val TAG = "BOOK_MY_MOVIE"
 
-    fun insert(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
+    suspend fun insert(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
         return try {
             Log.d(TAG, "Data inserted successfully")
             helper.insertBooking(movieId, theatreId, userId, ticketCount)
@@ -24,7 +24,7 @@ class TicketBookingRepository(context: Context) {
 
     }
 
-    fun getData(): List<BookTicketModel> {
+    suspend fun getData(): List<BookTicketModel> {
 
         val list = mutableListOf<BookTicketModel>()
         val cursor = helper.getAllBookings()
@@ -45,7 +45,7 @@ class TicketBookingRepository(context: Context) {
         return list
     }
 
-    fun getBooking(bookingId: Int): BookTicketModel {
+    suspend fun getBooking(bookingId: Int): BookTicketModel {
         var book: BookTicketModel? = null
         val cursor = helper.getBooking(bookingId)
         cursor.moveToFirst()

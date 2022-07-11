@@ -73,7 +73,7 @@ class MovieRepository(val context: Context) {
         }
     }
 
-    fun getMovie(movieId: Int): MovieModel {
+    suspend fun getMovie(movieId: Int): MovieModel {
         var movie: MovieModel? = null
         val cursor = helper.getMovie(movieId)
 

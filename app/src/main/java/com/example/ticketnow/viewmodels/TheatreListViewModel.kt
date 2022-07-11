@@ -27,15 +27,25 @@ class TheatreListViewModel : ViewModel() {
     }
 
     fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
-        repository.insert(name, location, totalSeats, availableSeats)
+        viewModelScope.launch {
+            repository.insert(name, location, totalSeats, availableSeats)
+        }
     }
 
     fun getData(): LiveData<List<TheatreModel>> = theatres
 
     fun updateStar(theatreId: Int, value: Int) {
-        repository.updateStar(theatreId, value)
-        loadData()
+        viewModelScope.launch {
+            repository.updateStar(theatreId, value)
+            loadData()
+        }
     }
 
-    fun getStar(theatreId: Int): Int = repository.getStar(theatreId)
+    fun getStar(theatreId: Int): Int {
+        var star = -1
+        viewModelScope.launch {
+            star = repository.getStar(theatreId)
+        }
+        return star
+    }
 }

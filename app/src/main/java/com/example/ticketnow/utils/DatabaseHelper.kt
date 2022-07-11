@@ -21,8 +21,9 @@ class DatabaseHelper(context: Context):
         /*db?.execSQL("DROP TABLE IF EXISTS $MOVIE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $THEATRE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $BOOKING_TABLE")
-        db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")*/
-        /*if (newVersion > oldVersion) {
+        db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")
+        onCreate(db)
+        if (newVersion > oldVersion) {
             db?.execSQL("ALTER TABLE $THEATRE_TABLE ADD COLUMN $STARED INTEGER DEFAULT 0")
         }*/
     }
@@ -39,18 +40,22 @@ class DatabaseHelper(context: Context):
         }
         db.insert(MOVIE_TABLE, null, contentValues)
     }
-    fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int) {
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.apply {
-            put(NAME, name)
-            put(LOCATION, location)
-            put(TOTAL_SEATS, totalSeats)
-            put(AVAILABLE_SEATS, availableSeats)
+    override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int) {
+        try {
+            val db = this.writableDatabase
+            val contentValues = ContentValues()
+            contentValues.apply {
+                put(NAME, name)
+                put(LOCATION, location)
+                put(TOTAL_SEATS, totalSeats)
+                put(AVAILABLE_SEATS, availableSeats)
+            }
+            db.insert(THEATRE_TABLE, null, contentValues)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        db.insert(THEATRE_TABLE, null, contentValues)
     }
-    fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
+    override suspend fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.apply {
@@ -63,42 +68,31 @@ class DatabaseHelper(context: Context):
 
         return db.insert(BOOKING_TABLE, null, contentValues)
     }
-    fun insertUser(name: String, phoneNumber: Long): Long {
-        Log.d("BOOK_MY_SHOW", "DB CALLING")
+    override suspend fun insertUser(name: String, phoneNumber: Long): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.apply {
             put(NAME, name)
             put(PHONE_NUMBER, phoneNumber)
         }
-        Log.d("CONTENT_VALUES USER", contentValues.toString())
-
         return db.insert(USER_TABLE, null, contentValues)
     }
 
-    override suspend fun getAllMovies(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $MOVIE_TABLE", null)
-    fun getAllTheatres(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $THEATRE_TABLE", null)
-    fun getAllBookings(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $BOOKING_TABLE", null)
-    fun getAllUsers(): Cursor = this.writableDatabase.rawQuery("SELECT * FROM $USER_TABLE", null)
+    override suspend fun getAllMovies(): Cursor = customRawQuery("SELECT * FROM $MOVIE_TABLE")
+    override suspend fun getAllTheatres(): Cursor = customRawQuery("SELECT * FROM $THEATRE_TABLE")
+    override suspend fun getAllBookings(): Cursor = customRawQuery("SELECT * FROM $BOOKING_TABLE")
+    override suspend fun getAllUsers(): Cursor = customRawQuery("SELECT * FROM $USER_TABLE")
 
-    fun getMovie(id: Int): Cursor {
-        val db = this.writableDatabase
-        return db.rawQuery("SELECT * FROM $MOVIE_TABLE WHERE $ID = $id", null)
-    }
-    fun getUser(id: Int): Cursor {
-        val db = this.writableDatabase
-        return db.rawQuery("SELECT * FROM $USER_TABLE WHERE $ID = $id", null)
-    }
-    fun getBooking(id: Int): Cursor {
-        val db = this.writableDatabase
-        return db.rawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id", null)
-    }
-    fun getTheatre(id: Int): Cursor {
-        val db = this.writableDatabase
-        return db.rawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id", null)
-    }
+    override suspend fun getMovie(id: Int): Cursor = customRawQuery("SELECT * FROM $MOVIE_TABLE WHERE $ID = $id")
+    override suspend fun getUser(id: Int): Cursor = customRawQuery("SELECT * FROM $USER_TABLE WHERE $ID = $id")
+    override suspend fun getBooking(id: Int): Cursor = customRawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id")
+    override suspend fun getTheatre(id: Int): Cursor  = customRawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id")
 
-    fun updateTheatre(id: String, name: String, location: String, totalSeats: Int, availableSeats: Int): Boolean {
+    override suspend fun deleteTheatre(theatreId : String) : Int = this.writableDatabase.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
+    override suspend fun deleteMovie(movieId: String): Int = this.writableDatabase.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))
+    override suspend fun deleteAllMovies(): Unit = this.writableDatabase.execSQL("DELETE FROM $MOVIE_TABLE")
+
+    override suspend fun updateTheatre(id: String, name: String, location: String, totalSeats: Int, availableSeats: Int): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(NAME, name)
@@ -108,27 +102,14 @@ class DatabaseHelper(context: Context):
         db.update(THEATRE_TABLE, contentValues, "ID = ?", arrayOf(id))
         return true
     }
-
-    fun deleteTheatre(theatreId : String) : Int {
-        val db = this.writableDatabase
-        return db.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
-    }
-    fun deleteMovie(movieId: String): Int {
-        val db = this.writableDatabase
-        return db.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))
-    }
-
-    fun deleteAllMovies() {
-        val db = this.writableDatabase
-        db.execSQL("DELETE FROM $MOVIE_TABLE")
-    }
-
-    fun updateStar(id: String, value: Int) {
+    override suspend fun updateStar(id: String, value: Int) {
         val db = writableDatabase
         val contentValues = ContentValues()
         contentValues.put(STARED, value)
         db.update(THEATRE_TABLE, contentValues, "id = ?", arrayOf(id))
     }
+
+    private fun customRawQuery(query: String): Cursor = this.writableDatabase.rawQuery(query, null)
 
     companion object {
         const val DATABASE_NAME = "ticketnow.db"

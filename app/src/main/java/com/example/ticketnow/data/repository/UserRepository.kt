@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class UserRepository(context: Context) {
     private val helper = DatabaseHelper(context)
 
-    fun insert(name: String, number: Long): Long {
+    suspend fun insert(name: String, number: Long): Long {
         return try {
             helper.insertUser(name, number)
         } catch (e: Exception){
@@ -23,7 +23,7 @@ class UserRepository(context: Context) {
 
     }
 
-    fun getData(): List<UserModel> {
+    suspend fun getData(): List<UserModel> {
 
         val list = mutableListOf<UserModel>()
         val cursor = helper.getAllUsers()
@@ -41,7 +41,7 @@ class UserRepository(context: Context) {
         return list
     }
 
-    fun getUser(userId: Int): UserModel {
+    suspend fun getUser(userId: Int): UserModel {
         var user: UserModel? = null
         val cursor = helper.getUser(userId)
         cursor.moveToFirst()

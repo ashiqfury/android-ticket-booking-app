@@ -17,19 +17,25 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class BookingDetailViewModel: ViewModel() {
-    private lateinit var movieRepository: MovieRepository
-    private lateinit var theatreRepository: TheatreRepository
+//    private lateinit var movieRepository: MovieRepository
+//    private lateinit var theatreRepository: TheatreRepository
     private lateinit var bookingRepository: TicketBookingRepository
     private lateinit var userRepository: UserRepository
     private lateinit var bookings: List<BookTicketModel>
 
     fun initializeRepo(context: Context) {
-        movieRepository = MovieRepository(context)
-        theatreRepository = TheatreRepository(context)
+//        movieRepository = MovieRepository(context)
+//        theatreRepository = TheatreRepository(context)
         bookingRepository = TicketBookingRepository(context).also {
-            bookings = it.getData()
+            loadBookings()
         }
         userRepository = UserRepository(context)
+    }
+
+    private fun loadBookings() {
+        viewModelScope.launch {
+            bookings = bookingRepository.getData()
+        }
     }
 
     fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long {
