@@ -17,6 +17,7 @@ import com.example.ticketnow.data.repository.TicketBookingRepository
 import com.example.ticketnow.utils.DatabaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.runBlocking
 import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helper = DatabaseHelper(this)
-//        helper.deleteAllMovies()
+//        runBlocking {
+//            helper.deleteAllMovies()
+//        }
 
 
 

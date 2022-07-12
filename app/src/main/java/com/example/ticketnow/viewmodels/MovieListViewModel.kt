@@ -1,52 +1,45 @@
 package com.example.ticketnow.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.content.res.Resources
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.UserModel
+import com.example.ticketnow.data.repository.MovieListRepository
 import com.example.ticketnow.data.repository.MovieRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MovieListViewModel : ViewModel() {
-    private lateinit var repository: MovieRepository
+    private lateinit var repository: MovieListRepository
     private var movies = MutableLiveData<List<MovieModel>>()
 
     fun initializeRepo(context: Context) {
-        repository = MovieRepository(context)
+        repository = MovieListRepository(context)
         loadData()
     }
 
     val getMoviesData: LiveData<List<MovieModel>> = movies
 
-
     private fun loadData() {
         viewModelScope.launch {
-            movies.postValue(repository.getAllData())
+            movies.postValue(repository.getInitialData())
         }
     }
+    fun fetchMoreMovies(offset: Int): LiveData<List<MovieModel>> = liveData {
+        val movies = repository.fetchMoreData(offset)
+        emit(movies)
+    }
 
-    /*fun getData(page: Int, limit: Int): List<MovieModel> {
-        lateinit var movies: List<MovieModel>
-        viewModelScope.launch {
-            movies = repository.getData(page, limit)
-        }
-        return movies
-    }*/
-
-    suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
-        viewModelScope.launch {
+    fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.insert(name, genre, language, showTime, price)
         }
     }
 
-    fun getUpdatedData() {
+    fun getUpdatedData(offset: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            movies.postValue(repository.getUpdatedMovies())
+            movies.postValue(repository.getUpdatedMovies(offset))
         }
     }
 }

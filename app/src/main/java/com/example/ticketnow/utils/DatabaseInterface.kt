@@ -18,6 +18,8 @@ interface DatabaseInterface {
     suspend fun getBooking(id: Int): Cursor
     suspend fun getTheatre(id: Int): Cursor
 
+    suspend fun getMoviesFromOffset(offset: Int): Cursor
+
     suspend fun deleteTheatre(theatreId : String) : Int
     suspend fun deleteMovie(movieId: String): Int
 

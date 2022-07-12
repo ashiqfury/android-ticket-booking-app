@@ -1,5 +1,6 @@
 package com.example.ticketnow.utils
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,10 @@ import kotlinx.android.synthetic.main.card_layout_movie_list.view.item_image
 import kotlinx.android.synthetic.main.card_layout_movie_list.view.item_title
 import kotlinx.android.synthetic.main.card_layout_theatre_list.view.*
 
-internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, val btnClickListener: RecyclerViewClickListener) : RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>() {
+internal class MovieRecyclerViewAdapter(
+    private val movies: List<MovieModel>,
+    val btnClickListener: RecyclerViewClickListener
+    ) : RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout_movie_list, parent, false)
@@ -27,6 +31,10 @@ internal class MovieRecyclerViewAdapter(private val movies: List<MovieModel>, va
             itemTitle.text = movies[position].name
             itemDesc.text = movies[position].genre
             itemImage.setImageResource(R.drawable.minion)
+        }
+        Log.d("TICKET_NOW", "onBindViewHolder: movies size: ${movies.size} ")
+        movies.forEach {
+            Log.d("MOVIES_TICKET_NOW", "onBindViewHolder: ${it.name}")
         }
     }
 

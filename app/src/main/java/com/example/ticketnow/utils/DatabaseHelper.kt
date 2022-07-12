@@ -88,6 +88,12 @@ internal class DatabaseHelper(context: Context):
     override suspend fun getBooking(id: Int): Cursor = customRawQuery("SELECT * FROM $BOOKING_TABLE WHERE $ID = $id")
     override suspend fun getTheatre(id: Int): Cursor  = customRawQuery("SELECT * FROM $THEATRE_TABLE WHERE $ID = $id")
 
+    override suspend fun getMoviesFromOffset(offset: Int): Cursor {
+//        if (getAllMovies().count > (offset + 10)) {
+            return customRawQuery("SELECT * FROM $MOVIE_TABLE LIMIT $LIMIT OFFSET $offset")
+//        }
+    }
+
     override suspend fun deleteTheatre(theatreId : String) : Int = this.writableDatabase.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
     override suspend fun deleteMovie(movieId: String): Int = this.writableDatabase.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))
     override suspend fun deleteAllMovies(): Unit = this.writableDatabase.execSQL("DELETE FROM $MOVIE_TABLE")
@@ -133,5 +139,6 @@ internal class DatabaseHelper(context: Context):
         const val TICKET_COUNT = "ticketCount"
         const val PHONE_NUMBER = "phoneNumber"
         const val STARED = "stared"
+        const val LIMIT = 10
     }
 }

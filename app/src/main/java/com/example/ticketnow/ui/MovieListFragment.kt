@@ -3,20 +3,19 @@ package com.example.ticketnow.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
+import com.example.ticketnow.data.repository.MovieListRepository
 import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
@@ -26,19 +25,17 @@ import kotlin.collections.ArrayList
 
 internal class MovieListFragment : Fragment() {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>? = null
+    private lateinit var adapter: RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder>
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var progressBar: ProgressBar
-
     private lateinit var viewModel: MovieListViewModel
+
+    private var allMovies: ArrayList<MovieModel> = arrayListOf()
     private var searchedMovies: ArrayList<MovieModel> = arrayListOf()
     private var movies: ArrayList<MovieModel> = arrayListOf()
-
-    private var page = 1
-    private val limit = 5
+    private var offset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,38 +44,19 @@ internal class MovieListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_list, container, false)
         setupAddBar()
         setupBottomNavigation(view)
+        initializeValues(view)
+        observeLiveData()
+        setupNestedScrollView()
+        setupRecyclerView(searchedMovies)
+        return view
+    }
 
-        nestedScrollView = view.findViewById(R.id.scroll_view)
-        progressBar = view.findViewById(R.id.progress_bar)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.layoutManager = layoutManager
-
-        // old code for fetching all movies as livedata
-        viewModel.getMoviesData.observe(viewLifecycleOwner) { _movies ->
-            movies.clear()
-            movies.addAll(_movies)
-            searchedMovies.clear()
-            searchedMovies.addAll(_movies)
-            recyclerView.adapter?.notifyDataSetChanged()
-        }
-
-        /*nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                page++
-                progressBar.visible()
-                getData()
-            }
-        })*/
-
-        adapter = MovieRecyclerViewAdapter(searchedMovies, object : RecyclerViewClickListener {
+    private fun setupRecyclerView(movies: List<MovieModel>) {
+        adapter = MovieRecyclerViewAdapter(movies, object : RecyclerViewClickListener {
             override fun clickListener(position: Int, isButton: Boolean) {
                 if (isButton) {
                     val bundle = Bundle()
@@ -99,26 +77,57 @@ internal class MovieListFragment : Fragment() {
             }
         })
         recyclerView.adapter = adapter
-        return view
     }
 
-    /*private fun getData() {
-        viewModel.getData(page, limit).also {
-//            movies.clear()
-            movies.addAll(it)
-            searchedMovies.clear()
+    private fun setupNestedScrollView() {
+        nestedScrollView.viewTreeObserver.addOnScrollChangedListener(object: ViewTreeObserver.OnScrollChangedListener {
+            override fun onScrollChanged() {
+                val scrollView = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
+                val diff = scrollView.bottom - (nestedScrollView.height + nestedScrollView.scrollY)
+                Log.d("TICKET_NOW", "onScrollChanged: DIFFERENCE $diff ")
+                if (diff == 0) {
+                    Log.d("TICKET_NOW", "onScrollChanged: DIFFERENCE $diff ")
+                    Log.d("TICKET_NOW", "onScrollChanged: MOVIES ${movies.size} ")
+                    progressBar.visible()
+                    loadMoreData()
+                }
+            }
+        })
+    }
+
+    private fun loadMoreData() {
+        offset += 10
+        viewModel.fetchMoreMovies(offset).observe(viewLifecycleOwner) {
             searchedMovies.addAll(it)
-            progressBar.hide()
-            adapter?.notifyDataSetChanged()
         }
-    }*/
+        progressBar.hide()
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun initializeValues(view: View) {
+        nestedScrollView = view.findViewById(R.id.scroll_view)
+        progressBar = view.findViewById(R.id.progress_bar)
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun observeLiveData() {
+        viewModel.getMoviesData.observe(viewLifecycleOwner) { movies ->
+            this.movies.clear()
+            this.movies.addAll(movies)
+            searchedMovies.clear()
+            searchedMovies.addAll(movies)
+            allMovies.addAll(movies)
+            recyclerView.adapter?.notifyDataSetChanged()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = view.findViewById(R.id.swipe)
         swipeRefreshLayout.setOnRefreshListener {
             Handler(Looper.getMainLooper()).postDelayed( {
-                viewModel.getUpdatedData()
+                viewModel.getUpdatedData(offset = 0)
                 swipeRefreshLayout.isRefreshing = false
             }, 2000)
         }

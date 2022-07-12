@@ -61,5 +61,705 @@
     "language": "English",
     "time": "Afternoon",
     "price": 210
+  },
+  {
+    "name": "The Shawshank Redemption",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 100
+  },
+  {
+    "name": "The Godfather",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 430
+  },
+  {
+    "name": "The Godfather: Part II",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 240
+  },
+  {
+    "name": "Pulp Fiction",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 100
+  },
+  {
+    "name": "The Good, the Bad and the Ugly",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "The Dark Knight",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 240
+  },
+  {
+    "name": "12 Angry Men",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "Schindler's List",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 240
+  },
+  {
+    "name": "The Lord of the Rings: The Return of the King",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 270
+  },
+  {
+    "name": "Fight Club",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "Star Wars: Episode V - The Empire Strikes Back",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Morning",
+    "price": 240
+  },
+  {
+    "name": "The Lord of the Rings: The Fellowship of the Ring",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "One Flew Over the Cuckoo's Nest",
+    "genre": "Action",
+    "language": "English",
+    "time": "Evening",
+    "price": 100
+  },
+  {
+    "name": "Inception",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "Goodfellas",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 200
+  },
+  {
+    "name": "Star Wars",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 430
+  },
+  {
+    "name": "Seven Samurai",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Forrest Gump",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 100
+  },
+  {
+    "name": "The Matrix",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "The Lord of the Rings: The Two Towers",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 430
+  },
+  {
+    "name": "City of God",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 200
+  },
+  {
+    "name": "Se7en",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 240
+  },
+  {
+    "name": "The Silence of the Lambs",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 330
+  },
+  {
+    "name": "Once Upon a Time in the West",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 100
+  },
+  {
+    "name": "Casablanca",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 120
+  },
+  {
+    "name": "The Usual Suspects",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 240
+  },
+  {
+    "name": "Raiders of the Lost Ark",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 210
+  },
+  {
+    "name": "Rear Window",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Evening",
+    "price": 330
+  },
+  {
+    "name": "It's a Wonderful Life",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 270
+  },
+  {
+    "name": "Psycho",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 390
+  },
+  {
+    "name": "Léon: The Professional",
+    "genre": "Action",
+    "language": "English",
+    "time": "Evening",
+    "price": 120
+  },
+  {
+    "name": "Sunset Blvd.",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 210
+  },
+  {
+    "name": "American History X",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Apocalypse Now",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 430
+  },
+  {
+    "name": "Terminator 2: Judgment Day",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 210
+  },
+  {
+    "name": "Saving Private Ryan",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 90
+  },
+  {
+    "name": "Memento",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 430
+  },
+  {
+    "name": "City Lights",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 330
+  },
+  {
+    "name": "Alien",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 210
+  },
+  {
+    "name": "Modern Times",
+    "genre": "Action",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Spirited Away",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "North by Northwest",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 430
+  },
+  {
+    "name": "Back to the Future",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 330
+  },
+  {
+    "name": "Life Is Beautiful",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "The Shining",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "The Pianist",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Evening",
+    "price": 240
+  },
+  {
+    "name": "Citizen Kane",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 100
+  },
+  {
+    "name": "The Departed",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Evening",
+    "price": 210
+  },
+  {
+    "name": "M",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 390
+  },
+  {
+    "name": "Paths of Glory",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Vertigo",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 270
+  },
+  {
+    "name": "Django Unchained",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 100
+  },
+  {
+    "name": "Double Indemnity",
+    "genre": "Comedy",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 100
+  },
+  {
+    "name": "The Dark Knight Rises",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 200
+  },
+  {
+    "name": "Aliens",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 430
+  },
+  {
+    "name": "Taxi Driver",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 120
+  },
+  {
+    "name": "American Beauty",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "The Green Mile",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 240
+  },
+  {
+    "name": "Gladiator",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "The Intouchables",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 240
+  },
+  {
+    "name": "WALL·E",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "The Lives of Others",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 270
+  },
+  {
+    "name": "Toy Story 3",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 100
+  },
+  {
+    "name": "The Great Dictator",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 330
+  },
+  {
+    "name": "The Prestige",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 100
+  },
+  {
+    "name": "A Clockwork Orange",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Morning",
+    "price": 390
+  },
+  {
+    "name": "Lawrence of Arabia",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 430
+  },
+  {
+    "name": "Amélie",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "To Kill a Mockingbird",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 120
+  },
+  {
+    "name": "Reservoir Dogs",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "Das Boot",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 270
+  },
+  {
+    "name": "The Lion King",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 390
+  },
+  {
+    "name": "Cinema Paradiso",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "Star Wars: Episode VI - Return of the Jedi",
+    "genre": "Romance",
+    "language": "Hindi",
+    "time": "Evening",
+    "price": 270
+  },
+  {
+    "name": "The Treasure of the Sierra Madre",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "The Third Man",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 90
+  },
+  {
+    "name": "Once Upon a Time in America",
+    "genre": "Action",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Requiem for a Dream",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 390
+  },
+  {
+    "name": "Eternal Sunshine of the Spotless Mind",
+    "genre": "Action",
+    "language": "English",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "Full Metal Jacket",
+    "genre": "Comedy",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 240
+  },
+  {
+    "name": "Oldboy",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 100
+  },
+  {
+    "name": "Braveheart",
+    "genre": "Comedy",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 200
+  },
+  {
+    "name": "L.A. Confidential",
+    "genre": "Action",
+    "language": "English",
+    "time": "Afternoon",
+    "price": 430
+  },
+  {
+    "name": "Bicycle Thieves",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 200
+  },
+  {
+    "name": "Chinatown",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Evening",
+    "price": 330
+  },
+  {
+    "name": "Singin' in the Rain",
+    "genre": "Comedy",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "Princess Mononoke",
+    "genre": "Romance",
+    "language": "Malayalam",
+    "time": "Evening",
+    "price": 120
+  },
+  {
+    "name": "Monty Python and the Holy Grail",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Afternoon",
+    "price": 210
+  },
+  {
+    "name": "Metropolis",
+    "genre": "Comedy",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 390
+  },
+  {
+    "name": "Rashomon",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 430
+  },
+  {
+    "name": "Some Like It Hot",
+    "genre": "Romance",
+    "language": "English",
+    "time": "Evening",
+    "price": 430
+  },
+  {
+    "name": "Amadeus",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 100
+  },
+  {
+    "name": "2001: A Space Odyssey",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "All About Eve",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Morning",
+    "price": 90
+  },
+  {
+    "name": "Witness for the Prosecution",
+    "genre": "Romance",
+    "language": "Tamil",
+    "time": "Evening",
+    "price": 390
+  },
+  {
+    "name": "The Sting",
+    "genre": "Action",
+    "language": "Malayalam",
+    "time": "Morning",
+    "price": 430
+  },
+  {
+    "name": "The Apartment",
+    "genre": "Comedy",
+    "language": "Hindi",
+    "time": "Morning",
+    "price": 330
+  },
+  {
+    "name": "Grave of the Fireflies",
+    "genre": "Action",
+    "language": "Hindi",
+    "time": "Afternoon",
+    "price": 390
+  },
+  {
+    "name": "Indiana Jones and the Last Crusade",
+    "genre": "Comedy",
+    "language": "Malayalam",
+    "time": "Afternoon",
+    "price": 240
   }
 ]
