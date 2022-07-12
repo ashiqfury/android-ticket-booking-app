@@ -32,10 +32,6 @@ internal class MovieRecyclerViewAdapter(
             itemDesc.text = movies[position].genre
             itemImage.setImageResource(R.drawable.minion)
         }
-        Log.d("TICKET_NOW", "onBindViewHolder: movies size: ${movies.size} ")
-        movies.forEach {
-            Log.d("MOVIES_TICKET_NOW", "onBindViewHolder: ${it.name}")
-        }
     }
 
     override fun getItemCount(): Int = movies.size

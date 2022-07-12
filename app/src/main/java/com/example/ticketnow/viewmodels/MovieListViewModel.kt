@@ -1,29 +1,25 @@
 package com.example.ticketnow.viewmodels
 
 import android.content.Context
-import android.content.res.Resources
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.ticketnow.data.models.MovieModel
-import com.example.ticketnow.data.models.UserModel
 import com.example.ticketnow.data.repository.MovieListRepository
-import com.example.ticketnow.data.repository.MovieRepository
 import kotlinx.coroutines.*
 
 class MovieListViewModel : ViewModel() {
     private lateinit var repository: MovieListRepository
-    private var movies = MutableLiveData<List<MovieModel>>()
+    private var _movies = MutableLiveData<List<MovieModel>>()
 
     fun initializeRepo(context: Context) {
         repository = MovieListRepository(context)
         loadData()
     }
 
-    val getMoviesData: LiveData<List<MovieModel>> = movies
+    val movies: LiveData<List<MovieModel>> = _movies
 
     private fun loadData() {
-        viewModelScope.launch {
-            movies.postValue(repository.getInitialData())
+        viewModelScope.launch(Dispatchers.IO) {
+            _movies.postValue(repository.getInitialData())
         }
     }
     fun fetchMoreMovies(offset: Int): LiveData<List<MovieModel>> = liveData {
@@ -39,7 +35,7 @@ class MovieListViewModel : ViewModel() {
 
     fun getUpdatedData(offset: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            movies.postValue(repository.getUpdatedMovies(offset))
+            _movies.postValue(repository.getUpdatedMovies(offset))
         }
     }
 }

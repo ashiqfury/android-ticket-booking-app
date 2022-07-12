@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
-import com.example.ticketnow.data.repository.MovieListRepository
 import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
@@ -50,9 +49,16 @@ internal class MovieListFragment : Fragment() {
         setupBottomNavigation(view)
         initializeValues(view)
         observeLiveData()
+        setObservers()
         setupNestedScrollView()
         setupRecyclerView(searchedMovies)
         return view
+    }
+
+    private fun setObservers() {
+        viewModel.movies.observe(viewLifecycleOwner) {
+
+        }
     }
 
     private fun setupRecyclerView(movies: List<MovieModel>) {
@@ -84,10 +90,8 @@ internal class MovieListFragment : Fragment() {
             override fun onScrollChanged() {
                 val scrollView = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
                 val diff = scrollView.bottom - (nestedScrollView.height + nestedScrollView.scrollY)
-                Log.d("TICKET_NOW", "onScrollChanged: DIFFERENCE $diff ")
                 if (diff == 0) {
                     Log.d("TICKET_NOW", "onScrollChanged: DIFFERENCE $diff ")
-                    Log.d("TICKET_NOW", "onScrollChanged: MOVIES ${movies.size} ")
                     progressBar.visible()
                     loadMoreData()
                 }
@@ -99,9 +103,10 @@ internal class MovieListFragment : Fragment() {
         offset += 10
         viewModel.fetchMoreMovies(offset).observe(viewLifecycleOwner) {
             searchedMovies.addAll(it)
+            allMovies.addAll(it)
+            progressBar.hide()
+            recyclerView.adapter?.notifyDataSetChanged()
         }
-        progressBar.hide()
-        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun initializeValues(view: View) {
@@ -112,7 +117,7 @@ internal class MovieListFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.getMoviesData.observe(viewLifecycleOwner) { movies ->
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
             this.movies.clear()
             this.movies.addAll(movies)
             searchedMovies.clear()
@@ -146,15 +151,17 @@ internal class MovieListFragment : Fragment() {
                 searchedMovies.clear()
                 val searchText = newText!!.lowercase(Locale.getDefault())
                 if (searchText.isNotEmpty()) {
-                    movies.forEach { movie ->
+                    progressBar.hide()
+                    allMovies.forEach { movie ->
                         if (movie.name.lowercase(Locale.getDefault()).contains(searchText)) {
                             searchedMovies.add(movie)
                         }
                     }
                     recyclerView.adapter?.notifyDataSetChanged()
                 } else {
+                    progressBar.visible()
                     searchedMovies.clear()
-                    searchedMovies.addAll(movies)
+                    searchedMovies.addAll(allMovies)
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
                 return false

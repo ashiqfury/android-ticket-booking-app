@@ -60,6 +60,7 @@ class MovieListRepository(val context: Context) {
     }
 
     suspend fun fetchMoreData(offset: Int): List<MovieModel> {
+        delay(1000)
         return getMoviesFromDB(offset)
     }
 
@@ -68,7 +69,7 @@ class MovieListRepository(val context: Context) {
             val movies = getMoviesFromNetwork()
             helper.deleteAllMovies()
             movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
-            return fetchMoreData(offset)
+            return movies
 //        } else {
 //            getMoviesFromDB(offset)
 //        }
