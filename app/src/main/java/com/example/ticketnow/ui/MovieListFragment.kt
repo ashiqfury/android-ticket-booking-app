@@ -49,16 +49,9 @@ internal class MovieListFragment : Fragment() {
         setupBottomNavigation(view)
         initializeValues(view)
         observeLiveData()
-        setObservers()
         setupNestedScrollView()
         setupRecyclerView(searchedMovies)
         return view
-    }
-
-    private fun setObservers() {
-        viewModel.movies.observe(viewLifecycleOwner) {
-
-        }
     }
 
     private fun setupRecyclerView(movies: List<MovieModel>) {
