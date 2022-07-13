@@ -2,15 +2,10 @@ package com.example.ticketnow.data.repository
 
 import android.content.Context
 import android.database.Cursor
-import android.database.DatabaseUtils
-import android.util.Log
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MovieRepository(val context: Context) {
     private val helper = DatabaseHelper(context)

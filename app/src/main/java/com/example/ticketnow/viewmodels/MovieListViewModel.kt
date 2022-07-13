@@ -1,7 +1,6 @@
 package com.example.ticketnow.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.repository.MovieListRepository
@@ -11,7 +10,7 @@ class MovieListViewModel : ViewModel() {
     private lateinit var repository: MovieListRepository
     private val _movies = MutableLiveData<List<MovieModel>>()
     val movies: LiveData<List<MovieModel>> = _movies
-//    private var
+    private var job: Job? = null
 
     fun initializeRepo(context: Context) {
         repository = MovieListRepository(context)
@@ -42,14 +41,10 @@ class MovieListViewModel : ViewModel() {
      * Swipe to Refresh
      */
     fun getUpdatedData(offset: Int) {
-        val job: Job = viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TICKET_NOW", "getUpdatedData: ")
+        if (job?.isActive == true) job?.cancel()
+
+        job = viewModelScope.launch(Dispatchers.IO) {
             _movies.postValue(repository.getUpdatedMovies(offset))
-        }
-        viewModelScope.launch {
-            if (job.isActive) {
-                job.cancelAndJoin()
-            }
         }
     }
 }

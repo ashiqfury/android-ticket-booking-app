@@ -2,18 +2,10 @@ package com.example.ticketnow.data.repository
 
 import android.content.Context
 import android.database.Cursor
-import android.database.DatabaseUtils
-import android.graphics.Movie
-import android.util.Log
-import androidx.lifecycle.LiveData
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
-import com.example.ticketnow.ui.MovieListFragment
 import com.example.ticketnow.utils.DatabaseHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MovieListRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
@@ -69,7 +61,7 @@ class MovieListRepository(val context: Context) {
             val movies = getMoviesFromNetwork()
             helper.deleteAllMovies()
             movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
-            return movies
+            return getMoviesFromDB(offset)
 //        } else {
 //            getMoviesFromDB(offset)
 //        }

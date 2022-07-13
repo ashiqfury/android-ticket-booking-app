@@ -79,17 +79,14 @@ internal class MovieListFragment : Fragment() {
     }
 
     private fun setupNestedScrollView() {
-        nestedScrollView.viewTreeObserver.addOnScrollChangedListener(object: ViewTreeObserver.OnScrollChangedListener {
-            override fun onScrollChanged() {
-                val scrollView = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
-                val diff = scrollView.bottom - (nestedScrollView.height + nestedScrollView.scrollY)
-                if (diff == 0) {
-                    Log.d("TICKET_NOW", "onScrollChanged: DIFFERENCE $diff ")
-                    progressBar.visible()
-                    loadMoreData()
-                }
+        nestedScrollView.viewTreeObserver.addOnScrollChangedListener {
+            val scrollView = nestedScrollView.getChildAt(nestedScrollView.childCount - 1)
+            val diff = scrollView.bottom - (nestedScrollView.height + nestedScrollView.scrollY)
+            if (diff == 0) {
+                progressBar.visible()
+                loadMoreData()
             }
-        })
+        }
     }
 
     private fun loadMoreData() {
@@ -124,8 +121,11 @@ internal class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = view.findViewById(R.id.swipe)
         swipeRefreshLayout.setOnRefreshListener {
-            Handler(Looper.getMainLooper()).postDelayed( {
-                viewModel.getUpdatedData(offset = 0)
+            Handler(Looper.getMainLooper()).postDelayed({
+                allMovies.clear()
+                searchedMovies.clear()
+                offset = 0
+                viewModel.getUpdatedData(offset)
                 swipeRefreshLayout.isRefreshing = false
             }, 2000)
         }
