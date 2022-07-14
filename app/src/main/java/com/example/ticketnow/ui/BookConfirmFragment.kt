@@ -17,6 +17,7 @@ import com.example.ticketnow.data.models.UserModel
 import com.example.ticketnow.viewmodels.BookingConfirmViewModel
 import com.example.ticketnow.viewmodels.BookingDetailViewModel
 import kotlinx.android.synthetic.main.fragment_book_confirm.view.*
+import kotlin.math.log
 
 class BookConfirmFragment : Fragment() {
 
@@ -62,26 +63,26 @@ class BookConfirmFragment : Fragment() {
          user 'theatre' in user function
          use 'movie' in theatre function*/
 
-        viewModel.getBookings().observe(viewLifecycleOwner) { _bookings ->
+        viewModel.bookings.observe(viewLifecycleOwner) { _bookings ->
             _bookings.find { it.id == bookingId }?.let { _book ->
                 book = _book
             }
         }
 
-        viewModel.getUsers().observe(viewLifecycleOwner) { users ->
+        viewModel.users.observe(viewLifecycleOwner) { users ->
             users.find { it.id == book.theatreId }?.let { user ->
                 assignUserValueToView(view, user)
             }
         }
 
-        viewModel.getMovies().observe(viewLifecycleOwner) { movies ->
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
             movies.find { it.id == book.userId }?.let { movie ->
                 assignMovieValueToView(view, movie, book.ticketCount)
             }
         }
 
-        viewModel.getTheatres().observe(viewLifecycleOwner) { theatres ->
-            theatres.find { it.id == book.theatreId }?.let { theatre ->
+        viewModel.theatres.observe(viewLifecycleOwner) { theatres ->
+            theatres.find { it.id == book.movieId }?.let { theatre ->
                 assignTheatreValueToView(view, theatre)
             }
         }

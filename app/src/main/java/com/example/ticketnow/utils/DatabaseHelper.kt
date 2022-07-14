@@ -13,7 +13,7 @@ internal class DatabaseHelper(context: Context):
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE IF NOT EXISTS $MOVIE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $GENRE TEXT, $LANGUAGE TEXT, $SHOWTIME TEXT, $PRICE INTEGER)")
-        db?.execSQL("CREATE TABLE IF NOT EXISTS $THEATRE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $LOCATION TEXT, $TOTAL_SEATS INTEGER, $AVAILABLE_SEATS INTEGER)")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $THEATRE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $LOCATION TEXT, $TOTAL_SEATS INTEGER, $AVAILABLE_SEATS INTEGER, $STARED INTEGER DEFAULT 0)")
         db?.execSQL("CREATE TABLE IF NOT EXISTS $BOOKING_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $MOVIE_ID INTEGER, $THEATRE_ID INTEGER, $USER_ID INTEGER, $TICKET_COUNT INTEGER)")
         db?.execSQL("CREATE TABLE IF NOT EXISTS $USER_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME INTEGER, $PHONE_NUMBER INTEGER)")
     }
@@ -40,7 +40,7 @@ internal class DatabaseHelper(context: Context):
         }
         db.insert(MOVIE_TABLE, null, contentValues)
     }
-    override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int) {
+    override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?) {
         try {
             val db = this.writableDatabase
             val contentValues = ContentValues()
@@ -49,6 +49,7 @@ internal class DatabaseHelper(context: Context):
                 put(LOCATION, location)
                 put(TOTAL_SEATS, totalSeats)
                 put(AVAILABLE_SEATS, availableSeats)
+                put(STARED, stared ?: 0)
             }
             db.insert(THEATRE_TABLE, null, contentValues)
         } catch (e: Exception) {
@@ -97,6 +98,7 @@ internal class DatabaseHelper(context: Context):
     override suspend fun deleteTheatre(theatreId : String) : Int = this.writableDatabase.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))
     override suspend fun deleteMovie(movieId: String): Int = this.writableDatabase.delete(MOVIE_TABLE, "ID = ?", arrayOf(movieId))
     override suspend fun deleteAllMovies(): Unit = this.writableDatabase.execSQL("DELETE FROM $MOVIE_TABLE")
+    override suspend fun deleteAllTheatres(): Unit = this.writableDatabase.execSQL("DELETE FROM $THEATRE_TABLE")
 
     override suspend fun updateTheatre(id: String, name: String, location: String, totalSeats: Int, availableSeats: Int): Boolean {
         val db = this.writableDatabase

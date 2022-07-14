@@ -26,10 +26,9 @@ class BookingDetailViewModel: ViewModel() {
     fun initializeRepo(context: Context) {
 //        movieRepository = MovieRepository(context)
 //        theatreRepository = TheatreRepository(context)
-        bookingRepository = TicketBookingRepository(context).also {
-            loadBookings()
-        }
+        bookingRepository = TicketBookingRepository(context)
         userRepository = UserRepository(context)
+        loadBookings()
     }
 
     private fun loadBookings() {

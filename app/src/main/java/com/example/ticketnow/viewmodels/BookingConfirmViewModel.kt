@@ -23,10 +23,14 @@ class BookingConfirmViewModel : ViewModel() {
     private lateinit var userRepository: UserRepository
     private lateinit var movieRepository: MovieRepository
     private lateinit var theatreRepository: TheatreRepository
-    private lateinit var users: MutableLiveData<List<UserModel>>
-    private lateinit var movies: MutableLiveData<List<MovieModel>>
-    private lateinit var theatres: MutableLiveData<List<TheatreModel>>
-    private lateinit var bookings: MutableLiveData<List<BookTicketModel>>
+    private val _bookings = MutableLiveData<List<BookTicketModel>>()
+    private val _theatres = MutableLiveData<List<TheatreModel>>()
+    private val _movies = MutableLiveData<List<MovieModel>>()
+    private val _users = MutableLiveData<List<UserModel>>()
+    val bookings: LiveData<List<BookTicketModel>> = _bookings
+    val theatres: LiveData<List<TheatreModel>> = _theatres
+    val movies: LiveData<List<MovieModel>> = _movies
+    val users: LiveData<List<UserModel>> = _users
 
     fun initializeRepo(context: Context) {
         bookingRepository = TicketBookingRepository(context)
@@ -41,34 +45,28 @@ class BookingConfirmViewModel : ViewModel() {
 
     private fun loadBookings() {
         viewModelScope.launch {
-            bookings.postValue(bookingRepository.getData())
+            bookingRepository.getAllBookings {
+                Log.d("TICKET_NOW", "loadBookings: $it")
+                _bookings.postValue(it)
+            }
         }
     }
 
     private fun loadUsers() {
         viewModelScope.launch {
-            users.postValue(userRepository.getData())
+            _users.postValue(userRepository.getData())
         }
     }
 
     private fun loadMovies() {
         viewModelScope.launch {
-            movies.postValue(movieRepository.getAllData())
+            _movies.postValue(movieRepository.getAllData())
         }
     }
 
     private fun loadTheatres() {
         viewModelScope.launch {
-            theatres.postValue(theatreRepository.getData())
+            _theatres.postValue(theatreRepository.getData())
         }
     }
-
-    fun getBookings(): LiveData<List<BookTicketModel>> = bookings
-
-    fun getUsers(): LiveData<List<UserModel>> = users
-
-    fun getMovies(): LiveData<List<MovieModel>> = movies
-
-    fun getTheatres(): LiveData<List<TheatreModel>> = theatres
-
 }

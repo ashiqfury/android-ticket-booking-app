@@ -39,10 +39,28 @@ class TicketBookingRepository(context: Context) {
                 val book = BookTicketModel(id.toInt(), movieId.toInt(), theatreId.toInt(), userId.toInt(), ticketCount.toInt())
                 list.add(book)
                 cursor.moveToNext()
-                Log.d(TAG, book.toString())
             }
         }
         return list
+    }
+
+    suspend fun getAllBookings(callback: (List<BookTicketModel>) -> Unit) {
+        val list = mutableListOf<BookTicketModel>()
+        val cursor = helper.getAllBookings()
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val id: String = cursor.getString(cursor.getColumnIndex("id"))
+                val movieId: String = cursor.getString(cursor.getColumnIndex("movieId"))
+                val theatreId: String = cursor.getString(cursor.getColumnIndex("theatreId"))
+                val userId: String = cursor.getString(cursor.getColumnIndex("userId"))
+                val ticketCount: String = cursor.getString(cursor.getColumnIndex("ticketCount"))
+                val book = BookTicketModel(id.toInt(), movieId.toInt(), theatreId.toInt(), userId.toInt(), ticketCount.toInt())
+                list.add(book)
+                cursor.moveToNext()
+            }
+        }
+        callback(list)
     }
 
     suspend fun getBooking(bookingId: Int): BookTicketModel {

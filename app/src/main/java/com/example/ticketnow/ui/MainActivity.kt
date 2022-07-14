@@ -1,6 +1,7 @@
 package com.example.ticketnow.ui
 
 import android.content.ContentValues.TAG
+import android.database.DatabaseUtils
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +32,18 @@ class MainActivity : AppCompatActivity() {
 //        runBlocking {
 //            helper.deleteAllMovies()
 //        }
+
+        runBlocking {
+//            helper.deleteAllTheatres()
+//            helper.insertTheatre("PVR Cinemas", "Madurai", 20, 20, 0)
+//            val theatreRepository = TheatreRepository(this@MainActivity)
+//            theatreRepository.getData().forEach {
+//                Log.d("TICKET_NOW", "onCreate: $it ")
+//            }
+            val cursor = helper.getAllTheatres()
+
+            Log.d("TICKET_NOW", "onCreate: ${DatabaseUtils.dumpCursorToString(cursor)}")
+        }
 
 
 

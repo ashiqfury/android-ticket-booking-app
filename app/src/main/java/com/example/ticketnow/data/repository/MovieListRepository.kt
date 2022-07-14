@@ -38,33 +38,24 @@ class MovieListRepository(val context: Context) {
         return list
     }
 
-    suspend fun getInitialData(offset: Int = 0): List<MovieModel> {
+    suspend fun getInitialData(offset: Int = 0, callback: (List<MovieModel>) -> Unit): Unit {
         val cursor = helper.getAllMovies()
-        return if (cursor.count > 0) {
+        val movies: List<MovieModel> = if (cursor.count > 0) {
             getMoviesFromDB(offset)
-        }
-        else {
+        } else {
             val movies = getMoviesFromNetwork()
             helper.deleteAllMovies()
             movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
             movies
         }
+        callback(movies)
     }
 
-    suspend fun fetchMoreData(offset: Int): List<MovieModel> {
-        delay(1000)
-        return getMoviesFromDB(offset)
-    }
-
-    suspend fun getUpdatedMovies(offset: Int): List<MovieModel> {
-//        return if (getMoviesFromNetwork().size != getMoviesFromDB(offset).size) {
+    suspend fun getUpdatedMovies(offset: Int, callback: (List<MovieModel>) -> Unit) {
             val movies = getMoviesFromNetwork()
             helper.deleteAllMovies()
             movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
-            return getMoviesFromDB(offset)
-//        } else {
-//            getMoviesFromDB(offset)
-//        }
+            getMoviesFromDB(offset).also(callback)
     }
 
     suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {
@@ -73,6 +64,11 @@ class MovieListRepository(val context: Context) {
         } catch (e: Exception){
             e.printStackTrace()
         }
+    }
+
+    suspend fun fetchMoreData(offset: Int): List<MovieModel> {
+        delay(1000)
+        return getMoviesFromDB(offset)
     }
 
     suspend fun getMovie(movieId: Int): MovieModel {

@@ -60,7 +60,6 @@ class BookingDetailFragment : Fragment() {
         view.findViewById<Button>(R.id.btn_booking_submit).setOnClickListener {
             if (validateInputFields(view)) {
                 val bookingId = registerTicket(view)
-                Log.d("BOOK_MY_SHOW BOOKING_ID", bookingId.toString())
                 navigateToConfirmFragment(bookingId.toInt())
             } else {
                 Toast.makeText(requireContext(), "Please fill all required fields!", Toast.LENGTH_SHORT).show()
@@ -80,9 +79,7 @@ class BookingDetailFragment : Fragment() {
 
     private fun registerTicket(view: View): Long {
         val userId = registerUser(view)
-        Log.d("BOOK_MY_SHOW USER_ID", userId.toString())
         val ticketCount = view.et_booking_ticket_count.text.toString().toInt()
-        Log.d("BOOK_MY_SHOW TICKETS", ticketCount.toString())
         return viewModel.insertBooking(movieId, theatreId, userId.toInt(), ticketCount)
     }
 

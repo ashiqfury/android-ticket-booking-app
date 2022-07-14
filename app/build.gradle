@@ -9,6 +9,10 @@ plugins {
 android {
     compileSdk 32
 
+    kapt {
+        generateStubs = true
+    }
+
     defaultConfig {
         applicationId "com.example.ticketnow"
         minSdk 21

@@ -5,7 +5,7 @@ import android.database.Cursor
 interface DatabaseInterface {
     suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int)
     suspend fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long
-    suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int)
+    suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?)
     suspend fun insertUser(name: String, phoneNumber: Long): Long
 
     suspend fun getAllMovies(): Cursor
@@ -26,6 +26,7 @@ interface DatabaseInterface {
     suspend fun updateStar(id: String, value: Int)
 
     suspend fun deleteAllMovies()
+    suspend fun deleteAllTheatres()
 
     suspend fun updateTheatre(id: String, name: String, location: String, totalSeats: Int, availableSeats: Int): Boolean
 }

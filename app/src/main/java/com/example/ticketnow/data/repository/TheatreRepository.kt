@@ -14,7 +14,7 @@ class TheatreRepository(context: Context) {
     private val TAG = "BOOK_MY_THEATRE"
 
     suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
-        helper.insertTheatre(name, location, totalSeats, availableSeats)
+        helper.insertTheatre(name, location, totalSeats, availableSeats, null)
     }
 
 
