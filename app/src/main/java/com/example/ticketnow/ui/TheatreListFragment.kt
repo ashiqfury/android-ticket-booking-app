@@ -220,7 +220,7 @@ class TheatreListFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
 
-        viewModel.getData().observe(viewLifecycleOwner) { theatres ->
+        viewModel.theatres.observe(viewLifecycleOwner) { theatres ->
             this.theatres.clear()
             this.theatres.addAll(theatres)
             searchedTheatres.clear()

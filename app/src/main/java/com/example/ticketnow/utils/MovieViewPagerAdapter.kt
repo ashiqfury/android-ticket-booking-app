@@ -8,14 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
+import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
-import kotlinx.android.synthetic.main.fragment_booking_detail.view.*
 import kotlinx.android.synthetic.main.item_view_view_pager.view.*
 
-class ViewPagerAdapter(
-    private val theatres: List<TheatreModel>,
+class MovieViewPagerAdapter(
+    private val movies: List<MovieModel>,
     private val btnClickListener: BtnClickListener
-): RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
+): RecyclerView.Adapter<MovieViewPagerAdapter.ViewPagerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_view_pager, parent, false)
@@ -23,19 +23,19 @@ class ViewPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        val theatre = theatres[position]
+        val movie = movies[position]
         holder.apply {
-            itemImage.setImageResource(R.drawable.theatres)
-            itemTitle.text = theatre.name
-            itemDesc.text = "This is the description of this theatre. It one of the popular theatre."
-            itemLocation.text = "Location: ${theatre.location}"
-            itemTotalSeats.text = "Total seats: ${theatre.totalSeats}"
-            itemAvailableSeats.text = "Available seats: ${theatre.availableSeats}"
+            itemImage.setImageResource(R.drawable.minion)
+//            itemTitle.text = movie.name
+//            itemDesc.text = "This is the description of this theatre. It one of the popular theatre."
+//            itemLocation.text = "Location: ${movie.location}"
+//            itemTotalSeats.text = "Total seats: ${movie.totalSeats}"
+//            itemAvailableSeats.text = "Available seats: ${movie.availableSeats}"
         }
 
     }
 
-    override fun getItemCount(): Int  = theatres.size
+    override fun getItemCount(): Int  = movies.size
 
     inner class ViewPagerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemImage: ImageView

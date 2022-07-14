@@ -23,10 +23,12 @@ class BookingConfirmViewModel : ViewModel() {
     private lateinit var userRepository: UserRepository
     private lateinit var movieRepository: MovieRepository
     private lateinit var theatreRepository: TheatreRepository
+
     private val _bookings = MutableLiveData<List<BookTicketModel>>()
     private val _theatres = MutableLiveData<List<TheatreModel>>()
     private val _movies = MutableLiveData<List<MovieModel>>()
     private val _users = MutableLiveData<List<UserModel>>()
+
     val bookings: LiveData<List<BookTicketModel>> = _bookings
     val theatres: LiveData<List<TheatreModel>> = _theatres
     val movies: LiveData<List<MovieModel>> = _movies
@@ -46,7 +48,6 @@ class BookingConfirmViewModel : ViewModel() {
     private fun loadBookings() {
         viewModelScope.launch {
             bookingRepository.getAllBookings {
-                Log.d("TICKET_NOW", "loadBookings: $it")
                 _bookings.postValue(it)
             }
         }

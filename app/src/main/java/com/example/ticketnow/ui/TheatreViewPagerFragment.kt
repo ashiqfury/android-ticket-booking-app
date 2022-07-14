@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.ticketnow.R
 import com.example.ticketnow.utils.BtnClickListener
-import com.example.ticketnow.utils.ViewPagerAdapter
+import com.example.ticketnow.utils.TheatreViewPagerAdapter
 import com.example.ticketnow.viewmodels.TheatreListViewModel
 import kotlinx.android.synthetic.main.fragment_theatre_view_pager.*
 
@@ -52,8 +52,8 @@ internal class TheatreViewPagerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData().observe(viewLifecycleOwner) { theatres ->
-            val adapter = ViewPagerAdapter(theatres, object : BtnClickListener {
+        viewModel.theatres.observe(viewLifecycleOwner) { theatres ->
+            val adapter = TheatreViewPagerAdapter(theatres, object : BtnClickListener {
                 override fun clickListener(position: Int) {
                     val fragment = BookingDetailFragment()
                     val bundle = Bundle()

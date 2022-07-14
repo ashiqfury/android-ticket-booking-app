@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.utils.BtnClickListener
-import com.example.ticketnow.utils.TheatreViewPagerAdapter
+import com.example.ticketnow.utils.TheatreMiniRecyclerViewAdapter
 import com.example.ticketnow.viewmodels.MovieDetailViewModel
 
 
@@ -22,7 +22,7 @@ class MovieDetailFragment : Fragment() {
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var movie: MovieModel
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<TheatreViewPagerAdapter.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<TheatreMiniRecyclerViewAdapter.ViewHolder>? = null
     private var movieId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class MovieDetailFragment : Fragment() {
             }
         }
 
-        viewModel.getMovies().observe(viewLifecycleOwner) { _movies ->
+        viewModel.movies.observe(viewLifecycleOwner) { _movies ->
             _movies.find { it.id == movieId }?.let { _movie ->
                 this.movie = _movie
                 assignValuesToViews(view)
@@ -77,10 +77,10 @@ class MovieDetailFragment : Fragment() {
             navigateToTheatreListFragment(movie.id)
         }
 
-        viewModel.getTheatres().observe(viewLifecycleOwner) { theatres ->
+        viewModel.theatres.observe(viewLifecycleOwner) { theatres ->
             if (theatres.isEmpty()) showMore.text = ""
 
-            adapter = TheatreViewPagerAdapter(theatres, object : BtnClickListener {
+            adapter = TheatreMiniRecyclerViewAdapter(theatres, object : BtnClickListener {
                 override fun clickListener(position: Int) {
                     navigateToBookingDetailFragment(movie.id, theatres[position].id)
                 }

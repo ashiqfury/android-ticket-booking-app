@@ -13,11 +13,12 @@ import kotlinx.coroutines.launch
 class TheatreListViewModel : ViewModel() {
     private lateinit var repository: TheatreRepository
 
-    private var theatres = MutableLiveData<List<TheatreModel>>()
+    private var _theatres = MutableLiveData<List<TheatreModel>>()
+    val theatres: LiveData<List<TheatreModel>> = _theatres
 
     private fun loadData() {
         viewModelScope.launch {
-            theatres.postValue(repository.getData())
+            _theatres.postValue(repository.getData())
         }
     }
 
@@ -32,20 +33,11 @@ class TheatreListViewModel : ViewModel() {
         }
     }
 
-    fun getData(): LiveData<List<TheatreModel>> = theatres
 
     fun updateStar(theatreId: Int, value: Int) {
         viewModelScope.launch {
             repository.updateStar(theatreId, value)
             loadData()
         }
-    }
-
-    fun getStar(theatreId: Int): Int {
-        var star = -1
-        viewModelScope.launch {
-            star = repository.getStar(theatreId)
-        }
-        return star
     }
 }

@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 
 class TheatreRepository(context: Context) {
     private val helper = DatabaseHelper(context)
-    private val TAG = "BOOK_MY_THEATRE"
 
     suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
         helper.insertTheatre(name, location, totalSeats, availableSeats, null)
@@ -31,7 +30,6 @@ class TheatreRepository(context: Context) {
                 val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
                 val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
                 val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt())
-                Log.d(TAG, "Get data is called with: $theatre")
                 list.add(theatre)
                 cursor.moveToNext()
             }

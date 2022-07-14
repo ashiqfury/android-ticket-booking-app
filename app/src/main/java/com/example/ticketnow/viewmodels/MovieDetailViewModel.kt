@@ -16,8 +16,10 @@ class MovieDetailViewModel : ViewModel() {
     private lateinit var movieRepository: MovieRepository
     private lateinit var theatreRepository: TheatreRepository
 
-    private var movies = MutableLiveData<List<MovieModel>>()
-    private var theatres = MutableLiveData<List<TheatreModel>>()
+    private var _movies = MutableLiveData<List<MovieModel>>()
+    private val _theatres = MutableLiveData<List<TheatreModel>>()
+    val movies: LiveData<List<MovieModel>> = _movies
+    val theatres: LiveData<List<TheatreModel>> = _theatres
 
 
     fun initializeRepo(context: Context) {
@@ -30,18 +32,13 @@ class MovieDetailViewModel : ViewModel() {
 
     private fun loadMovies() {
         viewModelScope.launch(Dispatchers.IO) {
-            movies.postValue(movieRepository.getAllData())
+            _movies.postValue(movieRepository.getAllData())
         }
     }
 
     private fun loadTheatres() {
         viewModelScope.launch(Dispatchers.IO) {
-            theatres.postValue(theatreRepository.getData())
+            _theatres.postValue(theatreRepository.getData())
         }
     }
-
-    fun getMovies(): LiveData<List<MovieModel>> = movies
-
-    fun getTheatres(): LiveData<List<TheatreModel>> = theatres
-
 }
