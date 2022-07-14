@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_movieListFragment_to_theatreListFragment2"
             app:destination="@id/theatreListFragment2" />
+        <action
+            android:id="@+id/action_movieListFragment_to_movieViewPagerFragment"
+            app:destination="@id/movieViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
@@ -58,4 +61,13 @@
         android:name="com.example.ticketnow.ui.TheatreListFragment"
         android:label="fragment_theatre_list"
         tools:layout="@layout/fragment_theatre_list" />
+    <fragment
+        android:id="@+id/movieViewPagerFragment"
+        android:name="com.example.ticketnow.ui.MovieViewPagerFragment"
+        android:label="fragment_movie_view_pager"
+        tools:layout="@layout/fragment_movie_view_pager" >
+        <action
+            android:id="@+id/action_movieViewPagerFragment_to_theatreListFragment"
+            app:destination="@id/theatreListFragment" />
+    </fragment>
 </navigation>

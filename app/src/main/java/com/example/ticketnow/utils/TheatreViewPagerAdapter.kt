@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.TheatreModel
-import kotlinx.android.synthetic.main.item_view_view_pager.view.*
+import kotlinx.android.synthetic.main.theatre_item_view_pager.view.*
 
 class TheatreViewPagerAdapter(
     private val theatres: List<TheatreModel>,
@@ -17,7 +17,7 @@ class TheatreViewPagerAdapter(
 ): RecyclerView.Adapter<TheatreViewPagerAdapter.ViewPagerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_view_pager, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.theatre_item_view_pager, parent, false)
         return ViewPagerViewHolder(view)
     }
 

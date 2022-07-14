@@ -68,7 +68,7 @@ internal class MovieListFragment : Fragment() {
                 else {
                     val bundle = Bundle()
                     bundle.putInt("position", position)
-                    MovieDetailFragment().apply {
+                    MovieViewPagerFragment().apply {
                         arguments = bundle
                         navigateFragment(this, true)
                     }

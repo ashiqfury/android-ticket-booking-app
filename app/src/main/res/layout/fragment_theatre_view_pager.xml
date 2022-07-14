@@ -7,7 +7,7 @@
     tools:context=".ui.TheatreViewPagerFragment">
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+        android:id="@+id/theatre_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

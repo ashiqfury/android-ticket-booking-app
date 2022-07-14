@@ -7,124 +7,124 @@
     android:id="@+id/movie_detail_fragment"
     tools:context=".ui.MovieDetailFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="1dp">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:layout_editor_absoluteY="1dp">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
-            <ImageView
-                android:id="@+id/movie_image"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/minion" />
+<!--            <ImageView-->
+<!--                android:id="@+id/movie_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="320dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:padding="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:src="@drawable/minion" />-->
 
-            <TextView
-                android:id="@+id/movie_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="20dp"
-                android:text="Minions Part II"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="@color/sky_blue"
-                android:fontFamily="sans-serif-smallcaps" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_title"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:text="Minions Part II"-->
+<!--                android:textSize="28sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/sky_blue"-->
+<!--                android:fontFamily="sans-serif-smallcaps" />-->
 
-            <TextView
-                android:id="@+id/movie_desc"
-                android:layout_width="338dp"
-                android:layout_height="39dp"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif"
-                android:text="This is the description of the this movie. This is one of the wonderful movie."
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_desc"-->
+<!--                android:layout_width="338dp"-->
+<!--                android:layout_height="39dp"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="This is the description of the this movie. This is one of the wonderful movie."-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/movie_language"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif"
-                android:text="Language: Tamil"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_language"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="Language: Tamil"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/movie_genre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif"
-                android:text="Genre: Comedy"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_genre"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="Genre: Comedy"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/movie_showtime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif"
-                android:text="Show Time: Evening"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_showtime"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="Show Time: Evening"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/movie_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif"
-                android:text="Price: 100rs"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_price"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="26dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="Price: 100rs"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/movie_theatre_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
-                android:text="Some popular theatres"
-                android:textStyle="bold"
-                android:textColor="@color/sky_blue"
-                android:fontFamily="sans-serif-smallcaps"
-                android:textSize="24sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/movie_theatre_title"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:text="Some popular theatres"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/sky_blue"-->
+<!--                android:fontFamily="sans-serif-smallcaps"-->
+<!--                android:textSize="24sp" />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_show_more_theatre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"/>
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rv_show_more_theatre"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="10dp"/>-->
 
-            <TextView
-                android:id="@+id/movie_show_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/sky_blue"
-                android:textStyle="italic"
-                android:fontFamily="sans-serif"
-                android:text="show more.."
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:layout_marginBottom="30dp"/>
+<!--            <TextView-->
+<!--                android:id="@+id/movie_show_more"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:textColor="@color/sky_blue"-->
+<!--                android:textStyle="italic"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="show more.."-->
+<!--                android:textAlignment="center"-->
+<!--                android:textSize="18sp"-->
+<!--                android:layout_marginBottom="30dp"/>-->
 
-        </LinearLayout>
-    </ScrollView>
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

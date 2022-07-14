@@ -68,7 +68,7 @@ internal class TheatreViewPagerFragment : Fragment() {
                     }
                 }
             })
-            view_pager.adapter = adapter
+            theatre_view_pager.adapter = adapter
         }
     }
 

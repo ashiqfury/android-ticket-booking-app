@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.MovieModel
-import com.example.ticketnow.data.models.TheatreModel
-import kotlinx.android.synthetic.main.item_view_view_pager.view.*
+import kotlinx.android.synthetic.main.movie_item_view_pager.view.*
+import kotlinx.android.synthetic.main.theatre_item_view_pager.view.*
 
 class MovieViewPagerAdapter(
     private val movies: List<MovieModel>,
@@ -18,7 +18,7 @@ class MovieViewPagerAdapter(
 ): RecyclerView.Adapter<MovieViewPagerAdapter.ViewPagerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_view_pager, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item_view_pager, parent, false)
         return ViewPagerViewHolder(view)
     }
 
@@ -26,13 +26,13 @@ class MovieViewPagerAdapter(
         val movie = movies[position]
         holder.apply {
             itemImage.setImageResource(R.drawable.minion)
-//            itemTitle.text = movie.name
-//            itemDesc.text = "This is the description of this theatre. It one of the popular theatre."
-//            itemLocation.text = "Location: ${movie.location}"
-//            itemTotalSeats.text = "Total seats: ${movie.totalSeats}"
-//            itemAvailableSeats.text = "Available seats: ${movie.availableSeats}"
+            itemTitle.text = movie.name
+            itemDesc.text = "This is the description of this theatre. It one of the popular theatre."
+            itemLanguage.text = "Language: ${movie.language}"
+            itemGenre.text = "Total seats: ${movie.genre}"
+            itemTime.text = "Show time: ${movie.time}"
+            itemPrice.text = "Price: ${movie.price}"
         }
-
     }
 
     override fun getItemCount(): Int  = movies.size
@@ -41,23 +41,24 @@ class MovieViewPagerAdapter(
         val itemImage: ImageView
         val itemTitle: TextView
         val itemDesc: TextView
-        val itemLocation: TextView
-        val itemTotalSeats: TextView
-        val itemAvailableSeats: TextView
+        val itemLanguage: TextView
+        val itemGenre: TextView
+        val itemTime: TextView
+        val itemPrice: TextView
 
         init {
-            itemImage = view.theatre_image
-            itemTitle = view.theatre_title
-            itemDesc = view.theatre_desc
-            itemLocation = view.theatre_location
-            itemTotalSeats = view.theatre_total_seats
-            itemAvailableSeats = view.theatre_available_seats
+            itemImage = view.findViewById(R.id.movie_image)
+            itemTitle = view.findViewById(R.id.movie_title)
+            itemDesc = view.movie_desc
+            itemLanguage = view.movie_language
+            itemGenre = view.movie_genre
+            itemTime = view.movie_showtime
+            itemPrice = view.movie_price
 
-            val btn = view.findViewById<Button>(R.id.btn_book_ticket)
+           /* val btn = view.findViewById<Button>(R.id.btn_book_ticket)
             btn.setOnClickListener {
                 btnClickListener.clickListener(this.layoutPosition)
-            }
+            }*/
         }
-
     }
 }
