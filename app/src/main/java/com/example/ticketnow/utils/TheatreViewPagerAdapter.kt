@@ -52,10 +52,10 @@ class TheatreViewPagerAdapter(
             itemTotalSeats = view.theatre_total_seats
             itemAvailableSeats = view.theatre_available_seats
 
-            val btn = view.findViewById<Button>(R.id.btn_book_ticket)
-            btn.setOnClickListener {
-                btnClickListener.clickListener(this.layoutPosition)
-            }
+//            val btn = view.findViewById<Button>(R.id.btn_book_ticket)
+//            btn.setOnClickListener {
+//                btnClickListener.clickListener(this.layoutPosition)
+//            }
         }
 
     }

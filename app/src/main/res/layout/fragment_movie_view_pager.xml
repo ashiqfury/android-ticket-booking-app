@@ -25,37 +25,57 @@
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/movie_theatre_title"
+            <Button
+                android:id="@+id/movie_btn_book_ticket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
-                android:text="Some popular theatres"
-                android:textStyle="bold"
-                android:textColor="@color/sky_blue"
-                android:fontFamily="sans-serif-smallcaps"
-                android:textSize="24sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_show_more_theatre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"/>
-
-            <TextView
-                android:id="@+id/movie_show_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/sky_blue"
-                android:textStyle="italic"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/sky_blue"
                 android:fontFamily="sans-serif"
-                android:text="show more.."
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:layout_marginBottom="30dp"/>
+                android:text="Book Now"
+                android:layout_gravity="center_horizontal"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/movie_extras_layout"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/movie_theatre_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Some popular theatres"
+                    android:textStyle="bold"
+                    android:textColor="@color/sky_blue"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:textSize="24sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_show_more_theatre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:id="@+id/movie_show_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/sky_blue"
+                    android:textStyle="italic"
+                    android:fontFamily="sans-serif"
+                    android:text="show more.."
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="30dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
 

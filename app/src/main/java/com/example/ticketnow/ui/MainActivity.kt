@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
 //            theatreRepository.getData().forEach {
 //                Log.d("TICKET_NOW", "onCreate: $it ")
 //            }
-            val cursor = helper.getAllTheatres()
+//            val cursor = helper.getAllTheatres()
 
-            Log.d("TICKET_NOW", "onCreate: ${DatabaseUtils.dumpCursorToString(cursor)}")
+//            Log.d("TICKET_NOW",  "onCreate: ${DatabaseUtils.dumpCursorToString(cursor)}")
         }
 
 

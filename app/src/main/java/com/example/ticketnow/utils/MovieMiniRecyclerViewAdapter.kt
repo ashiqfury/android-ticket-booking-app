@@ -7,32 +7,28 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketnow.R
+import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
+import kotlinx.android.synthetic.main.card_layout_movie.view.*
 import kotlinx.android.synthetic.main.card_layout_theatre.view.*
 
-class TheatreMiniRecyclerViewAdapter(
-    private val theatres: List<TheatreModel>,
+class MovieMiniRecyclerViewAdapter(
+    private val theatres: List<MovieModel>,
     val btnClickListener: BtnClickListener
-    ) : RecyclerView.Adapter<TheatreMiniRecyclerViewAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<MovieMiniRecyclerViewAdapter.ViewHolder>() {
 
-//    private val cardType =
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TheatreMiniRecyclerViewAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout_theatre, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieMiniRecyclerViewAdapter.ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout_movie, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TheatreMiniRecyclerViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MovieMiniRecyclerViewAdapter.ViewHolder, position: Int) {
         holder.apply {
             itemTitle.text = theatres[position].name
-            itemDesc.text = theatres[position].location
-            itemImage.setImageResource(R.drawable.theatres)
+            itemDesc.text = theatres[position].genre
+            itemImage.setImageResource(R.drawable.minion)
         }
     }
-
-//    override fun getItemViewType(position: Int): Int {
-////        return super.getItemViewType(position)
-//    }
 
     override fun getItemCount(): Int = theatres.size.coerceAtMost(4)
 
@@ -42,9 +38,9 @@ class TheatreMiniRecyclerViewAdapter(
         val itemDesc: TextView
 
         init {
-            itemImage = view.item_theatre_image
-            itemTitle = view.item_theatre_title
-            itemDesc = view.item_theatre_desc
+            itemImage = view.item_movie_image
+            itemTitle = view.item_movie_title
+            itemDesc = view.item_movie_desc
 
             view.setOnClickListener {
                 btnClickListener.clickListener(this.layoutPosition)

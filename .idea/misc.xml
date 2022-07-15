@@ -13,18 +13,21 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/card_layout.xml" value="0.4244791666666667" />
+        <entry key="app/src/main/res/layout/card_layout_movie.xml" value="0.4005208333333333" />
         <entry key="app/src/main/res/layout/card_layout_movie_list.xml" value="0.425" />
+        <entry key="app/src/main/res/layout/card_layout_theatre.xml" value="0.4005208333333333" />
         <entry key="app/src/main/res/layout/card_layout_theatre_list.xml" value="0.425" />
         <entry key="app/src/main/res/layout/cart_layout_theatre.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_book_confirm.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_booking_detail.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/fragment_movie_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_movie_view_pager.xml" value="0.3943589743589744" />
+        <entry key="app/src/main/res/layout/fragment_movie_view_pager.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_theatre_list.xml" value="0.3934010152284264" />
-        <entry key="app/src/main/res/layout/fragment_theatre_view_pager.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_theatre_view_pager.xml" value="0.4005208333333333" />
         <entry key="app/src/main/res/layout/item_view_view_pager.xml" value="0.4234375" />
-        <entry key="app/src/main/res/layout/movie_item_view_pager.xml" value="0.26481481481481484" />
+        <entry key="app/src/main/res/layout/layout_load_more.xml" value="0.39947916666666666" />
+        <entry key="app/src/main/res/layout/movie_item_view_pager.xml" value="0.1" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.4239583333333333" />
         <entry key="app/src/main/res/layout/theatre_item_view_pager.xml" value="0.26481481481481484" />
         <entry key="app/src/main/res/menu/action_menu.xml" value="0.4239583333333333" />

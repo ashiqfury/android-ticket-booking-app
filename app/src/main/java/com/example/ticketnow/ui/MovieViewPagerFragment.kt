@@ -3,13 +3,14 @@ package com.example.ticketnow.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +22,14 @@ import com.example.ticketnow.utils.TheatreMiniRecyclerViewAdapter
 import com.example.ticketnow.viewmodels.MovieDetailViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_movie_view_pager.*
+import kotlinx.android.synthetic.main.fragment_theatre_view_pager.*
 
 class MovieViewPagerFragment : Fragment() {
 
     private lateinit var viewModel: MovieDetailViewModel
     private var movieId: Int? = null
     private var position: Int? = null
+    private var theatreId: Int? = null // from theatre viewpager
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<TheatreMiniRecyclerViewAdapter.ViewHolder>? = null
 
@@ -37,8 +40,9 @@ class MovieViewPagerFragment : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-            this.movieId = bundle.getInt("movieId", 1)
-            this.position = bundle.getInt("position", 1)
+            this.movieId = bundle.getInt("movieId", -1)
+            this.position = bundle.getInt("position", -1)
+            this.theatreId = bundle.getInt("theatreId", -1)
         }
 
         if (activity != null) {
@@ -55,24 +59,28 @@ class MovieViewPagerFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_view_pager, container, false)
-
-        setupMoviesViewPager()
+        setupMoviesViewPager(view)
         setupMiniTheatresList(view)
         handleBottomNavigation()
-
         return view
     }
 
-    private fun setupMoviesViewPager() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (theatreId == -1) { // starts from movies list
+            view.findViewById<Button>(R.id.movie_btn_book_ticket).visibility = View.GONE
+        } else {
+            view.findViewById<LinearLayoutCompat>(R.id.movie_extras_layout).visibility = View.GONE
+        }
+    }
+
+    private fun setupMoviesViewPager(view: View) {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             val adapter = MovieViewPagerAdapter(movies, object: BtnClickListener {
                 override fun clickListener(position: Int) {
-                    Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
                 }
             })
             movie_view_pager.adapter = adapter
@@ -81,6 +89,20 @@ class MovieViewPagerFragment : Fragment() {
                     movie_view_pager.currentItem = it
                 }
             }, 100)
+            view.findViewById<Button>(R.id.movie_btn_book_ticket).setOnClickListener {
+                val fragment = BookingDetailFragment()
+                val bundle = Bundle()
+                val position = movie_view_pager.currentItem
+                bundle.putInt("theatreId", theatreId ?: 0)
+                bundle.putInt("movieId", movies[position].id)
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame_layout, fragment)
+                    addToBackStack(null)
+                    commit()
+                }
+            }
         }
     }
 
