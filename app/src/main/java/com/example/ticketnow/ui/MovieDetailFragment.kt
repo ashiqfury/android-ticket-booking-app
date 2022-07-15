@@ -15,6 +15,7 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.utils.BtnClickListener
 import com.example.ticketnow.utils.TheatreMiniRecyclerViewAdapter
 import com.example.ticketnow.viewmodels.MovieDetailViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MovieDetailFragment : Fragment() {

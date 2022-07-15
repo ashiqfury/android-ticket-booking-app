@@ -45,13 +45,13 @@ internal class MovieRecyclerViewAdapter(
             view.setOnClickListener {
                 val position = this.layoutPosition
                 val movieId = movies[position].id
-                btnClickListener.clickListener(movieId, false)
+                btnClickListener.clickListener(movieId, position, false)
             }
 
             view.findViewById<Button>(R.id.btn_movie_card_list).setOnClickListener {
                 val position = this.layoutPosition
                 val movieId = movies[position].id
-                btnClickListener.clickListener(movieId, true)
+                btnClickListener.clickListener(movieId, position, true)
             }
         }
 

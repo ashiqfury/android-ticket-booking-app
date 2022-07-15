@@ -104,6 +104,7 @@ class BookConfirmFragment : Fragment() {
         view.tv_confirm_movie_genre.text = "Genre: ${movie.genre}"
         view.tv_confirm_movie_showtime.text = "Show time: ${movie.time}"
         view.tv_confirm_movie_price.text = "Price per ticket: ${movie.price}"
+        view.tv_confirm_ticketcount.text = "Tickets: ${ticketCount}x"
         view.tv_confirm_totalprice.text = "Total price: ${movie.price * ticketCount}/-"
     }
 

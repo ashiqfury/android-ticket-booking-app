@@ -1,5 +1,5 @@
 package com.example.ticketnow.utils
 
 interface RecyclerViewClickListener {
-    fun clickListener(position: Int, isButton: Boolean)
+    fun clickListener(movieId: Int, position: Int, isButton: Boolean)
 }

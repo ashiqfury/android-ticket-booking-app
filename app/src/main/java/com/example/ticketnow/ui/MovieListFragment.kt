@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -46,20 +48,36 @@ internal class MovieListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_movie_list, container, false)
         setupAddBar()
-        setupBottomNavigation(view)
+        setupBottomNavigation()
         initializeValues(view)
         observeLiveData()
-        setupNestedScrollView()
+//        setupNestedScrollView()
         setupRecyclerView(searchedMovies)
+        setupRecyclerViewScrollListener()
+
         return view
+    }
+
+    private fun setupRecyclerViewScrollListener() {
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) { // 1 => downward, -1 => upward
+                    progressBar.visible()
+                    loadMoreData()
+                }
+            }
+        })
     }
 
     private fun setupRecyclerView(movies: List<MovieModel>) {
         adapter = MovieRecyclerViewAdapter(movies, object : RecyclerViewClickListener {
-            override fun clickListener(position: Int, isButton: Boolean) {
+            override fun clickListener(movieId: Int, position: Int, isButton: Boolean) {
                 if (isButton) {
                     val bundle = Bundle()
-                    bundle.putInt("movieId", position)
+                    bundle.putInt("movieId", movieId)
+                    bundle.putInt("position", position)
                     TheatreViewPagerFragment().apply {
                         arguments = bundle
                         navigateFragment(this, true)
@@ -67,6 +85,7 @@ internal class MovieListFragment : Fragment() {
                 }
                 else {
                     val bundle = Bundle()
+                    bundle.putInt("movieId", movieId)
                     bundle.putInt("position", position)
                     MovieViewPagerFragment().apply {
                         arguments = bundle
@@ -99,8 +118,13 @@ internal class MovieListFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        offset = 0
+    }
+
     private fun initializeValues(view: View) {
-        nestedScrollView = view.findViewById(R.id.scroll_view)
+//        nestedScrollView = view.findViewById(R.id.scroll_view)
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -162,15 +186,8 @@ internal class MovieListFragment : Fragment() {
         })
     }
 
-    private fun setupBottomNavigation(view: View) {
-        val bottomNavigation = view.findViewById<BottomNavigationView>(R.id.movie_bottom_navigation)
-        bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId) {
-                R.id.theatres_tab -> navigateFragment(TheatreListFragment())
-                R.id.movies_tab -> navigateFragment(MovieListFragment())
-            }
-            true
-        }
+    private fun setupBottomNavigation() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
     }
 
     private fun navigateFragment(fragment: Fragment, backStack: Boolean = false) {

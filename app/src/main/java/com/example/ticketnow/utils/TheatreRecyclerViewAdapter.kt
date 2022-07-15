@@ -49,7 +49,7 @@ internal class TheatreRecyclerViewAdapter(private val theatres: List<TheatreMode
             view.setOnClickListener {
                 val position = this.layoutPosition
                 val theatreId = theatres[position].id
-                btnClickListener.clickListener(theatreId, false)
+                btnClickListener.clickListener(theatreId, position, false)
             }
 
             var bool = false
@@ -63,7 +63,7 @@ internal class TheatreRecyclerViewAdapter(private val theatres: List<TheatreMode
 //                }
                 val position = this.layoutPosition
                 val theatreId = theatres[position].id
-                btnClickListener.clickListener(theatreId, true)
+                btnClickListener.clickListener(theatreId, position, true)
             }
         }
 

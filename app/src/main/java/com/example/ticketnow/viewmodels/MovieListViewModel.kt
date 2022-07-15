@@ -11,6 +11,7 @@ class MovieListViewModel : ViewModel() {
     private val _movies = MutableLiveData<List<MovieModel>>()
     val movies: LiveData<List<MovieModel>> = _movies
     private var getUpdatedMoviesJob: Job? = null
+    private var fetchMoreMoviesJob: Job? = null
 
     fun initializeRepo(context: Context) {
         repository = MovieListRepository(context)
@@ -42,8 +43,11 @@ class MovieListViewModel : ViewModel() {
      * Load more while scroll down list
      */
     fun fetchMoreMovies(offset: Int) = liveData {
-        val movies = repository.fetchMoreData(offset)
-        emit(movies)
+//        if (fetchMoreMoviesJob?.isActive == true) fetchMoreMoviesJob?.cancel()
+//        getUpdatedMoviesJob = viewModelScope.launch(Dispatchers.Main) {
+            val movies = repository.fetchMoreData(offset)
+            emit(movies)
+//        }
     }
 
     fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {

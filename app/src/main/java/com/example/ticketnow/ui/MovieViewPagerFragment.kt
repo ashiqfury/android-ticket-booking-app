@@ -1,13 +1,16 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,12 +19,14 @@ import com.example.ticketnow.utils.BtnClickListener
 import com.example.ticketnow.utils.MovieViewPagerAdapter
 import com.example.ticketnow.utils.TheatreMiniRecyclerViewAdapter
 import com.example.ticketnow.viewmodels.MovieDetailViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_movie_view_pager.*
 
 class MovieViewPagerFragment : Fragment() {
 
     private lateinit var viewModel: MovieDetailViewModel
     private var movieId: Int? = null
+    private var position: Int? = null
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<TheatreMiniRecyclerViewAdapter.ViewHolder>? = null
 
@@ -32,7 +37,8 @@ class MovieViewPagerFragment : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-            this.movieId = bundle.getInt("position", 0)
+            this.movieId = bundle.getInt("movieId", 1)
+            this.position = bundle.getInt("position", 1)
         }
 
         if (activity != null) {
@@ -53,11 +59,16 @@ class MovieViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_movie_view_pager, container, false)
+        val view =  inflater.inflate(R.layout.fragment_movie_view_pager, container, false)
+
+        setupMoviesViewPager()
+        setupMiniTheatresList(view)
+        handleBottomNavigation()
+
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setupMoviesViewPager() {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             val adapter = MovieViewPagerAdapter(movies, object: BtnClickListener {
                 override fun clickListener(position: Int) {
@@ -65,15 +76,23 @@ class MovieViewPagerFragment : Fragment() {
                 }
             })
             movie_view_pager.adapter = adapter
+            Handler(Looper.getMainLooper()).postDelayed( {
+                position?.let {
+                    movie_view_pager.currentItem = it
+                }
+            }, 100)
         }
+    }
 
+    private fun setupMiniTheatresList(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_show_more_theatre)
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
         val showMore = view.findViewById<TextView>(R.id.movie_show_more)
         showMore.setOnClickListener {
-//            navigateToTheatreListFragment(movie.id)
+            setMovieIdFromViewPagerPosition()
+            movieId?.let { movieId -> navigateToTheatreListFragment(movieId) }
         }
 
         viewModel.theatres.observe(viewLifecycleOwner) { theatres ->
@@ -81,7 +100,8 @@ class MovieViewPagerFragment : Fragment() {
 
             adapter = TheatreMiniRecyclerViewAdapter(theatres, object : BtnClickListener {
                 override fun clickListener(position: Int) {
-//                    navigateToBookingDetailFragment(movie.id, theatres[position].id)
+                    setMovieIdFromViewPagerPosition()
+                    movieId?.let { movieId -> navigateToBookingDetailFragment(movieId, theatres[position].id) }
                 }
             })
 
@@ -123,6 +143,16 @@ class MovieViewPagerFragment : Fragment() {
             replace(R.id.frame_layout, fragment)
             addToBackStack(null)
             commit()
+        }
+    }
+
+    private fun handleBottomNavigation() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.GONE
+    }
+
+    private fun setMovieIdFromViewPagerPosition() {
+        viewModel.movies.observe(viewLifecycleOwner) {
+            movieId = it[movie_view_pager.currentItem].id
         }
     }
 }

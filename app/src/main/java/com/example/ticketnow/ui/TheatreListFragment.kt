@@ -18,6 +18,8 @@ import com.example.ticketnow.utils.StarBtnClickListener
 import com.example.ticketnow.utils.TheatreRecyclerViewAdapter
 import com.example.ticketnow.viewmodels.TheatreListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.fragment_theatre_view_pager.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.log
@@ -46,51 +48,13 @@ class TheatreListFragment : Fragment() {
     // diff util
     // shared element transaction
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_theatre_list, container, false).also {
-            setUpNavigation(it)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_theatre_list, container, false).also { view ->
+            setupBottomNavigation()
             setupAppbar()
-            setupSpinner(it)
-            setupRecyclerView(it)
+            setupSpinner(view)
+            setupRecyclerView(view)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        val menuHost: MenuHost = requireActivity()
-//
-//        // Add menu items without using the Fragment Menu APIs
-//        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-//        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-//        // the menu should be visible
-//        menuHost.addMenuProvider(object : MenuProvider {
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                // Add menu items here
-//                menuInflater.inflate(R.menu.action_menu, menu)
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//                // Handle the menu selection
-//                return when (menuItem.itemId) {
-//                    R.id.movies_tab -> {
-//                        navigateFragment(MovieListFragment())
-//                        true
-//                    }
-//                    R.id.theatres_tab -> {
-//                        navigateFragment(TheatreListFragment())
-//                        true
-//                    }
-//                    else -> false
-//                }
-////                setupBottomNavigation(view)
-//            }
-//        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
     }
 
     /** implementation of search in appbar */
@@ -137,20 +101,8 @@ class TheatreListFragment : Fragment() {
         return -1
     }
 
-    private fun setUpNavigation(view: View) {
-        val bottomNavigation =
-            view.findViewById<BottomNavigationView>(R.id.theatre_bottom_navigation)
-        bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.movies_tab -> replaceCurrentFragment(MovieListFragment())
-                R.id.theatres_tab -> replaceCurrentFragment(TheatreListFragment())
-            }
-            true
-        }
-    }
-
-    private fun replaceCurrentFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit()
+    private fun setupBottomNavigation() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
     }
 
     private fun setupSpinner(view: View) {
@@ -228,17 +180,16 @@ class TheatreListFragment : Fragment() {
             recyclerView.adapter?.notifyDataSetChanged()
         }
         adapter = TheatreRecyclerViewAdapter(searchedTheatres, object : StarBtnClickListener {
-            override fun clickListener(theatreId: Int, isStar: Boolean) {
+            override fun clickListener(theatreId: Int, position: Int, isStar: Boolean) {
                 /** if the user clicked the star, change the star and update it to the database */
                 if (isStar) {
                     if (findStar(theatreId) == 1) viewModel.updateStar(theatreId, 0)
                     else viewModel.updateStar(theatreId, 1)
                     recyclerView.adapter?.notifyDataSetChanged()
                 } else {
-                    /** if the user clicked the card */
-//                    Toast.makeText(requireContext(), "Clicked $theatreId", Toast.LENGTH_SHORT).show()
-                    /*val fragment = MovieDetailFragment()
+                    val fragment = TheatreViewPagerFragment()
                     val bundle = Bundle()
+                    bundle.putInt("theatreId", theatreId)
                     bundle.putInt("position", position)
                     fragment.arguments = bundle
 
@@ -246,7 +197,7 @@ class TheatreListFragment : Fragment() {
                         replace(R.id.frame_layout, fragment)
                         addToBackStack(null)
                         commit()
-                    }*/
+                    }
                 }
             }
         })
