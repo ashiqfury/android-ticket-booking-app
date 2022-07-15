@@ -11,7 +11,7 @@ class MovieListRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
 
     private suspend fun getMoviesFromNetwork(): List<MovieModel> {
-        delay(2000) // simulated delay
+//        delay(1000) // simulated delay
         return FakeMovieRemoteDB.getAllMovies(context)
     }
 

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "PVR Cinemas",
+    "location": "Tirunelveli",
+    "totalSeats": 20,
+    "availableSeats": 20,
+    "stared": 1
+  },
+  {
+    "name": "Phoenix Mall",
+    "location": "Madurai",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 0
+  },
+  {
+    "name": "PVR Plasa",
+    "location": "Coimbatore",
+    "totalSeats": 15,
+    "availableSeats": 15,
+    "stared": 1
+  },
+  {
+    "name": "Fun Cinemas",
+    "location": "Kochin",
+    "totalSeats": 40,
+    "availableSeats": 40,
+    "stared": 0
+  },
+  {
+    "name": "Lulu Cinemas",
+    "location": "Mumbai",
+    "totalSeats": 30,
+    "availableSeats": 30,
+    "stared": 0
+  },
+  {
+    "name": "Rainbow Dolby",
+    "location": "Kolkata",
+    "totalSeats": 25,
+    "availableSeats": 25,
+    "stared": 1
+  },
+  {
+    "name": "Star Cinemas",
+    "location": "Bangalore",
+    "totalSeats": 10,
+    "availableSeats": 10,
+    "stared": 0
+  },
+  {
+    "name": "Color FilmZx",
+    "location": "Erode",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 1
+  }
+]

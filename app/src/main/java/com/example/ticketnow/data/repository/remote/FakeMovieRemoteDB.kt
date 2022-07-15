@@ -1,14 +1,11 @@
 package com.example.ticketnow.data.repository.remote
 
 import android.content.Context
-import android.util.Log
 import com.example.ticketnow.data.models.MovieModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.IOException
 
-object FakeMovieRemoteDB : RemoteInterface {
+object FakeMovieRemoteDB : MovieRemoteInterface {
 
     override suspend fun getAllMovies(context: Context): List<MovieModel> {
         val gson = Gson()

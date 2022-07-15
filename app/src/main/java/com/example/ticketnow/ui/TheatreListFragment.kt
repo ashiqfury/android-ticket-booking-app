@@ -26,6 +26,8 @@ import kotlin.math.log
 
 class TheatreListFragment : Fragment() {
 
+    enum class mSpinner { ALL, STARED }
+
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<TheatreRecyclerViewAdapter.ViewHolder>? = null
     private lateinit var recyclerView: RecyclerView
@@ -35,13 +37,12 @@ class TheatreListFragment : Fragment() {
     private lateinit var viewModel: TheatreListViewModel
     private var searchedTheatres: ArrayList<TheatreModel> = arrayListOf()
     private var theatres: ArrayList<TheatreModel> = arrayListOf()
+    private var spinnerSelection = mSpinner.ALL.ordinal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProvider(this)[TheatreListViewModel::class.java]
         viewModel.initializeRepo(requireContext())
-
         setHasOptionsMenu(true)
     }
 
@@ -86,7 +87,7 @@ class TheatreListFragment : Fragment() {
                     searchedTheatres.clear()
                     searchedTheatres.addAll(theatres)
                     recyclerView.adapter?.notifyDataSetChanged()
-                    spinner.setSelection(0) // 0 is the position for 'all' theatres
+                    spinner.setSelection(mSpinner.ALL.ordinal) // 0 is the position for 'all' theatres
                 }
                 return false
             }
@@ -114,41 +115,41 @@ class TheatreListFragment : Fragment() {
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, filter)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-
+//            it.setSelection(spinnerSelection)
             spinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    /** when the spinner has value of 'all' reset everything */
-                    if (filter[position] == "All") {
-                        searchedTheatres.clear()
-                        searchedTheatres.addAll(theatres)
-                        searchView.setQuery("", false)
-                        searchView.clearFocus()
-                        recyclerView.adapter?.notifyDataSetChanged()
-                    } else {
-                        /** when the spinner has value of 'stared' search for stared theatres and put that in searchTheatres array */
-                        val filteredTheatres = arrayListOf<TheatreModel>()
-                        searchedTheatres.forEach { theatre ->
-                            if (theatre.stared == 1) filteredTheatres.add(theatre)
-                        }
-                        searchedTheatres.clear()
-                        searchedTheatres.addAll(filteredTheatres)
-                        filteredTheatres.clear()
-                        searchView.setQuery("", false)
-                        searchView.clearFocus()
-                        recyclerView.adapter?.notifyDataSetChanged()
-                    }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    handleChangesInSpinner(filter, position)
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     // perform some action
                 }
             }
+        }
+    }
+
+    private fun handleChangesInSpinner(filter: Array<String>, position: Int) {
+        /** when the spinner has value of 'all' reset everything */
+        if (position == mSpinner.ALL.ordinal) { // filter[position] == "All"
+            spinnerSelection = mSpinner.ALL.ordinal
+            searchedTheatres.clear()
+            searchedTheatres.addAll(theatres)
+            searchView.setQuery("", false)
+            searchView.clearFocus()
+            recyclerView.adapter?.notifyDataSetChanged()
+        } else {
+            /** when the spinner has value of 'stared' search for stared theatres and put that in searchTheatres array */
+            spinnerSelection = mSpinner.STARED.ordinal
+            val filteredTheatres = arrayListOf<TheatreModel>()
+            searchedTheatres.forEach { theatre ->
+                if (theatre.stared == 1) filteredTheatres.add(theatre)
+            }
+            searchedTheatres.clear()
+            searchedTheatres.addAll(filteredTheatres)
+            filteredTheatres.clear()
+            searchView.setQuery("", false)
+            searchView.clearFocus()
+            recyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -185,6 +186,7 @@ class TheatreListFragment : Fragment() {
                 if (isStar) {
                     if (findStar(theatreId) == 1) viewModel.updateStar(theatreId, 0)
                     else viewModel.updateStar(theatreId, 1)
+                    setupSpinner(view)
                     recyclerView.adapter?.notifyDataSetChanged()
                 } else {
                     val fragment = TheatreViewPagerFragment()

@@ -15,8 +15,6 @@ class TheatreMiniRecyclerViewAdapter(
     val btnClickListener: BtnClickListener
     ) : RecyclerView.Adapter<TheatreMiniRecyclerViewAdapter.ViewHolder>() {
 
-//    private val cardType =
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TheatreMiniRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout_theatre, parent, false)
         return ViewHolder(view)
@@ -29,10 +27,6 @@ class TheatreMiniRecyclerViewAdapter(
             itemImage.setImageResource(R.drawable.theatres)
         }
     }
-
-//    override fun getItemViewType(position: Int): Int {
-////        return super.getItemViewType(position)
-//    }
 
     override fun getItemCount(): Int = theatres.size.coerceAtMost(4)
 

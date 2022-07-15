@@ -150,8 +150,9 @@ internal class MovieListFragment : Fragment() {
                 searchedMovies.clear()
                 offset = 0
                 viewModel.getUpdatedMovies(offset)
+                observeLiveData()
                 swipeRefreshLayout.isRefreshing = false
-            }, 2000)
+            }, 1000)
         }
     }
 

@@ -3,21 +3,22 @@ package com.example.ticketnow.data.repository
 import android.content.Context
 import android.database.DatabaseUtils
 import android.util.Log
+import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
+import com.example.ticketnow.data.repository.remote.FakeTheatreRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TheatreRepository(context: Context) {
+class TheatreRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
 
-    suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
-        helper.insertTheatre(name, location, totalSeats, availableSeats, null)
+    suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int = 0) {
+        helper.insertTheatre(name, location, totalSeats, availableSeats, stared)
     }
 
-
-    suspend fun getData(): List<TheatreModel> {
+    private suspend fun getTheatresFromDB(): List<TheatreModel> {
         val list = mutableListOf<TheatreModel>()
         val cursor = helper.getAllTheatres()
 
@@ -35,6 +36,23 @@ class TheatreRepository(context: Context) {
             }
         }
         return list
+    }
+
+    private suspend fun getTheatresFromNetwork(): List<TheatreModel> {
+        return FakeTheatreRemoteDB.getAllTheatres(context)
+    }
+
+    suspend fun getData(): List<TheatreModel> {
+        val cursor = helper.getAllTheatres()
+        val theatres: List<TheatreModel> = if (cursor.count > 0) {
+            getTheatresFromDB()
+        } else {
+            val theatres = getTheatresFromNetwork()
+            helper.deleteAllMovies()
+            theatres.forEach { theatre -> insert(theatre.name, theatre.location, theatre.totalSeats, theatre.availableSeats, theatre.stared) }
+            theatres
+        }
+        return theatres
     }
 
     suspend fun getTheatre(theatreId: Int): TheatreModel {
