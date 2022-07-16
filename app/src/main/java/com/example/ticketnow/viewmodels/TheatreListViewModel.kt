@@ -41,9 +41,9 @@ class TheatreListViewModel : ViewModel() {
         loadMovies()
     }
 
-    fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int) {
+    fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int = 0, movieList: List<MovieModel>) {
         viewModelScope.launch {
-            theatreRepository.insert(name, location, totalSeats, availableSeats)
+            theatreRepository.insert(name, location, totalSeats, availableSeats, stared, movieList)
         }
     }
 

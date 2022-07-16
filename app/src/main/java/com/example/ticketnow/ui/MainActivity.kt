@@ -15,6 +15,7 @@ import com.example.ticketnow.R
 import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
 import com.example.ticketnow.data.repository.TicketBookingRepository
+import com.example.ticketnow.data.repository.remote.FakeTheatreRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -29,15 +30,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupBottomNavigation()
 
+
+
+//        runBlocking {
+//            val theatres = FakeTheatreRemoteDB.getAllTheatres(this@MainActivity)
+//            theatres.forEach {
+//                Log.d("TICKET_NOW", "onCreate: $it")
+//            }
+//        }
+
         val helper = DatabaseHelper(this)
 //        runBlocking {
-//            helper.deleteAllMovies()
+//            helper.deleteAllTheatres()
 //        }
 
         runBlocking {
+//            FakeTheatreRemoteDB.getAllTheatres(this@MainActivity)
+//            helper.deleteAllMovies()
 //            helper.deleteAllTheatres()
 //            helper.insertTheatre("PVR Cinemas", "Madurai", 20, 20, 0)
-//            val theatreRepository = TheatreRepository(this@MainActivity)
+            val theatreRepository = TheatreRepository(this@MainActivity)
+            theatreRepository.getTheatresFromDB()
 //            theatreRepository.getData().forEach {
 //                Log.d("TICKET_NOW", "onCreate: $it ")
 //            }
@@ -45,9 +58,6 @@ class MainActivity : AppCompatActivity() {
 
 //            Log.d("TICKET_NOW",  "onCreate: ${DatabaseUtils.dumpCursorToString(cursor)}")
         }
-
-
-
 
 
 //        helper.updateStar("1", 1)

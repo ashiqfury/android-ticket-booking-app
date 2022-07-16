@@ -6,5 +6,6 @@ data class TheatreModel(
     val location: String,
     val totalSeats: Int,
     val availableSeats: Int,
-    val stared: Int
+    val stared: Int,
+    var moviesList: List<MovieModel>
 )

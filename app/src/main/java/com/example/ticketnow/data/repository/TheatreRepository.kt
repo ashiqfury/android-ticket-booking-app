@@ -7,6 +7,8 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.data.repository.remote.FakeTheatreRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,13 +16,15 @@ import kotlinx.coroutines.launch
 class TheatreRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
 
-    suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int = 0) {
-        helper.insertTheatre(name, location, totalSeats, availableSeats, stared)
+    suspend fun insert(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int = 0, moviesList: List<MovieModel>) {
+        helper.insertTheatre(name, location, totalSeats, availableSeats, stared, moviesList)
     }
 
-    private suspend fun getTheatresFromDB(): List<TheatreModel> {
+    suspend fun getTheatresFromDB(): List<TheatreModel> {
         val list = mutableListOf<TheatreModel>()
         val cursor = helper.getAllTheatres()
+        val gson = Gson()
+        val movieType = object : TypeToken<List<MovieModel>>() {}.type
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
@@ -30,7 +34,15 @@ class TheatreRepository(val context: Context) {
                 val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
                 val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
                 val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
-                val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt())
+                val moviesListString: String = cursor.getString(cursor.getColumnIndex("moviesList"))
+
+                val moviesList = arrayListOf<MovieModel>()
+                moviesListString.split("#").forEach {
+                    val movie =  gson.fromJson(it, movieType) as List<MovieModel>
+                    Log.d("TICKET_NOW", "getTheatresFromDB: $movie")
+//                    moviesList.add(movie)
+                }
+                val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt(), moviesList)
                 list.add(theatre)
                 cursor.moveToNext()
             }
@@ -49,7 +61,9 @@ class TheatreRepository(val context: Context) {
         } else {
             val theatres = getTheatresFromNetwork()
             helper.deleteAllMovies()
-            theatres.forEach { theatre -> insert(theatre.name, theatre.location, theatre.totalSeats, theatre.availableSeats, theatre.stared) }
+            theatres.forEach { theatre ->
+                insert(theatre.name, theatre.location, theatre.totalSeats, theatre.availableSeats, theatre.stared, theatre.moviesList)
+            }
             theatres
         }
         return theatres
@@ -67,7 +81,10 @@ class TheatreRepository(val context: Context) {
             val totalSeats: String = cursor.getString(cursor.getColumnIndex("totalSeats"))
             val availableSeats: String = cursor.getString(cursor.getColumnIndex("availableSeats"))
             val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
-            theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt())
+            val moviesListString: String = cursor.getString(cursor.getColumnIndex("moviesList"))
+
+            // change this line
+            theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt(), listOf())
             cursor.moveToNext()
         }
         return theatre!!

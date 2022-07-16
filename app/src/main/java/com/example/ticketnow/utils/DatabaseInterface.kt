@@ -1,11 +1,12 @@
 package com.example.ticketnow.utils
 
 import android.database.Cursor
+import com.example.ticketnow.data.models.MovieModel
 
 interface DatabaseInterface {
     suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int)
     suspend fun insertBooking(movieId: Int, theatreId: Int, userId: Int, ticketCount: Int): Long
-    suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?)
+    suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?, moviesList: List<MovieModel>)
     suspend fun insertUser(name: String, phoneNumber: Long): Long
 
     suspend fun getAllMovies(): Cursor

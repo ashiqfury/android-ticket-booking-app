@@ -17,7 +17,11 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.ticketnow.R
+import com.example.ticketnow.data.models.MovieModel
+import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.utils.BtnClickListener
 import com.example.ticketnow.utils.MovieMiniRecyclerViewAdapter
 import com.example.ticketnow.utils.TheatreMiniRecyclerViewAdapter
@@ -40,6 +44,11 @@ internal class TheatreViewPagerFragment : Fragment() {
     private var movieId: Int? = null // from movieViewpagerFragment
     private var theatreId: Int? = null // from theatreListFragment
     private var position: Int? = null // from theatreListFragment
+    private var currentViewPagerPosition = -1
+    private lateinit var currentTheatre: TheatreModel
+    private var recyclerViewMovies = arrayListOf<MovieModel>()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewPager2: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +78,9 @@ internal class TheatreViewPagerFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_theatre_view_pager, container, false)
-        setupTheatreViewPager(view)
+        viewPager2 = view.findViewById(R.id.theatre_view_pager)
         handleBottomNavigation()
+        setupTheatreViewPager(view)
         setupMiniMoviesList(view)
         return view
     }
@@ -127,25 +137,39 @@ internal class TheatreViewPagerFragment : Fragment() {
                 }
             }
         }
+        viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentViewPagerPosition = position
+                viewModel.theatres.observe(viewLifecycleOwner) {
+                    theatreId = it[currentViewPagerPosition].id
+                    currentTheatre = it[currentViewPagerPosition]
+                    getMoviesListFromTheatre()
+                    Log.d("TICKET_NOW", "onPageSelected: $recyclerViewMovies")
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
+            }
+        })
     }
 
     private fun setupMiniMoviesList(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_show_more_movie)
+
+        recyclerView = view.findViewById(R.id.rv_show_more_movie)
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
         val showMore = view.findViewById<TextView>(R.id.theatre_show_more)
         showMore.setOnClickListener {
-            setTheatreIdFromViewPagerPosition()
+//            setTheatreIdFromViewPagerPosition()
             theatreId?.let { theatreId -> navigateToMovieListFragment(theatreId) }
         }
 
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             if (movies.isEmpty()) showMore.text = ""
 
-            adapter = MovieMiniRecyclerViewAdapter(movies, object : BtnClickListener {
+            adapter = MovieMiniRecyclerViewAdapter(recyclerViewMovies, object : BtnClickListener {
                 override fun clickListener(position: Int) {
-                    setTheatreIdFromViewPagerPosition()
+//                    setTheatreIdFromViewPagerPosition()
                     theatreId?.let { theatreId -> navigateToBookingDetailFragment(theatreId, movies[position].id) }
                 }
             })
@@ -201,4 +225,19 @@ internal class TheatreViewPagerFragment : Fragment() {
         }
     }
 
+    private fun getMoviesListFromTheatre() {
+        recyclerViewMovies.clear()
+
+        val listOfMovieId = currentTheatre.moviesList
+        Log.d("TICKET_NOW", "currentTheatre $currentTheatre")
+//        val movies = arrayListOf<MovieModel>()
+        viewModel.movies.observe(viewLifecycleOwner) { _movies ->
+            _movies.forEach { movie ->
+//                if (listOfMovieId.contains(movie.id)) {
+//                    Log.d("TICKET_NOW", "ids: $listOfMovieId id ${movie.id}")
+//                    recyclerViewMovies.add(movie)
+//                }
+            }
+        }
+    }
 }

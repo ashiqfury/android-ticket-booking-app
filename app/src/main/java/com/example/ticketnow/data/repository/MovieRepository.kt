@@ -5,7 +5,9 @@ import android.database.Cursor
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.repository.remote.FakeMovieRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MovieRepository(val context: Context) {
     private val helper = DatabaseHelper(context)
@@ -97,6 +99,13 @@ class MovieRepository(val context: Context) {
 
     private fun getValueFromCursor(cursor: Cursor, key: String): String {
         return cursor.getString(cursor.getColumnIndex(key))
+    }
+
+    suspend fun getMoviesId(): List<Int> {
+        val movies = getMoviesFromDB()
+        val listOfId = arrayListOf<Int>()
+        movies.forEach { listOfId.add(it.id) }
+        return listOfId
     }
 
     /*fun update(id: String, name: String, genre: String, language: String, showTime: String, price: Int) = CoroutineScope(Dispatchers.Main).launch {

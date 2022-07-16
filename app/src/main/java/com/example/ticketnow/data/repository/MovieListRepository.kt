@@ -38,7 +38,7 @@ class MovieListRepository(val context: Context) {
         return list
     }
 
-    suspend fun getInitialData(offset: Int = 0, callback: (List<MovieModel>) -> Unit): Unit {
+    suspend fun getInitialData(offset: Int = 0, callback: (List<MovieModel>) -> Unit) {
         val cursor = helper.getAllMovies()
         val movies: List<MovieModel> = if (cursor.count > 0) {
             getMoviesFromDB(offset)

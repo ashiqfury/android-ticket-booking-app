@@ -36,6 +36,8 @@ class TheatreViewPagerAdapter(
 
     override fun getItemCount(): Int  = theatres.size
 
+
+
     inner class ViewPagerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemImage: ImageView
         val itemTitle: TextView

@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.ticketnow.data.models.MovieModel
 
 internal class DatabaseHelper(context: Context):
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
@@ -13,7 +14,7 @@ internal class DatabaseHelper(context: Context):
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE IF NOT EXISTS $MOVIE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $GENRE TEXT, $LANGUAGE TEXT, $SHOWTIME TEXT, $PRICE INTEGER)")
-        db?.execSQL("CREATE TABLE IF NOT EXISTS $THEATRE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $LOCATION TEXT, $TOTAL_SEATS INTEGER, $AVAILABLE_SEATS INTEGER, $STARED INTEGER DEFAULT 0)")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $THEATRE_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME TEXT, $LOCATION TEXT, $TOTAL_SEATS INTEGER, $AVAILABLE_SEATS INTEGER, $STARED INTEGER DEFAULT 0, $MOVIES_LIST TEXT DEFAULT \"\")")
         db?.execSQL("CREATE TABLE IF NOT EXISTS $BOOKING_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $MOVIE_ID INTEGER, $THEATRE_ID INTEGER, $USER_ID INTEGER, $TICKET_COUNT INTEGER)")
         db?.execSQL("CREATE TABLE IF NOT EXISTS $USER_TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NAME INTEGER, $PHONE_NUMBER INTEGER)")
     }
@@ -22,10 +23,10 @@ internal class DatabaseHelper(context: Context):
         db?.execSQL("DROP TABLE IF EXISTS $THEATRE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $BOOKING_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $USER_TABLE")
-        onCreate(db)
+        onCreate(db) */
         if (newVersion > oldVersion) {
-            db?.execSQL("ALTER TABLE $THEATRE_TABLE ADD COLUMN $STARED INTEGER DEFAULT 0")
-        }*/
+            db?.execSQL("ALTER TABLE $THEATRE_TABLE ADD COLUMN $MOVIES_LIST TEXT DEFAULT \"\"")
+        }
     }
 
     override suspend fun insertMovie(name: String, genre: String, language: String, showtime: String, price: Int) {
@@ -40,7 +41,8 @@ internal class DatabaseHelper(context: Context):
         }
         db.insert(MOVIE_TABLE, null, contentValues)
     }
-    override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?) {
+    override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?, moviesList: List<MovieModel>) {
+        val movieString = moviesList.joinToString("#")
         try {
             val db = this.writableDatabase
             val contentValues = ContentValues()
@@ -50,6 +52,7 @@ internal class DatabaseHelper(context: Context):
                 put(TOTAL_SEATS, totalSeats)
                 put(AVAILABLE_SEATS, availableSeats)
                 put(STARED, stared ?: 0)
+                put(MOVIES_LIST, movieString)
             }
             db.insert(THEATRE_TABLE, null, contentValues)
         } catch (e: Exception) {
@@ -65,8 +68,6 @@ internal class DatabaseHelper(context: Context):
             put(USER_ID, userId)
             put(TICKET_COUNT, ticketCount)
         }
-        Log.d("CONTENT_VALUES BOOKING", contentValues.toString())
-
         return db.insert(BOOKING_TABLE, null, contentValues)
     }
     override suspend fun insertUser(name: String, phoneNumber: Long): Long {
@@ -121,7 +122,7 @@ internal class DatabaseHelper(context: Context):
 
     companion object {
         const val DATABASE_NAME = "ticketnow.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
         const val MOVIE_TABLE = "movies"
         const val THEATRE_TABLE = "theatres"
         const val BOOKING_TABLE = "bookings"
@@ -142,5 +143,6 @@ internal class DatabaseHelper(context: Context):
         const val PHONE_NUMBER = "phoneNumber"
         const val STARED = "stared"
         const val LIMIT = 10
+        const val MOVIES_LIST = "moviesList"
     }
 }
