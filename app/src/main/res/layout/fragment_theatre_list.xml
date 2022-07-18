@@ -6,6 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.TheatreListFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/theatre_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
 
     <Spinner
         android:id="@+id/spinner_filter"
@@ -16,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/sky_blue"
         android:dropDownVerticalOffset="40dp"
+        android:layout_gravity="end"
         android:dropDownWidth="100dp"
         android:spinnerMode="dropdown"
         android:drawSelectorOnTop="true"/>
@@ -23,7 +38,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_theatre"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,14 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_filter"
         app:layout_constraintVertical_bias="0.0" />
 
-   <!-- <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/theatre_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:itemIconSize="@dimen/bottom_navigation_icon_size"
-        app:menu="@menu/bottom_menu" />-->
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

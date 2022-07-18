@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
 //            helper.deleteAllMovies()
 //            helper.deleteAllTheatres()
 //            helper.insertTheatre("PVR Cinemas", "Madurai", 20, 20, 0)
-            val theatreRepository = TheatreRepository(this@MainActivity)
-            theatreRepository.getTheatresFromDB()
+//            val theatreRepository = TheatreRepository(this@MainActivity)
+//            theatreRepository.getTheatresFromDB()
 //            theatreRepository.getData().forEach {
 //                Log.d("TICKET_NOW", "onCreate: $it ")
 //            }

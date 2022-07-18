@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.ticketnow.data.models.MovieModel
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 internal class DatabaseHelper(context: Context):
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
@@ -42,7 +43,9 @@ internal class DatabaseHelper(context: Context):
         db.insert(MOVIE_TABLE, null, contentValues)
     }
     override suspend fun insertTheatre(name: String, location: String, totalSeats: Int, availableSeats: Int, stared: Int?, moviesList: List<MovieModel>) {
-        val movieString = moviesList.joinToString("#")
+        val mapper = jacksonObjectMapper()
+        val moviesString = mapper.writeValueAsString(moviesList)
+        Log.d("TICKET_NOW", "insertTheatre: moviesString: $moviesString")
         try {
             val db = this.writableDatabase
             val contentValues = ContentValues()
@@ -52,7 +55,7 @@ internal class DatabaseHelper(context: Context):
                 put(TOTAL_SEATS, totalSeats)
                 put(AVAILABLE_SEATS, availableSeats)
                 put(STARED, stared ?: 0)
-                put(MOVIES_LIST, movieString)
+                put(MOVIES_LIST, moviesString)
             }
             db.insert(THEATRE_TABLE, null, contentValues)
         } catch (e: Exception) {
@@ -94,6 +97,13 @@ internal class DatabaseHelper(context: Context):
 //        if (getAllMovies().count > (offset + 10)) {
             return customRawQuery("SELECT * FROM $MOVIE_TABLE LIMIT $LIMIT OFFSET $offset")
 //        }
+    }
+
+    suspend fun updateSeatCount(newAvailableSeatCount: Int, theatreId: String) {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(AVAILABLE_SEATS, newAvailableSeatCount)
+        db.update(THEATRE_TABLE, contentValues, "ID = ?", arrayOf(theatreId))
     }
 
     override suspend fun deleteTheatre(theatreId : String) : Int = this.writableDatabase.delete(THEATRE_TABLE,"ID = ?", arrayOf(theatreId))

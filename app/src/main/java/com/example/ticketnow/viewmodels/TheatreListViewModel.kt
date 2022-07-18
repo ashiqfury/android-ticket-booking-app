@@ -1,26 +1,22 @@
 package com.example.ticketnow.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.data.repository.MovieRepository
 import com.example.ticketnow.data.repository.TheatreRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class TheatreListViewModel : ViewModel() {
     private lateinit var theatreRepository: TheatreRepository
     private lateinit var movieRepository: MovieRepository
 
+    private var getUpdatedTheatresJob: Job? = null
     private var _theatres = MutableLiveData<List<TheatreModel>>()
     private var _movies = MutableLiveData<List<MovieModel>>()
     val theatres: LiveData<List<TheatreModel>> = _theatres
     val movies: LiveData<List<MovieModel>> = _movies
-
 
     private fun loadTheatres() {
         viewModelScope.launch {
@@ -54,6 +50,20 @@ class TheatreListViewModel : ViewModel() {
             loadTheatres()
         }
     }
-}
 
-// replica the viewModel and build the app to see the theatres viewpager layout.
+    fun getUpdatedMovies() {
+        if (getUpdatedTheatresJob?.isActive == true) getUpdatedTheatresJob?.cancel()
+
+        getUpdatedTheatresJob = viewModelScope.launch(Dispatchers.IO) {
+            theatreRepository.getUpdatedTheatres { theatres ->
+                _theatres.postValue(theatres)
+            }
+        }
+    }
+
+    fun updateAvailableSeat(newAvailableSeatCount: Int, theatreId: Int) {
+        viewModelScope.launch {
+            theatreRepository.updateAvailableSeatCount(newAvailableSeatCount, theatreId)
+        }
+    }
+}

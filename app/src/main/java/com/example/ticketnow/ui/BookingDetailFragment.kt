@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.BookTicketModel
+import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.viewmodels.BookingDetailViewModel
+import com.example.ticketnow.viewmodels.TheatreListViewModel
 import kotlinx.android.synthetic.main.fragment_booking_detail.view.*
 import org.w3c.dom.Text
 
@@ -23,11 +25,14 @@ class BookingDetailFragment : Fragment() {
     private var movieId = 0
     private var theatreId: Int = 0
     private lateinit var viewModel: BookingDetailViewModel
+    private lateinit var theatreViewModel: TheatreListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[BookingDetailViewModel::class.java]
+        theatreViewModel = ViewModelProvider(this)[TheatreListViewModel::class.java]
         viewModel.initializeRepo(requireContext())
+        theatreViewModel.initializeRepo(requireContext())
 
         val bundle = this.arguments
         if (bundle != null) {
@@ -61,8 +66,6 @@ class BookingDetailFragment : Fragment() {
             if (validateInputFields(view)) {
                 val bookingId = registerTicket(view)
                 navigateToConfirmFragment(bookingId.toInt())
-            } else {
-                Toast.makeText(requireContext(), "Please fill all required fields!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -93,8 +96,33 @@ class BookingDetailFragment : Fragment() {
         val name = view.et_booking_name.text.toString()
         val number = view.et_booking_contactno.text.toString()
         val ticketCount = view.et_booking_ticket_count.text.toString()
+        var availableSeatCount: Int? = -1
+        val theatres = ArrayList<TheatreModel>()
 
-        return !(TextUtils.isEmpty(name) || TextUtils.isEmpty(number) || TextUtils.isEmpty(ticketCount))
+        theatreViewModel.theatres.observe(viewLifecycleOwner) { _theatres ->
+            theatres.addAll(_theatres)
+        }
+        theatres.forEach {
+            Log.d("TICKET_NOW", "validateInputFields: ${it.id} $theatreId")
+        }
+        availableSeatCount = theatres.find { theatre -> theatre.id == theatreId }?.availableSeats ?: -1
+        Log.d("TICKET_NOW", "validateInputFields: availableSeatCount: $availableSeatCount")
+
+        return if (TextUtils.isEmpty(name) || TextUtils.isEmpty(number) || TextUtils.isEmpty(ticketCount)) {
+            Toast.makeText(requireContext(), "Please fill all required fields!", Toast.LENGTH_SHORT).show()
+            false
+        } else if (number.length < 7 || number.length > 12) {
+            Toast.makeText(requireContext(), "Invalid phone number!", Toast.LENGTH_SHORT).show()
+            false
+        } else if (ticketCount.toInt() > availableSeatCount || ticketCount.toInt() <= 0) {
+            Toast.makeText(requireContext(), "Invalid ticket count!", Toast.LENGTH_SHORT).show()
+            false
+        } else {
+            val newAvailableSeats = availableSeatCount - ticketCount.toInt()
+            theatreViewModel.updateAvailableSeat(newAvailableSeats, theatreId)
+            true
+        }
+
     }
 
     private fun navigateToConfirmFragment(id: Int) {

@@ -14,7 +14,7 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/card_layout.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/card_layout_movie.xml" value="0.4005208333333333" />
-        <entry key="app/src/main/res/layout/card_layout_movie_list.xml" value="0.425" />
+        <entry key="app/src/main/res/layout/card_layout_movie_list.xml" value="0.334375" />
         <entry key="app/src/main/res/layout/card_layout_theatre.xml" value="0.4005208333333333" />
         <entry key="app/src/main/res/layout/card_layout_theatre_list.xml" value="0.425" />
         <entry key="app/src/main/res/layout/cart_layout_theatre.xml" value="0.4244791666666667" />
@@ -23,7 +23,7 @@
         <entry key="app/src/main/res/layout/fragment_movie_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_movie_view_pager.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_theatre_list.xml" value="0.3934010152284264" />
+        <entry key="app/src/main/res/layout/fragment_theatre_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_theatre_view_pager.xml" value="0.4005208333333333" />
         <entry key="app/src/main/res/layout/item_view_view_pager.xml" value="0.4234375" />
         <entry key="app/src/main/res/layout/layout_load_more.xml" value="0.39947916666666666" />
@@ -35,7 +35,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

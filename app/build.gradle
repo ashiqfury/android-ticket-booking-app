@@ -86,4 +86,7 @@ dependencies {
 
     // swipe to refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // jackson json convertor
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1'
 }

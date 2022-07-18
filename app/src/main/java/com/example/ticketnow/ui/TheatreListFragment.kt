@@ -1,6 +1,8 @@
 package com.example.ticketnow.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -12,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ticketnow.R
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.utils.StarBtnClickListener
@@ -33,11 +36,13 @@ class TheatreListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var spinner: Spinner
     private lateinit var searchView: SearchView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var viewModel: TheatreListViewModel
     private var searchedTheatres: ArrayList<TheatreModel> = arrayListOf()
     private var theatres: ArrayList<TheatreModel> = arrayListOf()
     private var spinnerSelection = mSpinner.ALL.ordinal
+    private var offset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,21 @@ class TheatreListFragment : Fragment() {
             setupAppbar()
             setupSpinner(view)
             setupRecyclerView(view)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout = view.findViewById(R.id.theatre_swipe)
+        swipeRefreshLayout.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+//                allMovies.clear()
+//                searchedMovies.clear()
+//                offset = 0
+                viewModel.getUpdatedMovies()
+//                observeLiveData()
+                swipeRefreshLayout.isRefreshing = false
+            }, 2000)
         }
     }
 

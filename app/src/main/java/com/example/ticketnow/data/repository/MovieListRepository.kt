@@ -52,10 +52,10 @@ class MovieListRepository(val context: Context) {
     }
 
     suspend fun getUpdatedMovies(offset: Int, callback: (List<MovieModel>) -> Unit) {
-            val movies = getMoviesFromNetwork()
-            helper.deleteAllMovies()
-            movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
-            getMoviesFromDB(offset).also(callback)
+        val movies = getMoviesFromNetwork()
+        helper.deleteAllMovies()
+        movies.forEach { movie -> insert(movie.name, movie.genre, movie.language, movie.time, movie.price) }
+        getMoviesFromDB(offset).also(callback)
     }
 
     suspend fun insert(name: String, genre: String, language: String, showTime: String, price: Int) {

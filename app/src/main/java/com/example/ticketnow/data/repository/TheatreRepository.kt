@@ -7,6 +7,8 @@ import com.example.ticketnow.data.models.MovieModel
 import com.example.ticketnow.data.models.TheatreModel
 import com.example.ticketnow.data.repository.remote.FakeTheatreRemoteDB
 import com.example.ticketnow.utils.DatabaseHelper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +25,7 @@ class TheatreRepository(val context: Context) {
     suspend fun getTheatresFromDB(): List<TheatreModel> {
         val list = mutableListOf<TheatreModel>()
         val cursor = helper.getAllTheatres()
-        val gson = Gson()
-        val movieType = object : TypeToken<List<MovieModel>>() {}.type
+        val mapper = jacksonObjectMapper()
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
@@ -36,12 +37,7 @@ class TheatreRepository(val context: Context) {
                 val stared: String = cursor.getString(cursor.getColumnIndex("stared"))
                 val moviesListString: String = cursor.getString(cursor.getColumnIndex("moviesList"))
 
-                val moviesList = arrayListOf<MovieModel>()
-                moviesListString.split("#").forEach {
-                    val movie =  gson.fromJson(it, movieType) as List<MovieModel>
-                    Log.d("TICKET_NOW", "getTheatresFromDB: $movie")
-//                    moviesList.add(movie)
-                }
+                val moviesList = mapper.readValue<List<MovieModel>>(moviesListString)
                 val theatre = TheatreModel(id.toInt(), name, location, totalSeats.toInt(), availableSeats.toInt(), stared.toInt(), moviesList)
                 list.add(theatre)
                 cursor.moveToNext()
@@ -69,6 +65,13 @@ class TheatreRepository(val context: Context) {
         return theatres
     }
 
+    suspend fun getUpdatedTheatres(callback: (List<TheatreModel>) -> Unit) {
+        val theatres = getTheatresFromNetwork()
+        helper.deleteAllTheatres()
+        theatres.forEach { theatre -> insert(theatre.name, theatre.location, theatre.totalSeats, theatre.availableSeats, theatre.stared, theatre.moviesList) }
+        getTheatresFromDB().also(callback)
+    }
+
     suspend fun getTheatre(theatreId: Int): TheatreModel {
         var theatre: TheatreModel? = null
         val cursor = helper.getTheatre(theatreId)
@@ -88,6 +91,10 @@ class TheatreRepository(val context: Context) {
             cursor.moveToNext()
         }
         return theatre!!
+    }
+
+    suspend fun updateAvailableSeatCount(newAvailableSeatCount: Int, theatreId: Int) {
+        helper.updateSeatCount(newAvailableSeatCount, theatreId.toString())
     }
 
     suspend fun deleteTheatre(theatreId: Int) {

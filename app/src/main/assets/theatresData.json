@@ -49,8 +49,71 @@
     "stared": 0
   },
   {
-    "name": "Color FilmZx",
+    "name": "Alangar Cinemas",
     "location": "Erode",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 1
+  },
+  {
+    "name": "Muthuram Cinemas",
+    "location": "Erode",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 0
+  },
+  {
+    "name": "Shree Rathna Cinemas",
+    "location": "Pondichery",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 1
+  },
+  {
+  "name": "Senthilvel Cinemas",
+  "location": "Hyderabad",
+  "totalSeats": 35,
+  "availableSeats": 35,
+  "stared": 1
+  },
+  {
+  "name": "Multiplex Dolby Atmos",
+  "location": "Mumbai",
+  "totalSeats": 35,
+  "availableSeats": 35,
+  "stared": 0
+  },
+  {
+    "name": "APA Cinemas",
+    "location": "Tirupur",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 0
+  },
+  {
+    "name": "Cinepolis DSL Mall",
+    "location": "Trivandrum",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 0
+  },
+  {
+    "name": "Mantra Mall",
+    "location": "Visakhapatnam",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 1
+  },
+  {
+    "name": "Inox GSM Mall",
+    "location": "Delhi",
+    "totalSeats": 35,
+    "availableSeats": 35,
+    "stared": 0
+  },
+  {
+    "name": "Super 70 MM",
+    "location": "Coimbatore",
     "totalSeats": 35,
     "availableSeats": 35,
     "stared": 1

@@ -1,15 +1,10 @@
 package com.example.ticketnow.ui
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -23,7 +18,6 @@ import com.example.ticketnow.utils.MovieRecyclerViewAdapter
 import com.example.ticketnow.utils.RecyclerViewClickListener
 import com.example.ticketnow.viewmodels.MovieListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -155,7 +149,7 @@ internal class MovieListFragment : Fragment() {
                 viewModel.getUpdatedMovies(offset)
                 observeLiveData()
                 swipeRefreshLayout.isRefreshing = false
-            }, 1000)
+            }, 2000)
         }
     }
 
